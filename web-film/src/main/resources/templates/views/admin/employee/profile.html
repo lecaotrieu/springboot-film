@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.employee.profile}"></title>
+    <link rel="stylesheet" th:href="@{/template/admin/employee/employee.css}">
+</head>
+<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/admin/home-page}">
+                <i class="fa fa-home"></i>
+                <span th:text="#{label.home.page}" th:remove="tag"></span>
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a th:href="@{/admin/employee/list}" th:text="#{label.employee.list}">
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${item.firstName + ' ' + item.lastName}"></li>
+    </ol>
+</nav>
+<div class="col-12 mx-auto">
+    <div class="container content">
+        <div class="row">
+            <div class="col-3">
+                <img class="d-block"
+                     th:src="${item.photoUrl}" alt="Card image cap" id="photo-employee">
+            </div>
+            <div class="col-7">
+                <h3 th:text="${item.firstName + ' ' + item.lastName}"></h3>
+                <p th:text="${item.birthDate}"></p>
+                <p th:text="${item.email}"></p>
+                <p th:text="${item.phone}"></p>
+            </div>
+            <div class="col-2">
+                <a th:href="@{/admin/employee/edit(id=${item.id})}"
+                   class="btn btn-secondary float-right" th:text="#{label.update}">
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    <th:block th:each="role: ${item.roles}">
+                        <b th:text="${'[' + role.name + ']'}"></b>
+                    </th:block>
+                </p>
+                <p>
+                    <b th:text="#{label.address}">
+                    </b>:
+                <div th:text="${item.address}" th:remove="tag"></div>
+                </p>
+                <p>
+                    <b th:text="#{label.create.date}"></b>:
+                <div th:text="${item.createdDate}" th:remove="tag"></div>
+                </p>
+                <p>
+                    <b th:text="#{label.people.create}"></b>:
+                <div th:text="${item.createdBy}" th:remove="tag"></div>
+                </p>
+                <p>
+                    <b th:text="#{label.modified.date}"></b>:
+                <div th:text="${item.modifiedDate}" th:remove="tag"></div>
+                </p>
+                <p>
+                    <b th:text="#{label.people.modified}"></b>:
+                <div th:text="${item.modifiedBy}" th:remove="tag"></div>
+                </p>
+                <p>
+                    <b th:text="#{label.status}"></b>:
+                <div th:if="${item.status == 1}" th:remove="tag">Hoạt động</div>
+                <div th:if="${item.status == 0}" th:remove="tag">Không hoạt động</div>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

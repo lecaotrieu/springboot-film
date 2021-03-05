@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.employee.list}"></title>
+    <!-- MDBootstrap Datatables  -->
+    <link th:href="@{/template/mdbootstrap/css/addons/datatables.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="breadcrumbs" id="breadcrumbs">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/admin/home-page}">
+                    <i class="fa fa-home"></i>
+                    <span th:text="#{label.home.page}" th:remove="tag"></span>
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{label.employee.list}"></li>
+        </ol>
+    </nav>
+</div>
+<th:block th:if="${param.message!=null}">
+    <div th:class="${'alert alert-block alert-'+ alert}">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="ace-icon fa fa-times"></i>
+        </button>
+        <div th:text="${messageResponse}" th:remove="tag"></div>
+    </div>
+</th:block>
+<div class="row">
+    <div class="col float-right"></div>
+    <a th:href="@{/admin/employee/edit}" class="btn btn-outline-success">
+        <div th:text="#{label.employee.add}" th:remove="tag"></div>
+    </a>
+</div>
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th class="th-sm" th:text="#{label.id}"></th>
+        <th class="th-sm" th:text="#{label.username}"></th>
+        <th class="th-sm" th:text="#{label.first.name}"></th>
+        <th class="th-sm" th:text="#{label.last.name}"></th>
+        <th class="th-sm" th:text="#{label.address}"></th>
+        <th class="th-sm" th:text="#{label.birth.date}"></th>
+        <th class="th-sm" th:text="#{label.phone}"></th>
+        <th class="th-sm" th:text="#{label.email}"></th>
+        <th class="th-sm" th:text="#{label.people.create}"></th>
+        <th class="th-sm" th:text="#{label.create.date}"></th>
+        <th class="th-sm" th:text="#{label.people.modified}"></th>
+        <th class="th-sm" th:text="#{label.modified.date}"></th>
+        <th class="th-sm" th:text="#{label.status}"></th>
+        <th class="th-sm" th:text="#{label.action}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="employee: ${items.listResult}">
+        <tr>
+            <a href="">
+
+            </a>
+            <td th:text="${employee.id}"></td>
+            <td><a th:href="@{'/admin/employee/profile?id='+${employee.id}}" th:text="${employee.userName}"
+                   style="color: #0b51c5; font-weight: bold"></a></td>
+            <td th:text="${employee.firstName}">
+            <td th:text="${employee.lastName}"></td>
+            <td th:text="${employee.address}"></td>
+            <td th:text="${employee.birthDate}"></td>
+            <td th:text="${employee.phone}"></td>
+            <td th:text="${employee.email}"></td>
+            <td th:text="${employee.createdBy}"></td>
+            <td th:text="${employee.createdDate}"></td>
+            <td th:text="${employee.modifiedBy}"></td>
+            <td th:text="${employee.modifiedDate}"></td>
+            <td>
+                <div class="custom-control custom-switch"
+                     style="width: fit-content; margin: auto;">
+                    <div th:if="${employee.status == 1}" th:remove="tag">
+                        <input type="checkbox" class="custom-control-input"
+                               th:id="status_+ ${employee.id}" checked
+                               th:onchange="updateStatusOfEmployee([[${employee.id}]])">
+                    </div>
+                    <div th:if="${employee.status == 0}" th:remove="tag">
+                        <input type="checkbox" class="custom-control-input"
+                               th:id="status_+ ${employee.id}"
+                               th:onchange="updateStatusOfEmployee([[${employee.id}]])">
+                    </div>
+                    <!-- <c:if test="${tableList.status == 1}">checked</c:if>
+                     >-->
+                    <label class="custom-control-label" th:for="status_+ ${employee.id}"></label>
+                </div>
+            </td>
+            <td>
+                <a th:href="@{'/admin/employee/edit?id='+${employee.id}}" class="btn btn-sm btn-primary btn-update">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a class="btn btn-sm btn-warning" th:onclick="warningBeforeDelete([[${employee.id}]])">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th class="th-sm" th:text="#{label.id}"></th>
+        <th class="th-sm" th:text="#{label.username}"></th>
+        <th class="th-sm" th:text="#{label.first.name}"></th>
+        <th class="th-sm" th:text="#{label.last.name}"></th>
+        <th class="th-sm" th:text="#{label.address}"></th>
+        <th class="th-sm" th:text="#{label.birth.date}"></th>
+        <th class="th-sm" th:text="#{label.phone}"></th>
+        <th class="th-sm" th:text="#{label.email}"></th>
+        <th class="th-sm" th:text="#{label.people.create}"></th>
+        <th class="th-sm" th:text="#{label.create.date}"></th>
+        <th class="th-sm" th:text="#{label.people.modified}"></th>
+        <th class="th-sm" th:text="#{label.modified.date}"></th>
+        <th class="th-sm" th:text="#{label.status}"></th>
+        <th class="th-sm" th:text="#{label.action}"></th>
+    </tr>
+    </tfoot>
+</table>
+<!-- MDBootstrap Datatables  -->
+<script type="text/javascript" th:src="@{/template/mdbootstrap/js/addons/datatables.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#dtBasicExample').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+
+    function warningBeforeDelete(x) {
+        if (x != null) {
+            showAlertBeforeDelete(function () {
+                deleteEmployee([x]);
+            });
+        } else {
+            showAlertBeforeDelete(function () {
+                var ids = $('tbody input[type=checkbox]:checked').map(function () {
+                    return $(this).val()
+                }).get();
+                deleteEmployee(ids);
+            });
+        }
+    }
+
+    var apiEmployee = "/api/admin/employee";
+
+    var employeeListURL = "/admin/employee/list";
+
+    function deleteEmployee(data) {
+        $.ajax({
+            url: apiEmployee,
+            type: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (result) {
+                window.location.href = employeeListURL + '?message=redirect_delete';
+            },
+            error: function (result) {
+                window.location.href = employeeListURL + '?&message=redirect_error';
+
+            }
+        });
+    }
+
+    var apiStatusUrl = "/api/admin/employee/status";
+
+    function updateStatusOfEmployee(id) {
+        var status = "status_" + id;
+        if ($('#' + status).is(':checked')) {
+            status = 1;
+        } else {
+            status = 0;
+        }
+        var data = {id: id, status: status};
+        $.ajax({
+            url: apiStatusUrl,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function () {
+            },
+            error: function () {
+                console.log("loi");
+            }
+        });
+    }
+</script>
+</body>
+</html>

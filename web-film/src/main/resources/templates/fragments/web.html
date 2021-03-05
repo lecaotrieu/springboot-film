@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<section class="header" th:fragment="header">
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="/trang-chu">
+        <img th:src="@{/web/img/phimhay.png}" height="40" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="form-inline search" action="/phim/tim-kiem"/>" method="get">
+        <input id="search-input" class="form-control" name="search" type="text" value="${items.search}"
+               placeholder="Tìm: tên phim, đạo diễn, diễn viên">
+        <div class="input-group-append button">
+            <button class="input-group-text">
+                <i class="fas fa-search text-white"></i>
+            </button>
+        </div>
+        </form>
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto login-manager">
+                <li class="nav-item dropdown">
+                        <a href="/dang-nhap"/>" class="btn btn-primary float-right"><fmt:message
+                            key="label.login"
+                            bundle="${lang}"/></a>
+                        <a href="/dang-ky"/>" class="btn btn-primary float-right"><fmt:message
+                            key="label.register"
+                            bundle="${lang}"/></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="clear"></div>
+    <hr style="border: solid 1px #e8e800;">
+    <nav id="menu">
+        <ul>
+            <li><a href="/phim?sort=view"/>">Phim Hay</a></li>
+            <li>
+                <a>Thể loại</a>
+                <ul class="sub-menu">
+                  <!--  <c:forEach items="${category_list}" var="category">
+                        <li><a href="/phim/the-loai/${category.code}"/>">Phim ${category.name}</a></li>
+                    </c:forEach>-->
+                </ul>
+            </li>
+            <li>
+                <a>Quốc gia</a>
+                <ul class="sub-menu">
+                   <!-- <c:forEach var="country" items="${country_list}">
+                        <li><a href="/phim/quoc-gia/${country.code}"/>">${country.name}</a></li>
+                    </c:forEach>-->
+                </ul>
+            </li>
+         <!--   <c:forEach items="${film_type_list}" var="filmType">
+                <li>
+                    <a href="/phim/${filmType.code}"/>">${filmType.name}</a>
+                    <c:if test="${filmType.code == 'phim-bo'}">
+                        <ul class="sub-menu">
+                            <c:forEach var="country" items="${country_list}">
+                                <li><a href="/phim/${filmType.code}/nuoc-${country.code}"/>">Phim bộ ${country.name}</a></li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                    <c:if test="${filmType.code == 'phim-le'}">
+                        <ul class="sub-menu">
+                            <c:forEach items="${years}" var="year">
+                                <li><a href="/phim/${filmType.code}/nam-${year}"/>">Phim lẻ ${year}</a></li>
+                            </c:forEach>
+                            <li><a href="#">Phim lẻ trước ${years[4]-1}</a></li>
+                        </ul>
+                    </c:if>
+                </li>
+            </c:forEach>-->
+            <li><a href="#">Trailer</a></li>
+        </ul>
+    </nav>
+</section>
+<section class="footer" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <img th:src="@{/web/img/phimhay.png}" alt="">
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="footer-title">
+                            <ul class="title-hover"> Phim mới ZZ
+                                <a href="#">
+                                    <li>Phim lẻ mới</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim bộ mới</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim chiếu rạp</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim kinh điển</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim sắp chiếu</li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="footer-title">
+                            <ul> Phim lẻ
+                                <a href="#">
+                                    <li>Phim hành động</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim kiếm hiệp</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim kinh dị</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim viển tưởng</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim hoạt hình</li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="footer-title">
+                            <ul> Phim bộ
+                                <a href="#">
+                                    <li>Phim Việt Nam</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim Hàn Quốc</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim Mỹ</li>
+                                </a>
+                                <a href="#">
+                                    <li>Phim Thái Lan</li>
+                                </a>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="footer-title">
+                    <ul> Thông tin liên hệ
+                        <a href="#">
+                            <li>Email: contact@phimmoi.net</li>
+                        </a>
+                        <a href="#">
+                            <li>IP của bạn:</li>
+                        </a>
+                        <a href="#">
+                            <li>171.231.241.105</li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

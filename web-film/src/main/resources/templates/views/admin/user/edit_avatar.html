@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.edit.avatar.change}"></title>
+    <link rel="stylesheet" th:href="@{/template/css/custom_upload_img.css}">
+</head>
+<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a th:href="@{/admin/home-page}">
+                <i class="fa fa-home"></i>
+                <span th:text="#{label.home.page}" th:remove="tag"></span>
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a th:href="@{/admin/user/list}" th:text="#{label.user.list}">
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="#{label.edit.avatar.change}"></li>
+    </ol>
+</nav>
+<div class="col-8 mx-auto">
+    <th:block th:if="${param.message!=null}">
+        <div th:class="${'alert alert-block alert-'+ alert}">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            <div th:text="${messageResponse}" th:remove="tag"></div>
+        </div>
+    </th:block>
+    <div class="card">
+        <div class="card-header">
+            <strong th:text="#{label.edit.avatar.change}">
+            </strong>
+        </div>
+        <div class="card-body card-block">
+            <form id="file-upload-form" class="uploader" enctype="multipart/form-data" method="post" th:action="@{/api/admin/user/photo}">
+                <input id="file-upload" type="file" name="img" accept="image/*"/>
+                <label for="file-upload" id="file-drag">
+                    <img id="file-image" th:src="${item.photoUrl}" alt="Preview" class="hidden">
+                    <div id="start">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <div>Select a file or drag here</div>
+                        <div id="notimage" class="hidden">Please select an image</div>
+                        <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+                    </div>
+                    <div id="response" class="hidden">
+                        <div id="messages"></div>
+                        <progress class="progress" id="file-progress" value="0">
+                            <span>0</span>%
+                        </progress>
+                    </div>
+                </label>
+                <input type="hidden" th:value="${item.id}" name="id" id="id">
+            </form>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary btn-sm" id="btn-update" type="button">
+                <i class="fas fa-check"></i>
+                <div th:text="#{label.update}" th:remove="tag"></div>
+            </button>
+            <button class="btn btn-success btn-sm float-right" id="btn-ignore" th:text="#{label.ignore}">
+            </button>
+        </div>
+    </div>
+</div>
+<script th:src="@{/template/js/custom_upload_img.js}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /*]]>*/
+    $(document).ready(function () {
+        if ($('#file-image').attr("src") != "") {
+            $('#file-image').removeClass("hidden");
+            $('#start').addClass("hidden");
+        }
+    });
+    var userListUrl = "/admin/user/list";
+
+    $('#btn-ignore').click(function () {
+        window.location.href = userListUrl;
+    });
+    $('#btn-update').click(function () {
+        $('#file-upload-form').submit();
+    });
+</script>
+</body>
+</html>

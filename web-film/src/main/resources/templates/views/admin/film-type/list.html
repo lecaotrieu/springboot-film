@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.film.type.list}"></title>
+    <!-- MDBootstrap Datatables  -->
+    <link th:href="@{/template/mdbootstrap/css/addons/datatables.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="breadcrumbs" id="breadcrumbs">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/admin/home-page}">
+                    <i class="fa fa-home"></i>
+                    <span th:text="#{label.home.page}" th:remove="tag"></span>
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{label.film.type.list}"></li>
+        </ol>
+    </nav>
+</div>
+<th:block th:if="${param.message!=null}">
+    <div th:class="${'alert alert-block alert-'+ alert}">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="ace-icon fa fa-times"></i>
+        </button>
+        <div th:text="${messageResponse}" th:remove="tag"></div>
+    </div>
+</th:block>
+<div class="row">
+    <div class="col float-right"></div>
+    <button type="button" class="btn btn-outline-success"
+            onclick="addFilmTypeShow()">
+        <div th:text="#{label.film.type.add}" th:remove="tag"></div>
+    </button>
+</div>
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th class="th-sm" th:text="#{label.id}"></th>
+        <th class="th-sm" th:text="#{label.code}"></th>
+        <th class="th-sm" th:text="#{label.name}"></th>
+        <th class="th-sm" th:text="#{label.total.film}"></th>
+        <th class="th-sm" th:text="#{label.people.create}"></th>
+        <th class="th-sm" th:text="#{label.create.date}"></th>
+        <th class="th-sm" th:text="#{label.people.modified}"></th>
+        <th class="th-sm" th:text="#{label.modified.date}"></th>
+        <th class="th-sm" th:text="#{label.action}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="filmType: ${items}">
+        <tr>
+            <td th:text="${filmType.id}"></td>
+            <td th:text="${filmType.code}"></td>
+            <td th:text="${filmType.name}"></td>
+            <td style="text-align: center;"><a href="#" th:text="${filmType.totalFilm}" style="color: #0b51c5; font-weight: bold"></a></td>
+            <td th:text="${filmType.createdBy}"></td>
+            <td th:text="${filmType.createdDate}"></td>
+            <td th:text="${filmType.modifiedBy}"></td>
+            <td th:text="${filmType.modifiedDate}"></td>
+            <td>
+                <button type="button" class="btn btn-sm btn-primary btn-update"
+                        th:onclick="updateFilmTypeShow([[${filmType.id}]],[[${filmType.code}]],[[${filmType.name}]])"
+                        data-toggle="tooltip">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <a class="btn btn-sm btn-warning" th:onclick="warningBeforeDelete([[${filmType.id}]])">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th class="th-sm" th:text="#{label.id}"></th>
+        <th class="th-sm" th:text="#{label.code}"></th>
+        <th class="th-sm" th:text="#{label.name}"></th>
+        <th class="th-sm" th:text="#{label.total.film}"></th>
+        <th class="th-sm" th:text="#{label.people.create}"></th>
+        <th class="th-sm" th:text="#{label.create.date}"></th>
+        <th class="th-sm" th:text="#{label.people.modified}"></th>
+        <th class="th-sm" th:text="#{label.modified.date}"></th>
+        <th class="th-sm" th:text="#{label.action}"></th>
+    </tr>
+    </tfoot>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="film-type-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{label.film.type.add}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formSubmit" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="code" class=" form-control-label"
+                                                         th:text="#{label.film.type.code}"></label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input name="code" class="form-control" id="code"
+                                   placeholder="Tự thêm nếu để trống"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label" th:text="#{label.film.type.name}"></label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" name="name" id="name"/>
+                        </div>
+                    </div>
+                    <input name="id" id="id" value="" type="hidden"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.close}">
+                </button>
+
+                <button type="button" id="btn-update" class="btn btn-primary" th:text="#{label.save.change}">
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MDBootstrap Datatables  -->
+<script type="text/javascript" th:src="@{/template/mdbootstrap/js/addons/datatables.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#dtBasicExample').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+
+    function addFilmTypeShow() {
+        $('#name').val("");
+        $('#code').val("");
+        $('#id').val("");
+        $('#film-type-modal').modal("toggle");
+    }
+
+    function updateFilmTypeShow(id, code, name) {
+        $('#name').val(name);
+        $('#code').val(code);
+        $('#id').val(id);
+        $('#film-type-modal').modal("toggle");
+    }
+
+    const filmTypeListUrl = "/admin/film-type/list";
+    const filmTypeApiUrl = "/api/admin/film-type";
+
+    function updateFilmType(data) {
+        $.ajax({
+            url: filmTypeApiUrl,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = filmTypeListUrl + "?message=redirect_update";
+            },
+            error: function (error) {
+                window.location.href = filmTypeListUrl + "?message=redirect_error";
+            }
+        });
+    }
+
+    function saveFilmType(data) {
+        $.ajax({
+            url: filmTypeApiUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = filmTypeListUrl + "?message=redirect_insert";
+            },
+            error: function (error) {
+                window.location.href = filmTypeListUrl + "?message=redirect_error";
+            }
+        });
+    }
+
+    function warningBeforeDelete(x) {
+        if (x != null) {
+            showAlertBeforeDelete(function () {
+                deleteFilmType([x]);
+            });
+        } else {
+            showAlertBeforeDelete(function () {
+                var ids = $('tbody input[type=checkbox]:checked').map(function () {
+                    return $(this).val()
+                }).get();
+                deleteFilmType(ids);
+            });
+        }
+    }
+
+    function deleteFilmType(data) {
+        $.ajax({
+            url: filmTypeApiUrl,
+            type: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (result) {
+                window.location.href = filmTypeListUrl + "?message=redirect_delete";
+            },
+            error: function (result) {
+                window.location.href = filmTypeListUrl + "?message=redirect_error";
+            }
+        });
+    }
+
+    $('#btn-update').click(function (e) {
+        e.preventDefault();
+        var formData = $('#formSubmit').serializeArray();
+        var id = $('#id').val();
+        var data = convertToJson(formData);
+        if (id == "") {
+            saveFilmType(data);
+        } else {
+            updateFilmType(data);
+        }
+    });
+</script>
+</body>
+</html>

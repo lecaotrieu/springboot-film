@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.category.list}"></title>
+    <!-- MDBootstrap Datatables  -->
+    <link th:href="@{/template/mdbootstrap/css/addons/datatables.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="breadcrumbs" id="breadcrumbs">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/admin/home-page}">
+                    <i class="fa fa-home"></i>
+                    <span th:text="#{label.home.page}" th:remove="tag"></span>
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{label.category.list}"></li>
+        </ol>
+    </nav>
+</div>
+<th:block th:if="${param.message!=null}">
+    <div th:class="${'alert alert-block alert-'+ alert}">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="ace-icon fa fa-times"></i>
+        </button>
+        <div th:text="${messageResponse}" th:remove="tag"></div>
+    </div>
+</th:block>
+<div class="row">
+    <div class="col float-right"></div>
+    <button type="button" class="btn btn-outline-success"
+            onclick="addCategoryShow()">
+        <div th:text="#{label.category.add}" th:remove="tag"></div>
+    </button>
+</div>
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th class="th-sm" th:text="#{label.id}"></th>
+        <th class="th-sm" th:text="#{label.code}"></th>
+        <th class="th-sm" th:text="#{label.name}"></th>
+        <th class="th-sm" th:text="#{label.description}"></th>
+        <th class="th-sm" th:text="#{label.total.film}"></th>
+        <th class="th-sm" th:text="#{label.people.create}"></th>
+        <th class="th-sm" th:text="#{label.create.date}"></th>
+        <th class="th-sm" th:text="#{label.people.modified}"></th>
+        <th class="th-sm" th:text="#{label.modified.date}"></th>
+        <th class="th-sm" th:text="#{label.action}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="category: ${items}">
+        <tr>
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.code}"></td>
+            <td th:text="${category.name}"></td>
+            <td th:text="${category.description}" class="td-description"></td>
+            <td style="text-align: center;"><a href="#" th:text="${category.totalFilm}" style="color: #0b51c5; font-weight: bold; "></a></td>
+            <td th:text="${category.createdBy}"></td>
+            <td th:text="${category.createdDate}"></td>
+            <td th:text="${category.modifiedBy}"></td>
+            <td th:text="${category.modifiedDate}"></td>
+            <td>
+                <button type="button" class="btn btn-sm btn-primary btn-update"
+                        th:onclick="updateCategoryShow([[${category.id}]],[[${category.code}]],[[${category.name}]],[[${category.description}]])"
+                        data-toggle="tooltip">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <a class="btn btn-sm btn-warning" th:onclick="warningBeforeDelete([[${category.id}]])">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th class="th-sm" th:text="#{label.id}"></th>
+        <th class="th-sm" th:text="#{label.code}"></th>
+        <th class="th-sm" th:text="#{label.name}"></th>
+        <th class="th-sm" th:text="#{label.description}"></th>
+        <th class="th-sm" th:text="#{label.total.film}"></th>
+        <th class="th-sm" th:text="#{label.people.create}"></th>
+        <th class="th-sm" th:text="#{label.create.date}"></th>
+        <th class="th-sm" th:text="#{label.people.modified}"></th>
+        <th class="th-sm" th:text="#{label.modified.date}"></th>
+        <th class="th-sm" th:text="#{label.action}"></th>
+    </tr>
+    </tfoot>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{label.category.add}"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formSubmit" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="code" class=" form-control-label"
+                                                         th:text="#{label.category.code}"></label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input name="code" class="form-control" id="code"
+                                   placeholder="Tự thêm nếu để trống"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label" th:text="#{label.category.name}"></label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input class="form-control" name="name" id="name"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12">
+                            <label for="description" class=" form-control-label" th:text="#{label.description}"></label>
+                        </div>
+                        <div class="col-12">
+                            <textarea name="description" class="form-control" id="description" rows="8"></textarea>
+                        </div>
+                    </div>
+                    <input name="id" id="id" value="" type="hidden"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.close}">
+                </button>
+                <button type="button" id="btn-update" class="btn btn-primary" th:text="#{label.save.change}">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MDBootstrap Datatables  -->
+<script type="text/javascript" th:src="@{/template/mdbootstrap/js/addons/datatables.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#dtBasicExample').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+
+    function addCategoryShow() {
+        $('#name').val("");
+        $('#code').val("");
+        $('#id').val("");
+        $('#description').val("");
+        $('#category-modal').modal("toggle");
+    }
+
+    function updateCategoryShow(id, code, name, description) {
+        $('#name').val(name);
+        $('#code').val(code);
+        $('#id').val(id);
+        $('#description').val(description);
+        $('#category-modal').modal("toggle");
+    }
+
+    const categoryListUrl = "/admin/category/list";
+    const categoryApiUrl = "/api/admin/category";
+
+    function updateCategory(data) {
+        $.ajax({
+            url: categoryApiUrl,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = categoryListUrl + "?message=redirect_update";
+            },
+            error: function (error) {
+                window.location.href = categoryListUrl + "?message=redirect_error";
+            }
+        });
+    }
+
+    function saveCategory(data) {
+        $.ajax({
+            url: categoryApiUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = categoryListUrl + "?message=redirect_insert";
+            },
+            error: function (error) {
+                window.location.href = categoryListUrl + "?message=redirect_error";
+            }
+        });
+    }
+
+    function warningBeforeDelete(x) {
+        if (x != null) {
+            showAlertBeforeDelete(function () {
+                deleteCategory([x]);
+            });
+        } else {
+            showAlertBeforeDelete(function () {
+                var ids = $('tbody input[type=checkbox]:checked').map(function () {
+                    return $(this).val()
+                }).get();
+                deleteCategory(ids);
+            });
+        }
+    }
+
+    function deleteCategory(data) {
+        $.ajax({
+            url: categoryApiUrl,
+            type: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (result) {
+                window.location.href = categoryListUrl + "?message=redirect_delete";
+            },
+            error: function (result) {
+                window.location.href = categoryListUrl + "?message=redirect_error";
+            }
+        });
+    }
+
+    $('#btn-update').click(function (e) {
+        e.preventDefault();
+        var formData = $('#formSubmit').serializeArray();
+        var id = $('#id').val();
+        var data = convertToJson(formData);
+        if (id == "") {
+            saveCategory(data);
+        } else {
+            updateCategory(data);
+        }
+    });
+</script>
+</body>
+</html>

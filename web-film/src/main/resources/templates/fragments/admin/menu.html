@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+<div id="mySidenav" class="sidenav active" th:fragment="menu">
+    <div class="left-menu">
+        <a class="nav-link active sub-menu" href="#">
+            <i class="fas fa-tachometer-alt"></i>
+            <div th:remove="tag" th:text="#{label.dashboard}"></div>
+        </a>
+        <div class="sidenav-menu-header sub-menu">
+            <div class="header-sub-menu" style="width: max-content">
+                <div th:remove="tag" th:text="#{label.manage}"></div>
+                <div sec:authorize="hasRole('ADMIN')">
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse3"><i class="fas fa-users"></i>
+                                        <div th:remove="tag" th:text="#{label.employee}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse3" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/employee/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a>
+                                    </li>
+                                    <li class="sub-menu-li"><a th:href="@{/admin/employee/edit}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.employee.add}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse8"><i class="fas fa-dot-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.role}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse8" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/role/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div sec:authorize="hasAnyRole('ADMIN','MANAGER')">
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse1"><i class="fas fa-user"></i>
+                                        <div th:remove="tag" th:text="#{label.user}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/user/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a></li>
+                                    <li class="sub-menu-li"><a th:href="@{/admin/user/edit}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.user.add}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse4"><i class="fas fa-dot-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.category}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse4" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/category/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse5"><i class="far fa-dot-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.film.type}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse5" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/film-type/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse6"><i class="fab fa-autoprefixer"></i>
+                                        <div th:remove="tag" th:text="#{label.actor}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse6" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/actor/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse7"><i class="fab fa-dyalog"></i></i>
+                                        <div th:remove="tag" th:text="#{label.director}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse7" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/director/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div sec:authorize="hasAnyRole('ADMIN','POSTER')">
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse2"><i class="fas fa-film"></i>
+                                        <div th:remove="tag" th:text="#{label.film}"></div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <ul class="collapse-sub-menu">
+                                    <li class="sub-menu-li"><a th:href="@{/admin/film/list}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.list}"></div>
+                                    </a></li>
+                                    <li class="sub-menu-li"><a th:href="@{/admin/film/edit}"><i
+                                            class="far fa-circle"></i>
+                                        <div th:remove="tag" th:text="#{label.film.add}"></div>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+</div>
+</body>
+</html>

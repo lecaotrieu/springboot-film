@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.user.info}"></title>
+    <link rel="stylesheet" th:href="@{/template/admin/user/profile.css}">
+</head>
+<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{admin/trang-chu}">
+            <i class="fa fa-home"></i>
+            <div th:text="#{label.home.page}" th:remove="tag"></div>
+        </a>
+        </li>
+        <li class="breadcrumb-item"><a th:href="@{/admin/user/list}" th:text="#{label.user.list}">
+        </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${item.userName}"></li>
+    </ol>
+</nav>
+<div class="col-12 mx-auto content-user-profile">
+    <div class="row">
+        <div class="col-6 info">
+            <div class="row">
+                <div class="col-5">
+                    <img class="d-block" th:src="${item.photoUrl}" alt="Card image cap"
+                         style="width: 100%; height: auto; min-height: 200px;" id="avatarUser">
+                </div>
+                <div class="col-7">
+                    <div class="row">
+                        <div class="full-name col-8">
+                            <h3 th:text="${item.firstName + ' ' + item.lastName}"></h3>
+                        </div>
+                        <div class="col-4">
+                            <a th:href="@{/admin/user/edit(id=${item.id})}" class="btn btn-outline-dark float-right"
+                               th:text="#{label.update}">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="username col-12">
+                            <h3>
+                                <div th:text="#{label.username} +': '+ ${item.userName}" th:remove="tag"></div>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.email}"></label>
+                </div>
+                <div class="col-7" th:text="${item.email}"></div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.phone}"></label>
+                </div>
+                <div class="col-7" th:text="${item.phone}"></div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.birth.date}"></label>
+                </div>
+                <div class="col-7" th:text="${item.birthDate}"></div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.address}"></label>
+                </div>
+                <div class="col-7" th:text="${item.address}"></div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.status}"></label>
+                </div>
+
+                <div class="col-7">
+                    <th:block th:if="${item.status==0}">Không</th:block>
+                    Hoạt động
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.create.date}"></label>
+                </div>
+                <div class="col-7" th:text="${item.createdDate}"></div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.people.create}"></label>
+                </div>
+                <div class="col-7" th:text="${item.createdBy}"></div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.modified.date}"></label>
+                </div>
+                <div class="col-7" th:text="${item.modifiedDate}"></div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <label th:text="#{label.people.modified}"></label>
+                </div>
+                <div class="col-7" th:text="${item.modifiedBy}"></div>
+            </div>
+        </div>
+        <div class="col-6 film-info">
+            <div class="col-12">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="col-4 nav-item nav-link active" id="nav-like-tab" data-toggle="tab" href="#nav-like"
+                           role="tab" aria-controls="nav-like" aria-selected="true" th:text="#{label.like}">
+                        </a>
+                        <a class="col-4 nav-item nav-link" id="nav-follow-tab" data-toggle="tab" href="#nav-follow"
+                           role="tab" aria-controls="nav-follow" aria-selected="false" th:text="#{label.follow}">
+                        </a>
+                        <a class="col-4 nav-item nav-link" id="nav-watching-tab" data-toggle="tab" href="#nav-watching"
+                           role="tab" aria-controls="nav-watching" aria-selected="false"
+                           th:text="#{label.film.watching}">
+                        </a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-like" role="tabpanel" aria-labelledby="nav-like-tab">
+                        <hr>
+                        <div class="col-12" th:each="evaluate: ${item.evaluates}">
+                            <div class="row" style="margin: 20px 0px;" th:if="${evaluate.liked == 1}">
+                                <div class="col-4">
+                                    <a th:href="@{/admin/film/show(id=${evaluate.film.id})}"
+                                       th:text="${evaluate.film.name}"></a>
+                                </div>
+                                <div class="col-4" style="text-align: center;"
+                                     th:text="${evaluate.watched + ' / ' +evaluate.film.episodesCount}">
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-outline-primary float-right">Bỏ thích</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-follow" role="tabpanel" aria-labelledby="nav-follow-tab">
+                        <hr>
+                        <div class="col-12" th:each="evaluate: ${item.evaluates}">
+                            <div class="row" style="margin: 20px 0px;" th:if="${evaluate.follow == 1}">
+                                <div class="col-4">
+                                    <a th:href="@{/admin/film/show(id=${evaluate.film.id})}"
+                                       th:text="${evaluate.film.name}"></a>
+                                </div>
+                                <div class="col-4" style="text-align: center;"
+                                     th:text="${evaluate.watched + ' / ' +evaluate.film.episodesCount}">
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-outline-danger float-right">Bỏ theo dõi</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-watching" role="tabpanel" aria-labelledby="nav-watching-tab">
+                        <hr>
+                        <div class="col-12" th:each="evaluate: ${item.evaluates}">
+                            <div class="row" style="margin: 20px 0px;" th:if="${evaluate.watched>0}">
+                                <div class="col-4">
+                                    <a th:href="@{/admin/film/show(id=${evaluate.film.id})}"
+                                       th:text="${evaluate.film.name}"></a>
+                                </div>
+                                <div class="col-4" style="text-align: center;"
+                                     th:text="${evaluate.watched + ' / ' +evaluate.film.episodesCount}">
+
+                                </div>
+                                <div class="col-4">
+                                    <a class="float-right" style="cursor: pointer;"><i class="fas fa-times"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

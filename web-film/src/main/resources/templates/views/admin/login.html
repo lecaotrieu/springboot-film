@@ -1,0 +1,69 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/account :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <title>Login Admin</title>
+    <link rel="stylesheet" th:href="@{/template/login/style.css}">
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header">
+                    <h3 class="text-center my-4" th:inline="text">
+                        [[#{label.login}]]
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger" th:if="${param.incorrectAccount !=null}">
+                        Username or password incorrect
+                    </div>
+                    <div class="alert alert-danger" th:if="${param.sessionTimeout !=null}">
+                        Thời gian đăng nhập đã hết
+                    </div>
+                    <div class="alert alert-danger" th:if="${param.accessDenied !=null}">
+                        You not authorize
+                    </div>
+                    <form th:action="@{/j_spring_security_check_admin}" id="formLogin" method="post">
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputUserNameAddress">
+                                <div th:text="#{label.username}" th:remove="tag"></div>
+                            </label>
+                            <input class="form-control py-4" id="inputUserNameAddress" type="text" name="j_username"
+                                   placeholder="Enter username"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputPassword">
+                                <div th:text="#{label.password}" th:remove="tag"></div>
+
+                            </label>
+                            <input class="form-control py-4" id="inputPassword" type="password" name="j_password"
+                                   placeholder="Enter password"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" name="remember-me" id="rememberPasswordCheck"
+                                       type="checkbox"/>
+                                <label class="custom-control-label" for="rememberPasswordCheck">
+                                    <div th:text="#{label.remember.password}" th:remove="tag"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                            <a class="small" href="#">
+                                <div th:text="#{label.forgot.password}" th:remove="tag"></div>
+                            </a>
+                            <button class="btn btn-primary">
+                                <div th:text="#{label.login}" th:remove="tag"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

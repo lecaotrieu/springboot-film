@@ -1,0 +1,128 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      th:fragment="main-fragment (title , head ,mainContent)">
+<head>
+    <title th:replace="${title}"></title>
+    <link rel=" shortcut icon" type="image/x-icon" th:href="@{/web/img/logo.png}">
+    <link rel="stylesheet" th:href="@{/template/fontawesome-5.12.1/css/fontawesome.min.css}">
+    <link rel="stylesheet" th:href="@{/template/fontawesome-5.12.1/css/all.css}">
+    <link rel="stylesheet" th:href="@{/template/bootstrap-4.5.2-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/template/admin/css/style.css}">
+    <link rel="stylesheet" th:href="@{/template/admin/css/side-navigation.css}">
+    <link th:href="@{/template/selectize.js-master/dist/css/select2.css}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/template/mdbootstrap/css/mdb.min.css}">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/template/mdbootstrap/css/style.css}">
+    <script th:src="@{/template/selectize.js-master/dist/css/selectize.bootstrap3.css}"></script>
+    <!-- jQuery -->
+    <script th:src="@{/template/admin/jquery/jquery.min.js}"></script>
+    <link th:href="@{/template/admin/css/pagination-custom.css}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script th:src="@{/template/selectize.js-master/dist/js/select2.js}"></script>
+    <script th:src="@{/template/selectize.js-master/dist/js/standalone/selectize.js}"></script>
+    <!-- sweetalert -->
+    <link rel="stylesheet" th:href="@{/template/admin/sweetalert2/sweetalert2.min.css}">
+    <script type='text/javascript' th:src="@{/template/admin/sweetalert2/sweetalert2.min.js}"></script>
+    <script th:src="@{/template/paging/jquery.twbsPagination.js}"></script>
+    <script th:src="@{/template/ckeditor/ckeditor.js}"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" th:src="@{/template/mdbootstrap/js/popper.min.js}"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" th:src="@{/template/mdbootstrap/js/mdb.min.js}"></script>
+    <div th:replace="${head}"></div>
+</head>
+<body>
+<div th:replace="fragments/admin/header::header"></div>
+<div class="container-fluid" style="margin-top: 75px">
+    <div th:replace="fragments/admin/menu::menu"></div>
+    <div id="main" class="active" style="padding-bottom: 180px;">
+        <div th:replace="${mainContent}"></div>
+    </div>
+    <footer class="fixed-bottom navbar bg-dark align-content-center" style="height: 70px;color: white">
+        <span style="width: fit-content" class="mx-auto">Welcome Admin page</span>
+    </footer>
+</div>
+<script th:src="@{/template/fontawesome-5.12.1/js/fontawesome.min.js}"></script>
+<script th:src="@{/template/bootstrap-4.5.2-dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/template/admin/js/side-navigation.js}"></script>
+<script th:src="@{/template/admin/js/convert-json.js}"></script>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    var loadingUrl = "/template/image/loading.gif";
+    /*]]>*/
+    function closeAndOpenNav() {
+        if ($('#mySidenav').hasClass("active")) {
+            closeNav();
+        } else {
+            openNav();
+        }
+    }
+
+    function showAlertAfterSuccess(x) {
+        swal("Thành công!", "Cập nhật thành công", "success").then(function (isConfirm) {
+            if (isConfirm) {
+                if (x != undefined) {
+                    x();
+                }
+            }
+        });
+    }
+    function showAlertAfterError(x) {
+        swal("Thất bại!", "Đã có lỗi xãy ra", "error").then(function (isConfirm) {
+            if (isConfirm) {
+                if (x != undefined) {
+                    x();
+                }
+            }
+        });
+    }
+    function showAlertBeforeDelete(callback) {
+        swal({
+            title: "Xác nhận xóa",
+            text: "Bạn có chắc muốn xóa những dữ liệu đã chọn !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy bỏ",
+            confirmButtonClass: "btn btn-success",
+            cancelButtonClass: "btn btn-danger"
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                callback();
+            }
+        })
+    }
+
+    function showAlertLoading() {
+        swal({
+            title: "Đang cập nhật...",
+            text: "Làm ơn chờ một lát",
+            imageUrl: loadingUrl,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+        });
+    }
+
+    function readURL(input, imageId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#' + imageId).attr('src', reader.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readVideo(input, videoId) {
+        if (input.files && input.files[0]) {
+            var $source = $('#' + videoId);
+            $source[0].src = URL.createObjectURL(input.files[0]);
+            $source.parent()[0].load();
+        }
+    }
+</script>
+</body>
+</html>

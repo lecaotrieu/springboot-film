@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.user.update}" th:if="${!#strings.isEmpty(item.id)}"></title>
+    <title th:text="#{label.user.add}" th:if="${#strings.isEmpty(item.id)}"></title>
+</head>
+<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/admin/trang-chu}">
+            <i class="fa fa-home"></i>
+            <span th:text="#{label.home.page}" th:remove="tag"></span>
+        </a>
+        </li>
+        <li class="breadcrumb-item"><a th:href="@{/admin/user/list}" th:text="#{label.user.list}"></a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:if="${!#strings.isEmpty(item.id)}">Chỉnh sửa</li>
+        <li class="breadcrumb-item active" aria-current="page" th:if="${#strings.isEmpty(item.id)}">Thêm mới</li>
+    </ol>
+</nav>
+<div class="col-12 mx-auto">
+    <th:block th:if="${param.message!=null}">
+        <div th:class="${'alert alert-block alert-'+ alert}">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            <div th:text="${messageResponse}" th:remove="tag"></div>
+        </div>
+    </th:block>
+    <div class="card">
+        <div class="card-header">
+            <strong th:if="${!#strings.isEmpty(item.id)}" th:text="#{label.user.update}">
+            </strong>
+            <strong th:if="${#strings.isEmpty(item.id)}" th:text="#{label.user.add}">
+            </strong>
+            <a th:if="${!#strings.isEmpty(item.id)}" th:href="@{/admin/user/profile(id=${item.id})}"
+               class="float-right"
+               th:text="#{label.user.profile}"></a>
+        </div>
+
+        <div class="card-body card-block">
+            <form method="post" class="form-horizontal" id="formSubmit" th:object="${item}">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row form-group" th:if="*{!#strings.isEmpty(id)}">
+                            <div class="col col-md-5">
+                                <img class="d-block"
+                                     th:src="*{photoUrl}"
+                                     alt="Card image cap" style="width: 100%; height: auto"
+                                     id="avatarUser">
+                                <input th:value="*{photo}" name="photo" type="hidden"/>
+                            </div>
+                            <div class="col-12 col-md-7">
+                                <a th:href="@{/admin/user/photo/edit(id=*{id})}"
+                                   class="d-block btn btn-outline-info" th:text="#{label.edit.avatar.change}">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="username" class=" form-control-label" th:text="#{label.username}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input th:value="*{userName}" name="userName" class="form-control" id="username"/>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="password" class=" form-control-label" th:text="#{label.password}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <a type="button" id="password" th:if="*{!#strings.isEmpty(id)}"
+                                   class="d-block btn btn-outline-primary"
+                                   data-toggle="modal" data-target="#edit-password" th:text="#{label.change.password}">
+                                </a>
+                                <input name="password" type="password" th:if="*{#strings.isEmpty(id)}" id="password"
+                                       class="form-control"></div>
+                        </div>
+                        <div class="row form-group" th:if="*{#strings.isEmpty(id)}">
+                            <div class="col col-md-3">
+                                <label for="confirmPassword" class=" form-control-label" th:text="#{label.confirm.password}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input name="confirmPassword" type="password" id="confirmPassword"
+                                       class="form-control"></div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="firstName" class="form-control-label" th:text="#{label.full.name}">
+                                </label>
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <input name="firstName" th:value="*{firstName}" id="firstName" class="form-control"
+                                       placeholder="Họ và tên lót"/>
+                            </div>
+                            <div class="col-1 col-md-1"><b>-</b></div>
+                            <div class="col-4 col-md-4">
+                                <input name="lastName" th:value="*{lastName}" id="lastName" class="form-control"
+                                       placeholder="Tên"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="row form-group">
+                            <div class=" col col-md-3">
+                                <label for="birthDate" class=" form-control-label" th:text="#{label.birth.date}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input name="birthDate" th:value="*{birthDate}" type="date" id="birthDate"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class=" col col-md-3">
+                                <label for="email" class=" form-control-label" th:text="#{label.email}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input name="email" th:value="*{email}" class="form-control" type="email"
+                                       id="email"/>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class=" col col-md-3">
+                                <label for="phone" class=" form-control-label" th:text="#{label.phone}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input name="phone" th:value="${item.phone}" type="number" class="form-control"
+                                       id="phone"/>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class=" col col-md-3">
+                                <label for="status" class=" form-control-label" th:text="#{label.status}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select name="status" th:value="${item.status}" class="form-control" id="status"
+                                        th:field="${item.status}">
+                                    <option value="1" label="Hoạt động"/>
+                                    <option value="0" label="Không hoạt động"/>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class=" col col-md-3">
+                                <label for="address" class=" form-control-label" th:text="#{label.address}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input name="address" th:value="${item.address}" class="form-control" id="address"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="*{!#strings.isEmpty(id)}">
+                    <input th:value="*{id}" type="hidden" name="id" id="id"/>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button th:if="${!#strings.isEmpty(item.id)}" type="button" class="btn btn-primary btn-sm"
+                    id="btnAddOrUpdate">
+                <i class="fas fa-check"></i>
+                <div th:text="#{label.user.update}" th:remove="tag"></div>
+            </button>
+            <button th:if="${#strings.isEmpty(item.id)}" type="button" class="btn btn-primary btn-sm"
+                    id="btnAddOrUpdate">
+                <i class="fas fa-check"></i>
+                <div th:text="#{label.user.add}" th:remove="tag"></div>
+            </button>
+            <button type="reset" class="btn btn-danger btn-sm">
+                <i class="fa fa-ban"></i> Reset
+            </button>
+        </div>
+        <div class="modal fade" id="edit-password" style="display: none; padding-right: 17px;" aria-modal="true"
+             th:if="${!#strings.isEmpty(item.id)}">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" th:text="#{label.change.password}">
+                        </h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- form start -->
+                        <form method="POST" id="editPasswordForm">
+                            <div class="form-group">
+                                <label class=" form-control-label" th:text="#{label.password}">
+                                </label>
+                                <input type="password" name="password" th:placeholder="#{label.new.password}"
+                                       class="form-control">
+                            </div>
+                            <input type="hidden" name="id" th:value="${item.id}"/>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-outline-primary" id="btnSave" th:utext="#{label.update}">
+                        </button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+    })
+    //update password
+    $('#btnSave').click(function (e) {
+        e.preventDefault();
+        var formData = $('#editPasswordForm').serializeArray();
+        var data = convertToJson(formData);
+        updatePassword(data);
+    });
+    var changAvatarUrl = "/admin/user/photo/edit";
+    var apiUpdatePasswordUrl = "/api/admin/user/password";
+    var userListURL = "/admin/user/list";
+    var editUserUrl = "/admin/user/edit";
+    var apiUrl = "/api/admin/user";
+
+    function updatePassword(data) {
+        var id = $('#id').val();
+        $.ajax({
+            url: apiUpdatePasswordUrl,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = editUserUrl + "?id=" + id + "&message=redirect_update";
+            },
+            error: function (error) {
+                window.location.href = editUserUrl + "?id=" + id + "&message=redirect_error";
+            }
+        });
+    }
+
+    // update and add new user
+    $('#btnAddOrUpdate').click(function (e) {
+        e.preventDefault();
+        var id = $('#id').val();
+        var formData = $('#formSubmit').serializeArray();
+        var data = convertToJson(formData);
+        console.log(data);
+        if (id != "" && id != undefined) {
+            updateUser(data);
+        } else {
+            addUser(data);
+        }
+    });
+
+    // get data form convert to json
+
+
+    //ajax add user
+    function addUser(data) {
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = changAvatarUrl + "?id=" + result.id;
+            },
+            error: function (error) {
+                window.location.href = userListURL + "?message=redirect_error";
+            }
+        });
+    }
+
+    //ajax update user
+    function updateUser(data) {
+        var id = $('#id').val();
+        $.ajax({
+            url: apiUrl,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = editUserUrl + "?id=" + result + "&message=redirect_update";
+            },
+            error: function (error) {
+                window.location.href = editUserUrl + "?id=" + id + "&message=redirect_error";
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
