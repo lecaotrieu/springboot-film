@@ -1,6 +1,7 @@
 package com.movie.core.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "video")
@@ -13,9 +14,18 @@ public class VideoEntity extends BaseEntity {
     @Column
     private String video;
 
+    @Column
+    private Integer status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")
+    private List<CommentVideoEntity> commentVideos;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")
+    private List<EvaluateVideoEntity> evaluateVideos;
 
     public String getCode() {
         return code;
@@ -47,5 +57,29 @@ public class VideoEntity extends BaseEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public List<CommentVideoEntity> getCommentVideos() {
+        return commentVideos;
+    }
+
+    public void setCommentVideos(List<CommentVideoEntity> commentVideos) {
+        this.commentVideos = commentVideos;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public List<EvaluateVideoEntity> getEvaluateVideos() {
+        return evaluateVideos;
+    }
+
+    public void setEvaluateVideos(List<EvaluateVideoEntity> evaluateVideos) {
+        this.evaluateVideos = evaluateVideos;
     }
 }

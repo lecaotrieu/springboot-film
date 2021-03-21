@@ -1,5 +1,8 @@
 package com.movie.core.dto;
 
+import com.movie.core.entity.*;
+
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 
@@ -17,9 +20,31 @@ public class UserDTO extends AbstractDTO<UserDTO> {
     private String photoUrl;
     private Date birthDate;
     private String address;
+    private List<CommentVideoDTO> commentVideos;
+    private List<CommentVideoLikeDTO> commentVideoLikes;
     private List<EvaluateDTO> evaluates;
     private List<CommentDTO> comments;
     private List<CommentLikeDTO> commentLikes;
+    private List<VideoDTO> videos;
+    private List<UserDTO> usersFollowed;
+    private List<UserDTO> followers;
+    private List<EvaluateVideoDTO> evaluateVideos;
+
+    public List<CommentVideoDTO> getCommentVideos() {
+        return commentVideos;
+    }
+
+    public void setCommentVideos(List<CommentVideoDTO> commentVideos) {
+        this.commentVideos = commentVideos;
+    }
+
+    public List<CommentVideoLikeDTO> getCommentVideoLikes() {
+        return commentVideoLikes;
+    }
+
+    public void setCommentVideoLikes(List<CommentVideoLikeDTO> commentVideoLikes) {
+        this.commentVideoLikes = commentVideoLikes;
+    }
 
     public String getUserName() {
         return userName;
@@ -147,5 +172,37 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public List<VideoDTO> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<VideoDTO> videos) {
+        this.videos = videos;
+    }
+
+    public List<UserDTO> getUsersFollowed() {
+        return usersFollowed;
+    }
+
+    public void setUsersFollowed(List<UserDTO> usersFollowed) {
+        this.usersFollowed = usersFollowed;
+    }
+
+    public List<UserDTO> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<UserDTO> followers) {
+        this.followers = followers;
+    }
+
+    public List<EvaluateVideoDTO> getEvaluateVideos() {
+        return evaluateVideos;
+    }
+
+    public void setEvaluateVideos(List<EvaluateVideoDTO> evaluateVideos) {
+        this.evaluateVideos = evaluateVideos;
     }
 }

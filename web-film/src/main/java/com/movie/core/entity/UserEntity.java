@@ -47,10 +47,27 @@ public class UserEntity extends BaseEntity {
     private List<CommentEntity> comments;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<CommentVideoEntity> commentVideos;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<CommentLikeEntity> commentLikes;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<VideoEntity> videos;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<EvaluateVideoEntity> evaluateVideos;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<CommentVideoLikeEntity> commentVideoLikes;
+
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.LAZY)
+    private List<UserEntity> usersFollowed;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "subscribe", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id_follow"))
+    private List<UserEntity> followers;
 
     public String getUserName() {
         return userName;
@@ -170,5 +187,45 @@ public class UserEntity extends BaseEntity {
 
     public void setVideos(List<VideoEntity> videos) {
         this.videos = videos;
+    }
+
+    public List<UserEntity> getUsersFollowed() {
+        return usersFollowed;
+    }
+
+    public void setUsersFollowed(List<UserEntity> usersFollowed) {
+        this.usersFollowed = usersFollowed;
+    }
+
+    public List<UserEntity> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<UserEntity> followers) {
+        this.followers = followers;
+    }
+
+    public List<CommentVideoLikeEntity> getCommentVideoLikes() {
+        return commentVideoLikes;
+    }
+
+    public void setCommentVideoLikes(List<CommentVideoLikeEntity> commentVideoLikes) {
+        this.commentVideoLikes = commentVideoLikes;
+    }
+
+    public List<CommentVideoEntity> getCommentVideos() {
+        return commentVideos;
+    }
+
+    public void setCommentVideos(List<CommentVideoEntity> commentVideos) {
+        this.commentVideos = commentVideos;
+    }
+
+    public List<EvaluateVideoEntity> getEvaluateVideos() {
+        return evaluateVideos;
+    }
+
+    public void setEvaluateVideos(List<EvaluateVideoEntity> evaluateVideos) {
+        this.evaluateVideos = evaluateVideos;
     }
 }
