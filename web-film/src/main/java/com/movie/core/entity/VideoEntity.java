@@ -8,11 +8,14 @@ public class VideoEntity extends BaseEntity {
     @Column
     private String code;
     @Column
-    private String server;
+    private String name;
+
+    @Column
+    private String video;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "episode_id")
-    private EpisodeEntity episode;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     public String getCode() {
         return code;
@@ -22,19 +25,27 @@ public class VideoEntity extends BaseEntity {
         this.code = code;
     }
 
-    public String getServer() {
-        return server;
+    public String getName() {
+        return name;
     }
 
-    public void setServer(String server) {
-        this.server = server;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public EpisodeEntity getEpisode() {
-        return episode;
+    public String getVideo() {
+        return video;
     }
 
-    public void setEpisode(EpisodeEntity episode) {
-        this.episode = episode;
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

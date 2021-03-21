@@ -49,6 +49,9 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<CommentLikeEntity> commentLikes;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<VideoEntity> videos;
+
     public String getUserName() {
         return userName;
     }
@@ -161,4 +164,11 @@ public class UserEntity extends BaseEntity {
         this.money = money;
     }
 
+    public List<VideoEntity> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<VideoEntity> videos) {
+        this.videos = videos;
+    }
 }

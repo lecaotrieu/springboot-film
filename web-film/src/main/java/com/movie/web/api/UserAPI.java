@@ -78,6 +78,7 @@ public class UserAPI {
             } else{
                 if (!file.isEmpty()) {
                     String fileName = org.springframework.util.StringUtils.cleanPath(file.getOriginalFilename());
+                    fileName = "film_img_" + id + getFieldName(fileName);
                     String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.USER_PHOTOS + File.separator + id;
                     UploadUtil.saveFile(uploadDir, fileName, file);
                     userService.updatePhoto(id, fileName);
@@ -89,6 +90,10 @@ public class UserAPI {
             mav.setViewName("redirect:/admin/user/photo/edit?id=" + id + "&message=redirect_error");
         }
         return mav;
+    }
+
+    private String getFieldName(String fileName) {
+        return fileName.substring(fileName.length() - 4);
     }
 
     @PostMapping("/api/user/photo")

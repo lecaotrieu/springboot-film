@@ -18,7 +18,6 @@
     </style>
 </head>
 <body>
-
 <div class="breadcrumbs" id="breadcrumbs">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -147,12 +146,13 @@
                         <tr>
                             <td th:text="${film.id}"></td>
                             <td th:text="${film.code}">
-                            <td><a th:href="@{/admin/film/show(id=${film.id})}" th:text="${film.name}"
+                            <td><a th:href="@{/admin/film/show(filmId=${film.id})}" th:text="${film.name}"
                                    style="color: #0b51c5; font-weight: bold"></a></td>
                             <td th:text="${film.language}"></td>
                             <td th:text="${film.scores}"></td>
                             <td th:text="${film.quality}"></td>
-                            <td th:text="${film.episodesCount}"></td>
+                            <td><a th:href="@{/admin/film/episode/list(filmId=${film.id})}" th:text="${film.episodesCount}"
+                                   style="color: #0b51c5; font-weight: bold"></a></td>
                             <td th:text="${film.createdBy}"></td>
                             <td th:text="${film.createdDate}"></td>
                             <td th:text="${film.modifiedBy}"></td>

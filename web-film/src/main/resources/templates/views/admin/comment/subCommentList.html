@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head></head>
+<body>
+<table>
+    <tbody>
+    <tr th:each="subComment : ${comments}" th:class="sub-comment_+${commentId}">
+        <td></td>
+        <td th:text="${subComment.id}" style="text-align: center"></td>
+        <td th:text="${subComment.user.userName}">
+        <td th:text="${subComment.film.name}"></td>
+        <td th:text="${subComment.content}"></td>
+        <td th:text="${subComment.totalLike}"></td>
+        <td></td>
+        <td th:text="${subComment.createdBy}"></td>
+        <td th:text="${subComment.createdDate}"></td>
+        <td th:text="${subComment.modifiedBy}"></td>
+        <td th:text="${subComment.modifiedDate}"></td>
+        <td>
+            <a class="btn btn-sm btn-danger" th:onclick="warningBeforeDelete([[${subComment.id}]])">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

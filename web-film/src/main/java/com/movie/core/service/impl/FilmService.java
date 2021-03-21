@@ -7,10 +7,10 @@ import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.FilmDTO;
 import com.movie.core.entity.*;
 import com.movie.core.repository.EpisodeRepository;
+import com.movie.core.repository.EvaluateRepository;
 import com.movie.core.repository.FilmRepository;
-import com.movie.core.service.IDriveService;
-import com.movie.core.service.IEpisodeService;
-import com.movie.core.service.IFilmService;
+import com.movie.core.service.*;
+import com.movie.core.service.utils.PagingUtils;
 import com.movie.core.service.utils.StringGlobalUtils;
 import com.movie.core.convert.FilmConvert;
 import org.apache.commons.fileupload.FileItem;
@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,9 +37,13 @@ public class FilmService implements IFilmService {
     @Autowired
     private FilmConvert filmConvert;
 
+    @Autowired
+    private PagingUtils pagingUtils;
+
+
     public List<FilmDTO> findByProperties(String search, String filmType, String category, String country, String year, String userName, int page, int limit, String sortExpression, String sortDirection) {
         search = search.toLowerCase();
-        Pageable pageable = setPageable(page, limit, sortExpression, sortDirection);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
         if (!userName.equals("ADMIN")) {
             filmEntities = filmRepository.findAllByPosterAndProperties(userName, search, CoreConstant.ACTIVE_STATUS, filmType, category, country, year, pageable);
@@ -63,7 +68,7 @@ public class FilmService implements IFilmService {
 
     public List<FilmDTO> findByProperties(String search, String filmType, String category, String country, String year, int page, int limit, String sortExpression, String sortDirection) {
         search = search.toLowerCase();
-        Pageable pageable = setPageable(page, limit, sortExpression, sortDirection);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
         Integer status = 1;
         filmEntities = filmRepository.findAllByProperties(search, filmType, category, country, year, status, pageable);
@@ -75,18 +80,9 @@ public class FilmService implements IFilmService {
         return filmDTOS;
     }
 
-    private Pageable setPageable(int page, int limit, String sortExpression, String sortDirection) {
-        Sort sort = Sort.unsorted();
-        if (sortExpression != null && sortDirection != null) {
-            sort = Sort.by(sortDirection.equals("1") ? Sort.Direction.ASC : Sort.Direction.DESC, sortExpression);
-        }
-        Pageable pageable = PageRequest.of(page - 1, limit, sort);
-        return pageable;
-    }
-
 
     public List<FilmDTO> findByProperties(int page, int limit, String sortExpression, String sortDirection) {
-        Pageable pageable = setPageable(page, limit, sortExpression, sortDirection);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
         filmEntities = filmRepository.findAllByStatus(CoreConstant.ACTIVE_STATUS, pageable);
         List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
@@ -98,7 +94,7 @@ public class FilmService implements IFilmService {
     }
 
     public List<FilmDTO> findByProperties(String filmTypeCode, int page, int limit, String sortExpression, String sortDirection) {
-        Pageable pageable = setPageable(page, limit, sortExpression, sortDirection);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
         filmEntities = filmRepository.findAllByStatusAndFilmType_Code(CoreConstant.ACTIVE_STATUS, filmTypeCode, pageable);
         List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
@@ -110,7 +106,7 @@ public class FilmService implements IFilmService {
     }
 
     public List<FilmDTO> findByProperties(boolean trailer, int page, int limit, String sortExpression, String sortDirection) {
-        Pageable pageable = setPageable(page, limit, sortExpression, sortDirection);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
         filmEntities = filmRepository.findAllByStatusAndTrailerNotNull(CoreConstant.ACTIVE_STATUS, pageable);
         List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
@@ -142,7 +138,7 @@ public class FilmService implements IFilmService {
         if (!userName.equals("ADMIN")) {
             return (int) filmRepository.countAllByPosterAndProperties(userName, search, CoreConstant.ACTIVE_STATUS, filmType, category, country, year);
         } else {
-            return (int) filmRepository.countAllByAdminAndProperties(search, search,filmType, category, country, year);
+            return (int) filmRepository.countAllByAdminAndProperties(search, search, filmType, category, country, year);
         }
     }
 
@@ -217,7 +213,8 @@ public class FilmService implements IFilmService {
         String code = stringGlobalUtils.covertToString(filmDTO.getName());
         if (filmDTO.getId() != null) {
             entity = filmRepository.getOne(filmDTO.getId());
-            entity = filmConvert.toEntity(filmDTO, entity, "image");
+            entity = filmConvert.toEntity(filmDTO, entity, "image", "image2");
+            if (entity.getScores() == null) entity.setScores(0.0);
         } else {
             entity = filmConvert.toEntity(filmDTO);
             entity.setScores(0.0);
@@ -257,21 +254,27 @@ public class FilmService implements IFilmService {
     @Autowired
     private IEpisodeService episodeService;
 
+    @Autowired
+    private ICommentService commentService;
+
+    @Autowired
+    private EvaluateRepository evaluateRepository;
+
     @Transactional
-    public void deleteById(Long[] ids) {
+    public void deleteById(Long[] ids) throws Exception{
         for (Long id : ids) {
-            // update episode
             FilmEntity entity = filmRepository.getOne(id);
-            if (entity.getImage() != null) {
-                try {
-                    driveService.deleteFileById(entity.getImage());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             for (EpisodeEntity episodeEntity : entity.getEpisodes()) {
                 Long[] episodeIds = {episodeEntity.getId()};
                 episodeService.delete(episodeIds);
+            }
+            for (CommentEntity commentEntity : entity.getComments()) {
+                Long[] commentIds = {commentEntity.getId()};
+                commentService.deleteComment(commentIds);
+            }
+            for (EvaluateEntity evaluateEntity : entity.getEvaluates()) {
+                evaluateEntity.setFilm(null);
+                evaluateRepository.save(evaluateEntity);
             }
             filmRepository.deleteById(id);
         }
@@ -298,25 +301,35 @@ public class FilmService implements IFilmService {
     }
 
     @Override
-    public void updatePhoto(Long id, String photoName) throws IOException {
+    public void updateImg1(Long id, String photoName) throws IOException {
         FilmEntity filmEntity = filmRepository.getOne(id);
         filmEntity.setImage(photoName);
         filmRepository.save(filmEntity);
     }
 
-    public void updateTrailer(Long id, FileItem trailer) throws IOException {
+    @Override
+    public void updateImg2(Long id, String photoName) throws IOException {
         FilmEntity filmEntity = filmRepository.getOne(id);
-        if (StringUtils.isNotBlank(filmEntity.getTrailer())) {
-            try {
-                driveService.deleteFileById(filmEntity.getTrailer());
-            } catch (IOException e) {
-                e.printStackTrace();
+        filmEntity.setImage2(photoName);
+        filmRepository.save(filmEntity);
+    }
+
+    public void updateTrailer(Long id, MultipartFile trailer, String trailerYoutube) throws IOException {
+        FilmEntity filmEntity = filmRepository.getOne(id);
+        if (!trailer.getOriginalFilename().isEmpty()) {
+            if (StringUtils.isNotBlank(filmEntity.getTrailer())) {
+                try {
+                    driveService.deleteFileById(filmEntity.getTrailer());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            String trailerName = "film_trailer_" + id;
+            File file = driveService.createGoogleFile(CoreConstant.FILM_TRAILER_ADDRESS_ID, trailer.getContentType(), trailerName, trailer.getInputStream());
+            driveService.createPublicPermission(file.getId());
+            filmEntity.setTrailer(file.getId());
         }
-        String trailerName = "film_trailer_" + id;
-        File file = driveService.createGoogleFile(CoreConstant.FILM_TRAILER_ADDRESS_ID, trailer.getContentType(), trailerName, trailer.getInputStream());
-        driveService.createPublicPermission(file.getId());
-        filmEntity.setTrailer(file.getId());
+        filmEntity.setTrailerYoutube(trailerYoutube);
         filmRepository.save(filmEntity);
     }
 

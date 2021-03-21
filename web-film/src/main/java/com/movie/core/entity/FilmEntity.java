@@ -42,16 +42,19 @@ public class FilmEntity extends BaseEntity {
     @Column
     private String trailer;
 
+    @Column(name = "traileryoutube")
+    private String trailerYoutube;
+
     @Column
     private Integer view;
 
     @Column
     private Integer totalVote;
 
-    @OneToMany(mappedBy = "film", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<CommentEntity> comments;
 
-    @OneToMany(mappedBy = "film", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<EvaluateEntity> evaluates;
 
     @OneToMany(mappedBy = "film", fetch = FetchType.LAZY)
@@ -265,5 +268,13 @@ public class FilmEntity extends BaseEntity {
 
     public void setImage2(String image2) {
         this.image2 = image2;
+    }
+
+    public String getTrailerYoutube() {
+        return trailerYoutube;
+    }
+
+    public void setTrailerYoutube(String trailerYoutube) {
+        this.trailerYoutube = trailerYoutube;
     }
 }

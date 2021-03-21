@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.film.info}"></title>
+    <link rel="stylesheet" th:href="@{/template/admin/css/profile.css}">
+    <style th:inline="text">
+       #main{
+           padding-bottom: 180px;
+           background-size: cover;
+           background-position: center;
+           background-repeat: no-repeat;
+           background-image:url([[@{(${item.image2Url})}]]);
+       }
+    </style>
+</head>
+<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/admin/trang-chu}">
+            <i class="fa fa-home"></i>
+            <span th:text="#{label.home.page}" th:remove="tag"></span>
+        </a>
+        </li>
+        <li class="breadcrumb-item"><a th:href="@{/admin/film/list}" th:text="#{label.film.list}"></a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${item.name}"></li>
+    </ol>
+</nav>
+
+<div class="col-12 mx-auto">
+    <th:block th:if="${param.message!=null}">
+        <div th:class="${'alert alert-block alert-'+ alert}">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            <div th:text="${messageResponse}" th:remove="tag"></div>
+        </div>
+    </th:block>
+    <div class="col-11 mx-auto emp-profile">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img th:src="@{${item.image1Url}}" alt=""/>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="profile-head">
+                                <h5 th:text="${item.name}">
+                                </h5>
+                                <div th:each="category: ${item.categories}">
+                                    <span class="category-film" th:text="${category.name}"></span>
+                                </div>
+                                <div>
+                                    <span th:each="actor: ${item.actors}" class="film-actor" th:text="${actor.name}"></span>
+                                </div>
+                                <p class="proile-rating">RANKINGS : <span th:text="${item.scores}+'/10'"></span></p>
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"
+                                           role="tab"
+                                           aria-controls="home" aria-selected="true">Thông tin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="description-tab" data-toggle="tab" href="#description"
+                                           role="tab"
+                                           aria-controls="profile" aria-selected="false">Tóm tắt</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a th:href="@{/admin/film/edit(filmId=${item.id})}" class="profile-edit-btn btn btn-primary"
+                                       style="margin-bottom: 20px;" th:text="#{label.film.update}"></a>
+                                    <a th:href="@{/admin/film/trailer(filmId=${item.id})}"
+                                       class="profile-edit-btn btn btn-danger"
+                                       th:text="#{label.film.trailer.edit}"></a>
+                                </div>
+                                <div class="col-6">
+                                    <a th:href="@{/admin/film/${item.code}-${item.id}}" style="margin-bottom: 20px;"
+                                       class="profile-edit-btn btn btn-success" th:text="#{label.film.episode.add}"></a>
+                                    <a th:href="@{/admin/film/episode/list(filmId=${item.id})}"
+                                       class="profile-edit-btn btn btn-light" th:text="#{label.episode.list}"></a>
+                                    <a th:href="@{/admin/comment/list(filmId=${item.id})}"
+                                       class="profile-edit-btn btn btn-cyan"
+                                       th:text="#{label.comment.list}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tab-content profile-tab" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel"
+                                     aria-labelledby="home-tab">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.film.id}"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.id}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.film.name}"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.name}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.film.code}"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.code}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.time}"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.time}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.language}">
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.language}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.country}"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.country.name}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.quality}"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.quality}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.status}">
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:if="${item.status == 1}">Hoạt động</p>
+                                            <p th:if="${item.status == 0}">Không hoạt động</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label th:text="#{label.film.type}">
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p th:text="${item.filmType.name}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="description" role="tabpanel"
+                                     aria-labelledby="profile-tab">
+                                    <div class="row">
+                                        <div class="col-md-12" th:utext="${item.description}"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+</script>
+</body>
+</html>

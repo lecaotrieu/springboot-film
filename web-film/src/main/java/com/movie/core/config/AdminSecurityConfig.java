@@ -67,10 +67,9 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Cấu hình Remember Me.
         http.authorizeRequests().and() //
-                .rememberMe().tokenRepository(this.persistentTokenRepository()) //
+                .rememberMe().tokenRepository(this.persistentTokenRepository()).key("uniqueAndSecret") //
                 .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
         http.csrf().disable();
-
     }
 
     @Autowired

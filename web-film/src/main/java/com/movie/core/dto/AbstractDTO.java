@@ -1,8 +1,6 @@
 package com.movie.core.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class AbstractDTO<T> {
     private Long id;
@@ -10,7 +8,7 @@ public class AbstractDTO<T> {
     private Date modifiedDate;
     private String createdBy;
     private String modifiedBy;
-    private long[] ids;
+  /*  private long[] ids;
     private List<T> listResult = new ArrayList<T>();
     private Integer page;
     private Integer limit;
@@ -18,9 +16,9 @@ public class AbstractDTO<T> {
     private Integer totalItem;
     private String sortName;
     private String sortBy;
-    private String type;
+    private String type;*/
 
-    public long[] getIds() {
+  /*  public long[] getIds() {
         return ids;
     }
 
@@ -91,7 +89,7 @@ public class AbstractDTO<T> {
     public void setType(String type) {
         this.type = type;
     }
-
+*/
     public AbstractDTO() {
     }
 

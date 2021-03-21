@@ -2,11 +2,11 @@ package com.movie.web.api;
 
 import com.movie.core.dto.CommentDTO;
 import com.movie.core.service.ICommentService;
+import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController(value = "CommentAPIOfWeb")
 public class CommentAPI {
@@ -21,4 +21,11 @@ public class CommentAPI {
     public void deleteComment(@RequestBody Long[] ids) {
         commentService.deleteComment(ids);
     }
+
+   /* @GetMapping("/ajax/admin/subComment/list")
+    public List<CommentDTO> loadSubComment(@RequestBody Long commentId) {
+        String employeeUserName = SecurityUtils.getPrincipal().getUsername();
+        List<CommentDTO> commentDTOS = commentService.findAllByCommentId(commentId, employeeUserName);
+        return commentDTOS;
+    }*/
 }

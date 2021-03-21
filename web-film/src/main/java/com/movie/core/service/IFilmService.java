@@ -2,6 +2,7 @@ package com.movie.core.service;
 
 import com.movie.core.dto.FilmDTO;
 import org.apache.commons.fileupload.FileItem;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,13 +40,16 @@ public interface IFilmService {
 
     boolean updateFilmStatus(FilmDTO filmDTO);
 
-    void deleteById(Long[] ids);
+    void deleteById(Long[] ids) throws Exception;
 
     void updatePhotoToDrive(Long id, FileItem photo) throws IOException;
 
-    void updatePhoto(Long id, String photoName) throws IOException;
+    void updateImg1(Long id, String photoName) throws IOException;
 
-    void updateTrailer(Long id, FileItem trailer) throws IOException;
+    void updateImg2(Long id, String photoName) throws IOException;
+
+
+    void updateTrailer(Long id, MultipartFile trailer, String trailerYoutube) throws IOException;
 
     void updateScores(Long id);
 

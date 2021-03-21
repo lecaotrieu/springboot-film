@@ -53,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().invalidSessionUrl("/dang-nhap?sessionTimeout")
                 .and()
                 .logout().deleteCookies("JSESSIONID").invalidateHttpSession(true);
+        http.csrf().disable();
     }
-
-
 }

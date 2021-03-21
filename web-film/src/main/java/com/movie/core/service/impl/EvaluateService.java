@@ -65,4 +65,11 @@ public class EvaluateService implements IEvaluateService {
         return entity.getId();
     }
 
+    @Override
+    public void delete(Long[] ids) throws Exception{
+        for (Long id: ids){
+            episodeRepository.deleteById(id);
+        }
+    }
+
 }

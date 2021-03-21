@@ -2,20 +2,8 @@ package com.movie.web.api;
 
 import com.movie.core.dto.EmployeeDTO;
 import com.movie.core.service.IEmployeeService;
-import com.movie.core.utils.UploadUtil;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RestController(value = "EmployeeAPI")
 public class EmployeeAPI {
@@ -34,9 +22,13 @@ public class EmployeeAPI {
         return true;
     }
 
-
     @PutMapping("/api/admin/employee/password")
     public Long updateEmployeePassword(@RequestBody EmployeeDTO employeeDTO) throws Exception {
+        employeeService.updatePassword(employeeDTO.getId(), employeeDTO.getPassword());
+        return employeeDTO.getId();
+    }
+    @PutMapping("/api/admin/personal/password")
+    public Long updateEmployeePersonalPassword(@RequestBody EmployeeDTO employeeDTO) throws Exception {
         employeeService.updatePassword(employeeDTO.getId(), employeeDTO.getPassword());
         return employeeDTO.getId();
     }
@@ -47,7 +39,11 @@ public class EmployeeAPI {
         return employeeDTO.getId();
     }
 
-
+    @PutMapping("/api/admin/info/update")
+    public Long updateEmployeePersonal(@RequestBody EmployeeDTO employeeDTO) throws Exception {
+        employeeDTO = employeeService.save(employeeDTO);
+        return employeeDTO.getId();
+    }
 
     @DeleteMapping("/api/admin/employee")
     public void deleteEmployee(@RequestBody Long[] ids) {

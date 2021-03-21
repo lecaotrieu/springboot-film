@@ -16,6 +16,9 @@ public class EpisodeConvert {
         if (entity.getFilm() != null) {
             dto.setFilm(filmConvert.toDTO(entity.getFilm()));
         }
+        if (dto.getEpisodeId() != null && !dto.getEpisodeId().isEmpty()) {
+            dto.setVideoUrl("https://drive.google.com/uc?id=" + dto.getEpisodeId());
+        }
         return dto;
     }
 

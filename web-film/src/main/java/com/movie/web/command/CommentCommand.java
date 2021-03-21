@@ -9,6 +9,7 @@ public class CommentCommand extends AbstractCommand<CommentDTO> {
     }
     private Long filmId;
     private Long commentId;
+    private String userName = "";
     private Integer nextCountItem;
 
     public Long getFilmId() {
@@ -33,5 +34,13 @@ public class CommentCommand extends AbstractCommand<CommentDTO> {
 
     public void setNextCountItem(Integer nextCountItem) {
         this.nextCountItem = nextCountItem;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

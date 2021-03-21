@@ -30,18 +30,20 @@ public class CommentConvert {
         if (entity.getComment()!=null){
             dto.setComment(toDTO(entity.getComment()));
         }
-        Long time = System.currentTimeMillis() - entity.getCreatedDate().getTime();
-        if (TimeUnit.HOURS.convert(time, TimeUnit.MILLISECONDS) > 72) {
-            DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            dto.setThoiGianDang(df.format(entity.getCreatedDate()));
-        } else if (TimeUnit.HOURS.convert(time, TimeUnit.MILLISECONDS) > 24) {
-            dto.setThoiGianDang(TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS) + " ngày trước");
-        } else if (TimeUnit.MINUTES.convert(time, TimeUnit.MILLISECONDS) > 60) {
-            dto.setThoiGianDang(TimeUnit.HOURS.convert(time, TimeUnit.MILLISECONDS) + " giờ trước");
-        } else if (TimeUnit.SECONDS.convert(time, TimeUnit.MILLISECONDS) > 60) {
-            dto.setThoiGianDang(TimeUnit.MINUTES.convert(time, TimeUnit.MILLISECONDS) + " phút trước");
-        } else {
-            dto.setThoiGianDang(TimeUnit.SECONDS.convert(time, TimeUnit.MILLISECONDS) + " giây trước");
+        if (entity.getCreatedDate()!=null){
+            Long time = System.currentTimeMillis() - entity.getCreatedDate().getTime();
+            if (TimeUnit.HOURS.convert(time, TimeUnit.MILLISECONDS) > 72) {
+                DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                dto.setThoiGianDang(df.format(entity.getCreatedDate()));
+            } else if (TimeUnit.HOURS.convert(time, TimeUnit.MILLISECONDS) > 24) {
+                dto.setThoiGianDang(TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS) + " ngày trước");
+            } else if (TimeUnit.MINUTES.convert(time, TimeUnit.MILLISECONDS) > 60) {
+                dto.setThoiGianDang(TimeUnit.HOURS.convert(time, TimeUnit.MILLISECONDS) + " giờ trước");
+            } else if (TimeUnit.SECONDS.convert(time, TimeUnit.MILLISECONDS) > 60) {
+                dto.setThoiGianDang(TimeUnit.MINUTES.convert(time, TimeUnit.MILLISECONDS) + " phút trước");
+            } else {
+                dto.setThoiGianDang(TimeUnit.SECONDS.convert(time, TimeUnit.MILLISECONDS) + " giây trước");
+            }
         }
         return dto;
     }

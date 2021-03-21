@@ -35,9 +35,17 @@ public class FilmConvert {
             dto.setDirector(directorConvert.toDTO(entity.getDirector()));
         }
         if (dto.getImage() == null || dto.getImage().isEmpty()) {
-            dto.setImageUrl("/template/image/default_poster.jpg");
+            dto.setImage1Url("/template/image/default_poster.jpg");
         } else {
-            dto.setImageUrl("/" + CoreConstant.FOLDER_UPLOAD + "/" + CoreConstant.FILM_IMAGES + "/" + dto.getId() + "/" + dto.getImage());
+            dto.setImage1Url("/" + CoreConstant.FOLDER_UPLOAD + "/" + CoreConstant.FILM_IMAGES + "/" + dto.getId() + "/" + dto.getImage());
+        }
+        if (dto.getImage2() == null || dto.getImage2().isEmpty()) {
+            dto.setImage2Url("/template/image/no-image.jpg");
+        } else {
+            dto.setImage2Url("/" + CoreConstant.FOLDER_UPLOAD + "/" + CoreConstant.FILM_IMAGES + "/" + dto.getId() + "/" + dto.getImage2());
+        }
+        if (dto.getTrailer() != null && !dto.getTrailer().isEmpty()) {
+            dto.setTrailerUrl("https://drive.google.com/uc?id=" + dto.getTrailer());
         }
         return dto;
     }
@@ -57,13 +65,13 @@ public class FilmConvert {
         if (dto.getDirector() != null) {
             entity.setDirector(directorConvert.toEntity(dto.getDirector()));
         }
-        if (entity.getYear()==null){
+        if (entity.getYear() == null) {
             entity.setYear("");
         }
         return entity;
     }
 
-    public FilmEntity toEntity(FilmDTO dto,FilmEntity entity, String ignore) {
+    public FilmEntity toEntity(FilmDTO dto, FilmEntity entity, String... ignore) {
         BeanUtils.copyProperties(dto, entity, ignore);
         if (dto.getCountry() != null) {
             entity.setCountry(countryConvert.toEntity(dto.getCountry()));
@@ -77,7 +85,7 @@ public class FilmConvert {
         if (dto.getDirector() != null) {
             entity.setDirector(directorConvert.toEntity(dto.getDirector()));
         }
-        if (entity.getYear()==null){
+        if (entity.getYear() == null) {
             entity.setYear("");
         }
         return entity;

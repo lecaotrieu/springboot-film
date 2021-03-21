@@ -12,12 +12,13 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class DriveUtils {
     private static final String APPLICATION_NAME = "Google Drive API Java Quickstart";
@@ -40,7 +41,7 @@ public class DriveUtils {
 
     private static Drive _driveService;
 
-    static {
+   /* static {
         try {
             String path = "credentials.json";
             String address = "\\drive-key";
@@ -63,6 +64,17 @@ public class DriveUtils {
             t.printStackTrace();
             System.exit(1);
         }
+    }*/
+
+    static {
+        try {
+            CREDENTIALS_FOLDER = ResourceUtils.getFile("classpath:");
+            HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            DATA_STORE_FACTORY = new FileDataStoreFactory(CREDENTIALS_FOLDER);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public static Credential getCredentials() throws IOException {
@@ -75,7 +87,7 @@ public class DriveUtils {
         }
 
         InputStream in = new FileInputStream(clientSecretFilePath);
-        InputStream input = DriveUtils.class.getResourceAsStream("/main/resources/" + CLIENT_SECRET_FILE_NAME);
+//        InputStream in = DriveUtils.class.getResourceAsStream("/main/resources/" + CLIENT_SECRET_FILE_NAME);
 
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 

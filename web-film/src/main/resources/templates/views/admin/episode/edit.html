@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.episode.add}" th:if="${#strings.isEmpty(item.id)}"></title>
+    <title th:text="#{label.episode.update}" th:if="${!#strings.isEmpty(item.id)}"></title>
+</head>
+<body>
+<div class="breadcrumbs" id="breadcrumbs">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/admin/home-page}">
+                    <i class="fa fa-home"></i>
+                    <span th:text="#{label.home.page}" th:remove="tag"></span>
+                </a>
+            </li>
+            <li class="breadcrumb-item"><a th:href="@{/admin/film/list}" th:text="#{label.film.list}"></a>
+            </li>
+            <li class="breadcrumb-item" th:if="${param.filmId}"><a
+                    th:href="@{/admin/film/show(filmId=${items.filmDTO.id})}"
+                    th:text="${items.filmDTO.name}"></a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" th:if="${#strings.isEmpty(item.id)}"
+                th:text="#{label.episode.add}"></li>
+            <li class="breadcrumb-item active" aria-current="page" th:if="${!#strings.isEmpty(item.id)}"
+                th:text="#{label.episode.update}"></li>
+        </ol>
+    </nav>
+</div>
+<div class="col-8 mx-auto">
+    <th:block th:if="${param.message!=null}">
+        <div th:class="${'alert alert-block alert-'+ alert}">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            <div th:text="${messageResponse}" th:remove="tag"></div>
+        </div>
+    </th:block>
+    <div class="" style="margin-bottom: 20px">
+        <div th:each="episode:${film.episodes}" th:remove="tag">
+            <a th:href="@{'/admin/film/'+${film.code}+'-'+${film.id}+'/tap-'+${episode.episodeCode}+'-'+${episode.id}}"
+               class="btn btn-primary btn-sm" th:text="${episode.episodeCode}"></a>
+        </div>
+        <a th:href="@{'/admin/film/'+${film.code}+'-'+${film.id}}" class="btn btn-primary btn-sm">+</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <strong th:text="#{label.episode.update}" th:if="${!#strings.isEmpty(item.id)}">
+            </strong>
+            <strong th:text="#{label.episode.add}" th:if="${#strings.isEmpty(item.id)}">
+            </strong>
+        </div>
+
+        <div class="card-body card-block">
+            <form method="post" th:action="@{/api/admin/film/episode}" class="form-horizontal"
+                  id="formEpisode" enctype="multipart/form-data">
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="name" class=" form-control-label" th:text="#{label.episode.chapter}">
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="number" id="episodeCode" name="episodeCode" th:value="${item.episodeCode}"
+                               placeholder="Tự động thêm khi để trống"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="name" class="form-control-label" th:text="#{label.episode.name}">
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" id="name" name="name" th:value="${item.name}" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <video width="100%" controls>
+                                    <source th:src="${item.videoUrl}" id="episode-video">
+                                </video>
+                            </div>
+                        </div>
+                        <input type="file" name="video" id="video" onchange="readVideo(this,'episode-video')"
+                               accept="video/*">
+                        <input type="hidden" name="filmId" th:value="${film.id}" id="filmId">
+                        <input type="hidden" value="1" name="status">
+                        <input type="hidden" th:if="${!#strings.isEmpty(item.id)}" id="id" name="id"
+                               th:value="${item.id}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button type="button" th:if="${!#strings.isEmpty(item.id)}" class="btn btn-primary btn-sm"
+                    id="btnAddOrUpdate">
+                <i class="fas fa-check"></i>
+                <div th:text="#{label.episode.update}" th:remove="tag"></div>
+            </button>
+            <button type="button" th:if="${#strings.isEmpty(item.id)}" class="btn btn-primary btn-sm"
+                    id="btnAddOrUpdate">
+                <i class="fas fa-check"></i>
+                <div th:text="#{label.episode.add}" th:remove="tag"></div>
+            </button>
+
+            <button type="reset" class="btn btn-danger btn-sm">
+                <i class="fa fa-ban"></i> Reset
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $('#video').change(function () {
+        if ($(this).val() != "") {
+            $('#btnAddOrUpdate').prop('disabled', false);
+        } else {
+            $('#btnAddOrUpdate').prop('disabled', true);
+        }
+    });
+
+    $('#btnAddOrUpdate').click(function () {
+        $(this).prop('disabled', true);
+        var id = $('#id').val();
+        if (id == "" || id == undefined) {
+            addEpisodeVideo(function () {
+            });
+        } else {
+            updateEpisodeVideo(function () {
+            });
+        }
+    });
+    var episodeUrl = "/admin/film/code-" + $('#filmId').val();
+
+    function updateEpisodeVideo(a) {
+        showAlertLoading();
+        var form = $('#formEpisode')[0];
+        var data = new FormData(form);
+        $.ajax({
+            type: "PUT",
+            url: $('#formEpisode').attr('action'),
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            method: 'PUT',
+            success: function (res) {
+                showAlertAfterSuccess(function () {
+                    window.location.href = window.location.href + "?message=redirect_update";
+                });
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    }
+
+    function addEpisodeVideo(a) {
+        showAlertLoading();
+        var form = $('#formEpisode')[0];
+        var data = new FormData(form);
+        $.ajax({
+            type: "POST",
+            url: $('#formEpisode').attr('action'),
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            method: 'POST',
+            success: function (res) {
+                if (res == null) {
+                    window.location.href = episodeUrl;
+                } else {
+                    showAlertAfterSuccess(function () {
+                        window.location.href = episodeUrl + "/tap-" + res.episodeCode + "-" + res.id;
+                    });
+                }
+            },
+            error: function (res) {
+                window.location.href = episodeUrl + "?message=redirect_error";
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

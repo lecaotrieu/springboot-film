@@ -1,12 +1,13 @@
 package com.movie.core.dto;
 
-import org.apache.commons.fileupload.FileItem;
+import org.springframework.web.multipart.MultipartFile;
 
 public class EpisodeDTO extends AbstractDTO<EpisodeDTO> {
     private String episodeId;
     private String name;
     private Integer episodeCode;
-    private FileItem video;
+    private MultipartFile video;
+    private String videoUrl;
     private Integer status;
     private FilmDTO film;
 
@@ -35,14 +36,6 @@ public class EpisodeDTO extends AbstractDTO<EpisodeDTO> {
         this.film = film;
     }
 
-    public FileItem getVideo() {
-        return video;
-    }
-
-    public void setVideo(FileItem video) {
-        this.video = video;
-    }
-
     public Integer getEpisodeCode() {
         return episodeCode;
     }
@@ -57,5 +50,21 @@ public class EpisodeDTO extends AbstractDTO<EpisodeDTO> {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public MultipartFile getVideo() {
+        return video;
+    }
+
+    public void setVideo(MultipartFile video) {
+        this.video = video;
     }
 }

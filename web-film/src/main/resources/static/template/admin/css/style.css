@@ -53,6 +53,13 @@ ul.collapse-sub-menu {
     margin: 0;
 }
 
+video {}
+
+div#video-youtube iframe {
+    width: 100%;
+    height: 420px;
+}
+
 td.td-description {
     white-space: nowrap;
     overflow: hidden;
@@ -126,12 +133,11 @@ button#img-save {
 }
 
 form#form-image-film {
-    border: 1px solid #6f6f6f;
+    border: 1px solid #e6e1f3;
     width: 100%;
     padding: 14px 27px;
     margin: auto;
     min-height: 400px;
-    max-width: 445px;
 }
 
 img#imageFilm {

@@ -12,4 +12,6 @@ public interface IEvaluateService {
     Long save(EvaluateDTO evaluateDTO);
 
     Long updateFollow(EvaluateDTO evaluateDTO);
+
+    void delete(Long[] ids) throws Exception;
 }

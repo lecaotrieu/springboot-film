@@ -73,7 +73,7 @@ public class EmployeeController {
                 employeeDTO = employeeService.findOneById(SecurityUtils.getPrincipal().getId());
             }
         }
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("roles", roleService.findAllNotAdmin());
         model.addAttribute("countries", countryService.findAll());
         model.addAttribute(WebConstant.FORM_ITEM, employeeDTO);
         return "views/admin/employee/edit";
@@ -108,6 +108,7 @@ public class EmployeeController {
                     return "redirect:" + urlRq + "over_size";
                 }
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                fileName = "employee_photo_" + id + getFieldName(fileName);
                 String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.EMPLOYEE_PHOTOS + File.separator + id;
                 UploadUtil.saveFile(uploadDir, fileName, file);
                 employeeService.updatePhoto(id, fileName);
@@ -116,6 +117,10 @@ public class EmployeeController {
         } catch (Exception e) {
             return "redirect:" + urlRq + "redirect_error";
         }
+    }
+
+    private String getFieldName(String fileName) {
+        return fileName.substring(fileName.length() - 4);
     }
 
     @RequestMapping(value = {"/admin/employee/profile"}, method = RequestMethod.GET)

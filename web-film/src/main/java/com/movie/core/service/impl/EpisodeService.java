@@ -7,15 +7,16 @@ import com.movie.core.entity.EpisodeEntity;
 import com.movie.core.repository.EpisodeRepository;
 import com.movie.core.service.IEpisodeService;
 import com.movie.core.convert.EpisodeConvert;
+import com.movie.core.service.utils.PagingUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,11 +30,47 @@ public class EpisodeService implements IEpisodeService {
     private EpisodeConvert episodeConvert;
     @Autowired
     private DriveService driveService;
+    @Autowired
+    private PagingUtils pagingUtils;
 
     @Transactional
     public void updateVideo(Long id, FileItem video) throws IOException {
         EpisodeEntity episodeEntity = episodeRepository.getOne(id);
         String filmFolderName = episodeEntity.getFilm().getId().toString();
+        File filmFolder = getFilmFolder(filmFolderName);
+        deleteEpisodeInDrive(episodeEntity.getEpisodeId());
+        String videoName = episodeEntity.getEpisodeCode().toString();
+        File file = driveService.createGoogleFile(filmFolder.getId(), video.getContentType(), videoName, video.getInputStream());
+        driveService.createPublicPermission(file.getId());
+        episodeEntity.setEpisodeId(file.getId());
+        episodeRepository.save(episodeEntity);
+    }
+
+
+    @Transactional
+    public void updateVideo(Long id, MultipartFile video) throws IOException {
+        EpisodeEntity episodeEntity = episodeRepository.getOne(id);
+        String filmFolderName = episodeEntity.getFilm().getId().toString();
+        File filmFolder = getFilmFolder(filmFolderName);
+        deleteEpisodeInDrive(episodeEntity.getEpisodeId());
+        String videoName = episodeEntity.getEpisodeCode().toString();
+        File file = driveService.createGoogleFile(filmFolder.getId(), video.getContentType(), videoName, video.getInputStream());
+        driveService.createPublicPermission(file.getId());
+        episodeEntity.setEpisodeId(file.getId());
+        episodeRepository.save(episodeEntity);
+    }
+
+    private void deleteEpisodeInDrive(String episodeId) {
+        try {
+            if (StringUtils.isNotBlank(episodeId)) {
+                driveService.deleteFileById(episodeId);
+            }
+        } catch (IOException e) {
+            System.out.println("Không có file để xóa trên drive");
+        }
+    }
+
+    private File getFilmFolder(String filmFolderName) throws IOException {
         List<File> fileList = driveService.getSubFoldersByName(CoreConstant.VIDEO_ADDRESS_ID, filmFolderName);
         File filmFolder;
         if (fileList.size() < 1) {
@@ -41,18 +78,7 @@ public class EpisodeService implements IEpisodeService {
         } else {
             filmFolder = fileList.get(0);
         }
-        if (StringUtils.isNotBlank(episodeEntity.getEpisodeId())) {
-            try {
-                driveService.deleteFileById(episodeEntity.getEpisodeId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        String videoName = episodeEntity.getEpisodeCode().toString();
-        File file = driveService.createGoogleFile(filmFolder.getId(), video.getContentType(), videoName, video.getInputStream());
-        driveService.createPublicPermission(file.getId());
-        episodeEntity.setEpisodeId(file.getId());
-        episodeRepository.save(episodeEntity);
+        return filmFolder;
     }
 
     public Long updateStatus(Long id, Integer status) {
@@ -100,7 +126,7 @@ public class EpisodeService implements IEpisodeService {
     public void delete(Long[] ids) {
         for (Long id : ids) {
             EpisodeEntity episodeEntity = episodeRepository.getOne(id);
-            if(episodeEntity.getEpisodeId()!=null){
+            if (episodeEntity.getEpisodeId() != null) {
                 try {
                     driveService.deleteFileById(episodeEntity.getEpisodeId());
                 } catch (IOException e) {
@@ -128,7 +154,7 @@ public class EpisodeService implements IEpisodeService {
     }
 
     public EpisodeDTO findOneById(Long id, Integer status) {
-        EpisodeEntity episodeEntity = episodeRepository.findByIdAndStatus(id,status);
+        EpisodeEntity episodeEntity = episodeRepository.findByIdAndStatus(id, status);
         if (episodeEntity != null) {
             return episodeConvert.toDTO(episodeEntity);
         }
@@ -147,11 +173,52 @@ public class EpisodeService implements IEpisodeService {
         return episodeDTOS;
     }
 
+    @Override
+    public List<EpisodeDTO> findAllByProperties(Long id, String search, boolean status, int page, int limit, String sortBy, String sortDrc) {
+        search = search.toLowerCase();
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortBy, sortDrc);
+        List<EpisodeEntity> episodeEntities;
+        if (status) {
+            if (id != null) {
+                episodeEntities = episodeRepository.findByProperties(id, search, 1, pageable);
+            } else {
+                episodeEntities = episodeRepository.findByProperties(search, 1, pageable);
+            }
+        } else {
+            if (id != null) {
+                episodeEntities = episodeRepository.findByProperties(id, search, pageable);
+            } else {
+                episodeEntities = episodeRepository.findByProperties(search, pageable);
+            }
+        }
+        List<EpisodeDTO> episodeDTOS = ConvertToDTOS(episodeEntities);
+        return episodeDTOS;
+    }
+
+    @Override
+    public int countAllByProperties(Long id, String search, boolean status) {
+        search = search.toLowerCase();
+        int result = 0;
+        if (status) {
+            if (id != null) {
+                result = episodeRepository.countByProperties(id, search, 1);
+            } else {
+                result = episodeRepository.countByProperties(search, 1);
+            }
+        } else {
+            if (id != null) {
+                result = episodeRepository.countByProperties(id, search);
+            } else {
+                result = episodeRepository.countByProperties(search);
+            }
+        }
+        return result;
+    }
+
     private List<EpisodeDTO> ConvertToDTOS(List<EpisodeEntity> episodeEntities) {
         List<EpisodeDTO> episodeDTOS = new ArrayList<EpisodeDTO>();
         for (EpisodeEntity entity : episodeEntities) {
-            EpisodeDTO episodeDTO = new EpisodeDTO();
-            BeanUtils.copyProperties(entity, episodeDTO, "film");
+            EpisodeDTO episodeDTO = episodeConvert.toDTO(entity);
             episodeDTOS.add(episodeDTO);
         }
         return episodeDTOS;

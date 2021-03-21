@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.film.trailer.edit}"></title>
+</head>
+<body>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/admin/trang-chu}">
+            <i class="fa fa-home"></i>
+            <span th:text="#{label.home.page}" th:remove="tag"></span>
+        </a>
+        </li>
+        <li class="breadcrumb-item"><a th:href="@{/admin/film/list}" th:text="#{label.film.list}"></a>
+        </li>
+        <li class="breadcrumb-item"><a th:href="@{/admin/film/show(filmId=${item.id})}" th:text="${item.name}"></a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="#{label.update}"></li>
+    </ol>
+</nav>
+<div class="col-12 mx-auto">
+    <th:block th:if="${param.message!=null}">
+        <div th:class="${'alert alert-block alert-'+ alert}">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+            <div th:text="${messageResponse}" th:remove="tag"></div>
+        </div>
+    </th:block>
+    <div class="card">
+        <div class="card-header">
+            <strong th:text="#{label.film.trailer.update}">
+            </strong>
+        </div>
+
+        <div class="card-body card-block">
+            <form th:action="@{/api/admin/film/trailer}" class="form-horizontal"
+                  id="form-submit" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <input type="file" name="video" id="video" style="margin-bottom: 42px;"
+                                       onchange="readVideo(this,'trailer')"
+                                       accept="video/*">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <video width="100%" controls>
+                                            <source th:src="${item.trailerUrl}" id="trailer">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row form-group">
+                            <div class=" col col-md-2">
+                                <label for="trailerYoutube" class=" form-control-label" th:text="#{label.link.youtube}">
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input id="trailerYoutube" th:field="${item.trailerYoutube}" class="form-control"/>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <button type="button" class="btn btn-outline-primary" id="duyet">Xem</button>
+                            </div>
+                        </div>
+                        <div class="row form-group" id="video-youtube">
+                            <div th:if="${!#strings.isEmpty(item.trailerYoutube)}" th:utext="${item.trailerYoutube}" th:remove="tag">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" th:value="${item.id}" name="id">
+            </form>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary btn-sm" id="btnAddOrUpdate">
+                <i class="fas fa-check"></i>
+                <div th:text="#{label.update}" th:remove="tag"></div>
+            </button>
+            <button type="reset" class="btn btn-danger btn-sm" id="btn-reset">
+                <i class="fa fa-ban"></i> Reset
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $('#video').change(function () {
+        if ($(this).val() != "") {
+            $('#btnAddOrUpdate').prop('disabled', false);
+        } else {
+            $('#btnAddOrUpdate').prop('disabled', true);
+        }
+    });
+    var urlTrailer = "/admin/film/trailer?filmId=" + $('input[name="id"]').val();
+
+    function updateTrailer() {
+        showAlertLoading();
+        var form = $('#form-submit')[0];
+        var data = new FormData(form);
+        $.ajax({
+            type: "PUT",
+            url: $('#form-submit').attr('action'),
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            method: 'PUT',
+            success: function (res) {
+                showAlertAfterSuccess(function () {
+                    window.location.href = urlTrailer + "&message=redirect_update"
+                });
+            },
+            error: function (res) {
+                window.location.href = urlTrailer + "&message=redirect_error"
+            }
+        });
+    }
+
+    $('#btnAddOrUpdate').click(function () {
+        $(this).prop('disabled', true);
+        updateTrailer(function () {
+        });
+    });
+
+    $('#duyet').click(function () {
+        $('#video-youtube').html($('#trailerYoutube').val());
+    });
+
+    $('#btn-reset').click(function () {
+        window.location.href = urlTrailer;
+    });
+</script>
+</body>
+</html>

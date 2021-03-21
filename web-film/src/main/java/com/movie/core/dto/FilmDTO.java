@@ -8,7 +8,8 @@ public class FilmDTO extends AbstractDTO<FilmDTO> {
     private String description;
     private String image;
     private String image2;
-    private String imageUrl;
+    private String image1Url;
+    private String image2Url;
     private Integer status;
     private String language;
     private String time;
@@ -16,6 +17,8 @@ public class FilmDTO extends AbstractDTO<FilmDTO> {
     private String quality;
     private String year;
     private String trailer;
+    private String trailerUrl = "";
+    private String trailerYoutube;
     private Integer view;
     private Integer totalVote;
     private Integer episodesCount;
@@ -213,19 +216,43 @@ public class FilmDTO extends AbstractDTO<FilmDTO> {
         this.year = year;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public String getImage2() {
         return image2;
     }
 
     public void setImage2(String image2) {
         this.image2 = image2;
+    }
+
+    public String getImage1Url() {
+        return image1Url;
+    }
+
+    public void setImage1Url(String image1Url) {
+        this.image1Url = image1Url;
+    }
+
+    public String getImage2Url() {
+        return image2Url;
+    }
+
+    public void setImage2Url(String image2Url) {
+        this.image2Url = image2Url;
+    }
+
+    public String getTrailerUrl() {
+        return trailerUrl;
+    }
+
+    public void setTrailerUrl(String trailerUrl) {
+        this.trailerUrl = trailerUrl;
+    }
+
+    public String getTrailerYoutube() {
+        return trailerYoutube;
+    }
+
+    public void setTrailerYoutube(String trailerYoutube) {
+        this.trailerYoutube = trailerYoutube;
     }
 }

@@ -64,18 +64,17 @@ public class FilmController {
     }
 
     @RequestMapping(value = {"/admin/film/show"}, method = RequestMethod.GET)
-    public ModelAndView showFilmProfile(@RequestParam Long id) {
+    public String showFilmProfile(Model model, @RequestParam("filmId") Long id) {
         FilmDTO filmDTO = null;
         if (id != null) {
-            if (SecurityUtils.getEmployeeAuthorities().contains("ADMIN")) {
+            if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)) {
                 filmDTO = filmService.findOneById(id);
-            } else if (SecurityUtils.getEmployeeAuthorities().contains("POSTER")) {
+            } else if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_POSTER)) {
                 filmDTO = filmService.findOneById(id, 1);
             }
         }
-        ModelAndView mav = new ModelAndView("admin/film/profile");
-        mav.addObject(WebConstant.FORM_ITEM, filmDTO);
-        return mav;
+        model.addAttribute(WebConstant.FORM_ITEM, filmDTO);
+        return "views/admin/film/profile";
     }
 
     @RequestMapping(value = "/admin/film/edit", method = RequestMethod.GET)
@@ -92,6 +91,12 @@ public class FilmController {
                 filmDTO = filmService.findOneById(id, 1);
             }
         }
+        if (filmDTO.getImage1Url()==null){
+            filmDTO.setImage1Url("/template/image/default_poster.jpg");
+        }
+        if (filmDTO.getImage2Url()==null){
+            filmDTO.setImage2Url("/template/image/no-image.jpg");
+        }
         model.addAttribute(WebConstant.FORM_ITEM, filmDTO);
         model.addAttribute("countries", countryService.findAll());
         model.addAttribute("categories", categoryService.findAll());
@@ -102,24 +107,24 @@ public class FilmController {
     }
 
     @RequestMapping(value = "/admin/film/trailer", method = RequestMethod.GET)
-    public ModelAndView showFilmTrailerEdit(@RequestParam(value = "id", required = false) Long id,
+    public String showFilmTrailerEdit(@RequestParam(value = "filmId", required = false) Long id,
                                             @RequestParam(value = "message", required = false) String message,
-                                            HttpServletRequest request) {
+                                            Model model) {
         if (message != null) {
-            WebCommonUtil.addRedirectMessage(request, getMapMessage(), message);
+            WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
         FilmDTO filmDTO = new FilmDTO();
         if (id != null) {
-            if (SecurityUtils.getEmployeeAuthorities().contains("ADMIN")) {
+            if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)) {
                 filmDTO = filmService.findOneById(id);
-            } else if (SecurityUtils.getEmployeeAuthorities().contains("POSTER")) {
+            } else if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_POSTER)) {
                 filmDTO = filmService.findOneById(id, 1);
             }
         }
-        ModelAndView mav = new ModelAndView("admin/film/trailerEdit");
-        mav.addObject(WebConstant.FORM_ITEM, filmDTO);
-        return mav;
+        model.addAttribute(WebConstant.FORM_ITEM, filmDTO);
+        return "views/admin/film/trailerEdit";
     }
+
 
     public void executeSearchFilm(FilmCommand command) {
         String userName = null;

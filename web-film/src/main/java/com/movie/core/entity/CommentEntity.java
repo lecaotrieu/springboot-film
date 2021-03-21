@@ -9,6 +9,9 @@ public class CommentEntity extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "totallike", nullable = false, columnDefinition = "0")
+    private Integer totalLike;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
@@ -73,5 +76,13 @@ public class CommentEntity extends BaseEntity {
 
     public void setCommentLikes(List<CommentLikeEntity> commentLikes) {
         this.commentLikes = commentLikes;
+    }
+
+    public Integer getTotalLike() {
+        return totalLike;
+    }
+
+    public void setTotalLike(Integer totalLike) {
+        this.totalLike = totalLike;
     }
 }

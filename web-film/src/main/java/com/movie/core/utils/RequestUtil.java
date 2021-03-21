@@ -35,4 +35,13 @@ public class RequestUtil {
             command.setPage(page);
         }
     }
+
+    public static void initSearchBeanManual(int page) {
+        Integer p = 1;
+        if (page != 0) {
+            p = page;
+        }
+        page = p;
+    }
+
 }

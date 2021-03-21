@@ -30,16 +30,23 @@ public class FilmAPI {
     }
 
     @PostMapping("/api/admin/film/image")
-    public void saveImageFilm(@RequestParam("img") MultipartFile file, @RequestParam("id") Long id) throws Exception {
+    public void saveImageFilm(@RequestParam("img1") MultipartFile img1, @RequestParam("id") Long id, @RequestParam("img2") MultipartFile img2) throws Exception {
         try {
-            if (file.getSize() > CoreConstant.IMAGE_UPLOAD_MAX) {
+            if (img1.getSize() > CoreConstant.IMAGE_UPLOAD_MAX || img2.getSize() > CoreConstant.IMAGE_UPLOAD_MAX) {
                 throw new Exception();
             } else {
-                if (!file.isEmpty()) {
-                    String fileName = org.springframework.util.StringUtils.cleanPath(file.getOriginalFilename());
-                    String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.FILM_IMAGES + File.separator + id;
-                    UploadUtil.saveFile(uploadDir, fileName, file);
-                    filmService.updatePhoto(id, fileName);
+                String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.FILM_IMAGES + File.separator + id;
+                if (!img1.isEmpty()) {
+                    String fileName1 = org.springframework.util.StringUtils.cleanPath(img1.getOriginalFilename());
+                    fileName1 = "film_img1_" + id + getFieldName(fileName1);
+                    UploadUtil.saveFile(uploadDir, fileName1, img1);
+                    filmService.updateImg1(id, fileName1);
+                }
+                if (!img2.isEmpty()) {
+                    String fileName2 = org.springframework.util.StringUtils.cleanPath(img2.getOriginalFilename());
+                    fileName2 = "film_img2_" + id + getFieldName(fileName2);
+                    UploadUtil.saveFile(uploadDir, fileName2, img2);
+                    filmService.updateImg2(id, fileName2);
                 }
             }
         } catch (Exception e) {
@@ -47,16 +54,15 @@ public class FilmAPI {
         }
     }
 
+
+    private String getFieldName(String fileName) {
+        return fileName.substring(fileName.length() - 4);
+    }
+
     @PutMapping("/api/admin/film/trailer")
-    public void updateFilmTrailer(HttpServletRequest request) {
-        UploadUtil uploadUtil = new UploadUtil();
-        Set<String> titleValue = buildTitleValue();
-        Object[] objects = uploadUtil.getFileInputStreams(request, titleValue);
-        FilmDTO filmDTO = new FilmDTO();
-        filmDTO = returnValueOfDTO(filmDTO, (Map<String, Object>) objects[1]);
-        List<FileItem> fileItems = (List<FileItem>) objects[0];
+    public void updateFilmTrailer(@RequestParam("video") MultipartFile file, @RequestParam("id") Long id, @RequestParam("trailerYoutube") String trailerYoutube) {
         try {
-            filmService.updateTrailer(filmDTO.getId(), fileItems.get(0));
+            filmService.updateTrailer(id, file, trailerYoutube);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +84,7 @@ public class FilmAPI {
     }
 
     @DeleteMapping("/api/admin/film")
-    public void deleteFilm(@RequestBody Long[] ids) {
+    public void deleteFilm(@RequestBody Long[] ids) throws Exception {
         filmService.deleteById(ids);
     }
 

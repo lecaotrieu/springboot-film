@@ -8,9 +8,11 @@ import com.movie.core.dto.RoleDTO;
 import com.movie.core.entity.EmployeeEntity;
 import com.movie.core.entity.FilmEntity;
 import com.movie.core.entity.RoleEntity;
-import com.movie.core.repository.*;
+import com.movie.core.repository.EmployeeRepository;
+import com.movie.core.repository.FilmRepository;
 import com.movie.core.service.IDriveService;
 import com.movie.core.service.IEmployeeService;
+import com.movie.core.service.utils.PagingUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -34,18 +36,12 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
-    private RoleRepository roleRepository;
+    private PagingUtils pagingUtils;
 
     public List<EmployeeDTO> findByProperties(String search, List<String> roleCodes, int page, int limit, String sortExpression, String sortDirection) {
-        Sort sort = Sort.unsorted();
         search = search.toLowerCase();
-        if (sortExpression != null && sortDirection != null) {
-            sort = Sort.by(sortDirection.equals("1") ? Sort.Direction.ASC : Sort.Direction.DESC, sortExpression);
-        }
-        Pageable pageable = PageRequest.of(page - 1, limit, sort);
-        List<EmployeeDTO> employeeDTOS = new ArrayList<EmployeeDTO>();
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
+        List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         List<EmployeeEntity> employeeEntities = employeeRepository.findAllByRolesAndUserName(roleCodes, search, pageable);
         for (EmployeeEntity entity : employeeEntities) {
             EmployeeDTO employeeDTO = executeToEmployeeDTO(entity);
@@ -55,7 +51,7 @@ public class EmployeeService implements IEmployeeService {
     }
 
     private EmployeeDTO executeToEmployeeDTO(EmployeeEntity entity) {
-        List<EmployeeEntity> employees = new ArrayList<EmployeeEntity>();
+        List<EmployeeEntity> employees = new ArrayList<>();
         employees.add(entity);
         EmployeeDTO employeeDTO = employeeConvert.toDTO(entity);
         return employeeDTO;

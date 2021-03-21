@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title th:text="#{label.film.update}" th:if="${!#strings.isEmpty(item.id)}"></title>
     <title th:text="#{label.film.add}" th:if="${#strings.isEmpty(item.id)}"></title>
-    <link rel="stylesheet" th:href="@{/template/css/custom_upload_img.css}">
+    <link rel="stylesheet" th:href="@{/template/admin/film/film.css}">
 </head>
 <body>
 <nav aria-label="breadcrumb">
@@ -38,31 +38,36 @@
             </strong>
             <strong th:if="${#strings.isEmpty(item.id)}" th:text="#{label.film.add}">
             </strong>
-            <a th:href="@{/admin/film/show(id=${item.id})}" th:if="${!#strings.isEmpty(item.id)}" class="float-right"
+            <a th:href="@{/admin/film/show(filmId=${item.id})}" th:if="${!#strings.isEmpty(item.id)}"
+               class="float-right"
                th:text="#{label.film.info}"></a>
         </div>
         <div class="card-body card-block" th:object="${item}">
             <div class="row">
-                <div class="col-4">
-                    <div class="row form-group">
-                        <div class="col-10 col-md-10 mx-auto">
-                            <form th:action="@{/api/admin/film/image}" method="post" id="form-image-film"
-                                  enctype="multipart/form-data">
-                                <img class="d-block" th:src="*{imageUrl}" alt="Card image cap" id="imageFilm">
-                                <input type="file" name="img" id="img" accept="image/*"
-                                       onchange="readURL(this,'imageFilm')">
-                                <input type="hidden" name="id" th:value="*{id}" id="filmId">
-
-                            </form>
+                <div class="col-12 col-md-12 mx-auto">
+                    <form th:action="@{/api/admin/film/image}" method="post" id="form-image-film" class="row"
+                          enctype="multipart/form-data">
+                        <div class="col-4">
+                            <img class="d-block film-img-1" th:src="*{image1Url}" alt="Card image cap" id="image1Film">
+                            <input type="file" name="img1" id="img1" accept="image/*"
+                                   onchange="readURL(this,'image1Film')">
                         </div>
-                    </div>
-                    <div class="row" style="height: 50px;" th:if="*{!#strings.isEmpty(id)}">
-                        <button type="button" id="img-save" class="btn btn-info"
-                                disabled="disabled" th:text="#{label.film.image.change}">
-                        </button>
-                        <img th:src="@{/template/image/loading.gif}" alt="" hidden id="loading-img">
-                    </div>
+                        <div class="col-8 mx-auto">
+                            <img class="d-block film-img-2" th:src="*{image2Url}" alt="Card image cap" id="image2Film">
+                            <input type="file" name="img2" id="img2" accept="image/*"
+                                   onchange="readURL(this,'image2Film')">
+                        </div>
+                        <input type="hidden" name="id" th:value="*{id}" id="filmId">
+                    </form>
                 </div>
+            </div>
+            <div class="row" style="height: 50px; margin-bottom: 100px;" th:if="*{!#strings.isEmpty(id)}">
+                <button type="button" id="img-save" class="btn btn-info"
+                        disabled="disabled" th:text="#{label.film.image.change}">
+                </button>
+                <img th:src="@{/template/image/loading.gif}" alt="" hidden id="loading-img">
+            </div>
+            <div class="row">
                 <form method="post" class="form-horizontal col-8" id="formSubmit">
                     <div class="row form-group">
                         <div class="col col-md-2">
@@ -79,8 +84,7 @@
                             </label>
                         </div>
                         <div class="col-10 col-md-7">
-                            <select name="actors.id" multiple class="form-control role-select2" id="actor"
-                            >
+                            <select name="actors.id" multiple class="form-control role-select2" id="actor">
                                 <option th:each="actor: ${actors}" th:field="*{actors}" th:value="${actor.id}"
                                         th:text="${actor.name}"></option>
                                 </c:forEach>
@@ -100,7 +104,8 @@
                         <div class="col-10 col-md-7">
                             <select name="director.id" id="director" class="form-control">
                                 <option value="" th:text="#{label.director}"></option>
-                                <option th:each="director: ${directors}" th:value="${director.id}" th:field="*{director.id}"
+                                <option th:each="director: ${directors}" th:value="${director.id}"
+                                        th:field="*{director.id}"
                                         th:text="${director.name}"></option>
                             </select>
                         </div>
@@ -215,15 +220,16 @@
                             </div>
                         </div>
                     </div>
-                    <input name="id" th:value="*{id}" type="hidden" id="id"/>
+                    <input name="id" th:value="*{id}" type="hidden" id="id" th:if="${!#strings.isEmpty(item.id)}"/>
                     <input name="employee.id" th:value="${#authentication.getPrincipal().getId()}" type="hidden"/>
+                    <input type="hidden" th:field="*{scores}">
                 </form>
-            </div>
-            <div class="row">
-                <label for="description" class="col-sm-12" th:text="#{label.content}"></label>
-                <div class="col-sm-12">
+                <div class="col-4">
+                    <label for="description" class="col-sm-12" th:text="#{label.content}"></label>
+                    <div class="col-sm-12">
                     <textarea form="formSubmit" class="form-control" name="description" id="description"
                               rows="20" th:text="*{description}"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -319,8 +325,8 @@
             width: ['100%'], height: ['300px']
         });
 
-        if($('#imageFilm').attr("src") == ""){
-            $('#imageFilm').attr("src","/template/image/default_poster.jpg");
+        if ($('#image1Film').attr("src") == "") {
+            $('#image1Film').attr("src", "/template/image/default_poster.jpg");
         }
 
     });
@@ -386,7 +392,7 @@
         });
     }
 
-    $('input#img').change(function () {
+    $('input[type="file"]').change(function () {
         if ($(this).val() != "") {
             $('#img-save').prop("disabled", false);
         } else {
@@ -431,7 +437,7 @@
     }
 
     function updateFilmImage(a) {
-        if ($('#img').val() != "") {
+        if ($('#img1').val() != "" || $('#img2').val() !="") {
             var form = $('#form-image-film')[0];
             $('#loading-img').prop("hidden", false);
             var data = new FormData(form);

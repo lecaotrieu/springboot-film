@@ -6,17 +6,20 @@ import com.movie.core.dto.EpisodeDTO;
 import com.movie.core.dto.FilmDTO;
 import com.movie.core.service.IEpisodeService;
 import com.movie.core.service.IFilmService;
+import com.movie.core.utils.FormUtil;
+import com.movie.core.utils.RequestUtil;
+import com.movie.core.utils.WebCommonUtil;
 import com.movie.web.command.EpisodeCommand;
+import com.movie.web.command.FilmCommand;
 import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Controller(value = "EpisodeControllerOfAdmin")
 public class EpisodeController {
@@ -26,23 +29,26 @@ public class EpisodeController {
     @Autowired
     private IEpisodeService episodeService;
 
+    ResourceBundle bundle = ResourceBundle.getBundle("i18n/message_vn");
+
     @RequestMapping(value = {"/admin/film/{filmCode}-{filmId}"}, method = RequestMethod.GET)
-    public ModelAndView showEpisodeEdit(@PathVariable("filmCode") String filmCode, @PathVariable("filmId") Long filmId) {
-        ModelAndView mav;
+    public String showEpisodeEdit(@PathVariable("filmCode") String filmCode, @PathVariable("filmId") Long filmId, Model model) {
         boolean check = buildCheck(filmId);
         if (check == true) {
             FilmDTO filmDTO = buildFilmToShow(filmId);
-            mav = new ModelAndView("/admin/episode/edit");
-            mav.addObject("film", filmDTO);
-            buildFilmToShow(filmId);
+            model.addAttribute("film", filmDTO);
+            EpisodeDTO episodeDTO = new EpisodeDTO();
+            model.addAttribute(WebConstant.FORM_ITEM, episodeDTO);
+//            buildFilmToShow(filmId);
             if (!filmCode.equals(filmDTO.getCode())) {
-                mav = new ModelAndView("redirect:/admin/film/" + filmDTO.getCode() + "-" + filmId);
+               return "redirect:/admin/film/" + filmDTO.getCode() + "-" + filmId;
             }
         } else {
-            mav = new ModelAndView("redirect:/admin/film/list");
+           return "redirect:/admin/film/list";
         }
-        return mav;
+        return "views/admin/episode/edit";
     }
+
 
     private FilmDTO buildFilmToShow(Long filmId) {
         FilmDTO filmDTO = filmService.findOneById(filmId);
@@ -63,7 +69,7 @@ public class EpisodeController {
         ModelAndView mav;
         if (check == true) {
             FilmDTO filmDTO = buildFilmToShow(filmId);
-            mav = new ModelAndView("/admin/episode/edit");
+            mav = new ModelAndView("views/admin/episode/edit");
             mav.addObject("film", filmDTO);
             EpisodeDTO episodeDTO;
             if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)) {
@@ -71,12 +77,12 @@ public class EpisodeController {
             } else {
                 episodeDTO = episodeService.findOneById(id, CoreConstant.ACTIVE_STATUS);
             }
-            if (episodeDTO!=null){
+            if (episodeDTO != null) {
                 mav.addObject(WebConstant.FORM_ITEM, episodeDTO);
                 if (!filmCode.equals(filmDTO.getCode()) || !episodeCode.equals(episodeDTO.getEpisodeCode())) {
                     mav = new ModelAndView("redirect:/admin/film/" + filmDTO.getCode() + "-" + filmId + "/tap-" + episodeDTO.getEpisodeCode() + "-" + id);
                 }
-            } else{
+            } else {
                 mav = new ModelAndView("redirect:/admin/film/list");
             }
         } else {
@@ -85,32 +91,52 @@ public class EpisodeController {
         return mav;
     }
 
-    @RequestMapping(value = {"/ajax/admin/film/list"}, method = RequestMethod.GET)
-    public ModelAndView showEpisodeList(@RequestParam("filmId") Long id) {
-        EpisodeCommand command = new EpisodeCommand();
-        boolean check = buildCheck(id);
-        ModelAndView mav = null;
-        if (check == true) {
-            if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)) {
-                command.setListResult(episodeService.findAllByFilmId(id));
-            } else if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_POSTER)) {
-                command.setListResult(episodeService.findAllByFilmId(id, CoreConstant.ACTIVE_STATUS));
-            }
-            FilmDTO filmDTO = filmService.findOneById(id);
-            mav = new ModelAndView("/admin/episode/list");
-            mav.addObject("film", filmDTO);
-            mav.addObject(WebConstant.LIST_ITEM, command);
+    @RequestMapping(value = {"/ajax/admin/film/list", "/admin/film/episode/list"}, method = RequestMethod.GET)
+    public String showEpisodeList(Model model, @RequestParam(value = "message", required = false) String message, HttpServletRequest request) {
+        if (message != null) {
+            WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
-        return mav;
+        EpisodeCommand command = FormUtil.populate(EpisodeCommand.class, request);
+        RequestUtil.initSearchBeanManual(command);
+        boolean check = buildCheck(command.getFilmId());
+        List<EpisodeDTO> episodeDTOS = new ArrayList<>();
+        if (check == true) {
+            boolean status = false;
+            if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)) {
+                status = false;
+            } else if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_POSTER)) {
+                status = true;
+            }
+            episodeDTOS = episodeService.findAllByProperties(command.getFilmId(), command.getSearch(), status, command.getPage(),
+                    command.getLimit(), command.getSortExpression(), command.getSortDirection());
+            command.setListResult(episodeDTOS);
+            if (command.getFilmId() != null) {
+                FilmDTO filmDTO = filmService.findOneById(command.getFilmId());
+                command.setFilmDTO(filmDTO);
+            }
+            command.setTotalItems(episodeService.countAllByProperties(command.getFilmId(), command.getSearch(), status));
+            command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
+            model.addAttribute(WebConstant.LIST_ITEM, command);
+        }
+        return "views/admin/episode/list";
     }
 
     private boolean buildCheck(Long id) {
         boolean check = false;
-        if (SecurityUtils.getEmployeeAuthorities().contains("ADMIN")) {
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)) {
             check = true;
         } else {
             check = filmService.checkPosterFilm(id, SecurityUtils.getPrincipal().getUsername());
         }
         return check;
+    }
+
+    private Map<String, String> getMapMessage() {
+        Map<String, String> mapValue = new HashMap<String, String>();
+        mapValue.put(WebConstant.REDIRECT_ERROR, bundle.getString("label.message.error"));
+        mapValue.put(WebConstant.REDIRECT_INSERT, bundle.getString("label.episode.message.add.success"));
+        mapValue.put(WebConstant.REDIRECT_DELETE, bundle.getString("label.episode.message.delete.success"));
+        mapValue.put(WebConstant.REDIRECT_UPDATE, bundle.getString("label.episode.message.update.success"));
+        return mapValue;
     }
 }

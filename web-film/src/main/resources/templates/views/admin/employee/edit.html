@@ -16,8 +16,10 @@
             <span th:text="#{label.home.page}" th:remove="tag"></span>
         </a>
         </li>
-        <li class="breadcrumb-item"><a th:href="@{/admin/employee/list}" th:text="#{label.employee.list}"></a>
-        </li>
+        <div sec:authorize="hasRole('ADMIN')">
+            <li class="breadcrumb-item"><a th:href="@{/admin/employee/list}" th:text="#{label.employee.list}"></a>
+            </li>
+        </div>
         <li class="breadcrumb-item active" aria-current="page" th:if="${!#strings.isEmpty(item.id)}">Chỉnh sửa</li>
         <li class="breadcrumb-item active" aria-current="page" th:if="${#strings.isEmpty(item.id)}">Thêm mới</li>
     </ol>
@@ -129,12 +131,22 @@
                                 </label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <select multiple class="form-control role-select2" th:field="${item.roles}" name="roles.id" id="role">
+                                <select multiple class="form-control role-select2" name="roles.id" id="role"
+                                        th:if="${#authentication.principal.id != item.id}">
+                                    <option th:each="role : ${roles}" th:field="${item.roles}"
+                                            th:value="${role.id}"
+                                            th:text="${role.name}"></option>
+                                </select>
+                                <select multiple class="form-control role-select2" name="roles.id" id="role" disabled
+                                        th:if="${#authentication.principal.id == item.id}">
                                     <option th:each="role : ${roles}" th:field="${item.roles}"
                                             th:value="${role.id}"
                                             th:text="${role.name}"></option>
                                 </select>
                             </div>
+                            <th:block th:each="role: ${item.roles}" th:if="${#authentication.principal.id == item.id}">
+                                <input type="hidden" name="roles.id" th:value="${role.id}">
+                            </th:block>
                         </div>
                         <div class="row form-group">
                             <div class=" col col-md-3">
@@ -170,6 +182,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="personal" value="1" th:if="${#authentication.principal.id == item.id}">
                 <input name="id" th:value="${item.id}" type="hidden" id="id"/>
             </form>
         </div>
@@ -209,7 +222,7 @@
                                 <input type="password" name="password" th:placeholder="#{label.password.new}"
                                        class="form-control">
                             </div>
-                            <input type="hidden" name="id" value="${item.id}"/>
+                            <input type="hidden" name="id" th:value="${item.id}"/>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -228,9 +241,10 @@
 
     var apiUpdatePasswordUrl = "/api/admin/employee/password";
     var editEmployeeUrl = "/admin/employee/edit";
+    var inforPersonalEditUrl = "/admin/personal/information";
     var apiUrl = "/api/admin/employee";
     $(document).ready(function () {
-        $('#role').attr("name","roles.id");
+        $('#role').attr("name", "roles.id");
     })
     $('.role-select2').select2();
 
@@ -242,22 +256,27 @@
         e.preventDefault();
         var formData = $('#editPasswordForm').serializeArray();
         var data = convertToJson(formData);
-        updatePassword(data);
+        var url = apiUpdatePasswordUrl;
+        var redirectUrl = editEmployeeUrl + "?id=" + $('#id').val();
+        if ($('#personal').val() == '1') {
+            url = "/api/admin/personal/password";
+            redirectUrl = inforPersonalEditUrl + "?";
+        }
+        updatePassword(data, url, redirectUrl);
     });
 
-    function updatePassword(data) {
-        var id = $('#id').val();
+    function updatePassword(data, url, redirectUrl) {
         $.ajax({
-            url: apiUpdatePasswordUrl,
+            url: url,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (result) {
-                window.location.href = editEmployeeUrl + "?id=" + id + "&message=redirect_update";
+                window.location.href = redirectUrl + "&message=redirect_update";
             },
             error: function (error) {
-                window.location.href = editEmployeeUrl + "?id=" + id + "&message=redirect_error";
+                window.location.href = redirectUrl + "&message=redirect_error";
             }
         });
     }
@@ -270,7 +289,13 @@
         var data = convertToJson(formData);
         console.log(data);
         if (id != "") {
-            updateEmployee(data);
+            var redirectUrl = editEmployeeUrl + "?id=" + id;
+            var url = apiUrl;
+            if ($('#personal').val() == '1') {
+                url = "/api/admin/info/update";
+                redirectUrl = inforPersonalEditUrl + "?";
+            }
+            updateEmployee(data, url, redirectUrl);
         } else {
             addEmployee(data);
         }
@@ -297,19 +322,18 @@
     }
 
     //ajax update employee
-    function updateEmployee(data) {
-        var id = $('#id').val();
+    function updateEmployee(data, url, redirectUrl) {
         $.ajax({
-            url: apiUrl,
+            url: url,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(data),
             dataType: 'json',
-            success: function () {
-                window.location.href = editEmployeeUrl + "?id=" + id + "&message=redirect_update";
+            success: function (res) {
+                window.location.href = redirectUrl + "&message=redirect_update";
             },
-            error: function () {
-                window.location.href = editEmployeeUrl + "?id=" + id +"&message=redirect_error";
+            error: function (res) {
+                window.location.href = redirectUrl + "&message=redirect_error";
             }
         });
     }
