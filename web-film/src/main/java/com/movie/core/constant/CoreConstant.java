@@ -6,6 +6,7 @@ public class CoreConstant {
     public static final String FOLDER_UPLOAD = "fileUpload";
     public static final String EMPLOYEE_PHOTOS = "employee-photos";
     public static final String USER_PHOTOS = "user-photos";
+    public static final String ACTOR_PHOTOS = "actor-photos";
     public static final String FILM_IMAGES = "film-images";
     public static final int ACTIVE_STATUS = 1;
     public static final int INACTIVE_STATUS = 0;

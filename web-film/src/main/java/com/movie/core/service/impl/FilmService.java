@@ -261,7 +261,7 @@ public class FilmService implements IFilmService {
     private EvaluateRepository evaluateRepository;
 
     @Transactional
-    public void deleteById(Long[] ids) throws Exception{
+    public void deleteById(Long[] ids) throws Exception {
         for (Long id : ids) {
             FilmEntity entity = filmRepository.getOne(id);
             for (EpisodeEntity episodeEntity : entity.getEpisodes()) {
@@ -359,5 +359,10 @@ public class FilmService implements IFilmService {
 
         filmEntity.setView(view);
         filmRepository.save(filmEntity);
+    }
+
+    @Override
+    public int getTotalItem() {
+        return (int) filmRepository.count();
     }
 }

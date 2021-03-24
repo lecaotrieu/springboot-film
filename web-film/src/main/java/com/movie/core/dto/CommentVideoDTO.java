@@ -7,7 +7,28 @@ public class CommentVideoDTO extends AbstractDTO<CommentVideoDTO> {
     private Integer totalLike;
     private VideoDTO video;
     private UserDTO user;
+    private List<CommentVideoDTO> commentVideos;
+    private CommentVideoDTO commentVideo;
     private List<CommentVideoLikeDTO> commentVideoLikes;
+    private String thoiGianDang;
+    private Integer like;
+    private Integer subCommentCount=0;
+
+    public List<CommentVideoDTO> getCommentVideos() {
+        return commentVideos;
+    }
+
+    public void setCommentVideos(List<CommentVideoDTO> commentVideos) {
+        this.commentVideos = commentVideos;
+    }
+
+    public CommentVideoDTO getCommentVideo() {
+        return commentVideo;
+    }
+
+    public void setCommentVideo(CommentVideoDTO commentVideo) {
+        this.commentVideo = commentVideo;
+    }
 
     public String getContent() {
         return content;
@@ -47,5 +68,29 @@ public class CommentVideoDTO extends AbstractDTO<CommentVideoDTO> {
 
     public void setCommentVideoLikes(List<CommentVideoLikeDTO> commentVideoLikes) {
         this.commentVideoLikes = commentVideoLikes;
+    }
+
+    public String getThoiGianDang() {
+        return thoiGianDang;
+    }
+
+    public void setThoiGianDang(String thoiGianDang) {
+        this.thoiGianDang = thoiGianDang;
+    }
+
+    public Integer getSubCommentCount() {
+        return subCommentCount;
+    }
+
+    public void setSubCommentCount(Integer subCommentCount) {
+        this.subCommentCount = subCommentCount;
+    }
+
+    public Integer getLike() {
+        return like;
+    }
+
+    public void setLike(Integer like) {
+        this.like = like;
     }
 }

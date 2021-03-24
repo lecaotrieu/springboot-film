@@ -61,6 +61,11 @@ public class EmployeeService implements IEmployeeService {
         return (int) employeeRepository.countAllByRolesAndUserName(roleCodes, search);
     }
 
+    @Override
+    public int getTotalItem() {
+        return (int) employeeRepository.count();
+    }
+
     @Autowired
     private EmployeeConvert employeeConvert;
 

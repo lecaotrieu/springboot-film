@@ -9,9 +9,8 @@ public class CommentVideoEntity extends BaseEntity {
     @Column
     private String content;
 
-    @Column
+    @Column(name = "totallike")
     private Integer totalLike;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "video_id")
@@ -23,6 +22,29 @@ public class CommentVideoEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "commentVideo", fetch = FetchType.LAZY)
     private List<CommentVideoLikeEntity> commentVideoLikes;
+
+    @OneToMany(mappedBy = "commentVideo", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<CommentVideoEntity> commentVideos;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private CommentVideoEntity commentVideo;
+
+    public List<CommentVideoEntity> getCommentVideos() {
+        return commentVideos;
+    }
+
+    public void setCommentVideos(List<CommentVideoEntity> commentVideos) {
+        this.commentVideos = commentVideos;
+    }
+
+    public CommentVideoEntity getCommentVideo() {
+        return commentVideo;
+    }
+
+    public void setCommentVideo(CommentVideoEntity commentVideo) {
+        this.commentVideo = commentVideo;
+    }
 
     public String getContent() {
         return content;

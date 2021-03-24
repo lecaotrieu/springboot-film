@@ -5,9 +5,267 @@
       th:replace="~{layout/admin :: main-fragment (~{::title} ,~{::head}, ~{::body})}">
 <head>
     <meta charset="UTF-8">
-    <title>Trang chủ</title>
+    <title th:text="#{label.home.page}"></title>
+    <link rel="stylesheet" th:href="@{/template/css/adminlte.min.css}">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body>
-    <h1>trang chủ</h1>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Dashboard</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard v1</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 th:text="${userTotal}"></h3>
+                            <p th:text="#{label.user}"></p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <a th:href="@{/admin/user/list}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 th:text="${employeeTotal}"></h3>
+
+                            <p th:text="#{label.employee}"></p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <a th:href="@{/admin/employee/list}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 th:text="${filmTotal}"></h3>
+
+                            <p th:text="#{label.film}"></p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <a th:href="@{/admin/film/list}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3 th:text="${videoTotal}"></h3>
+                            <p  th:text="#{label.video}"></p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <a th:href="@{/admin/video/list}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Category CHART -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Category Chart</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="categoryChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <!-- AREA CHART -->
+                    <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">Area Chart</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col (LEFT) -->
+                <div class="col-md-6">
+                    <!-- LINE CHART -->
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Film Type Chart</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="filmTypeChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                    <!-- BAR CHART -->
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Bar Chart</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col (RIGHT) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<script th:src="@{/template/js/Chart.min.js}"></script>
+<script th:src="@{/template/js/adminlte.min.js}"></script>
+<script th:inline="javascript">
+    $(document).ready(function (){
+       categoryChart();
+        filmTypeChart();
+    });
+
+    //- Category CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    function categoryChart(){
+        var categoryNames = [];
+        var categoryData = [];
+        var backgroundColors = [];
+        var randomColor;
+        /*<![CDATA[*/
+        /*[# th:each="category : ${categories}"]*/
+        categoryNames.push(/*[[${category.name}]]*/);
+        categoryData.push(/*[[${category.totalFilm}]]*/)
+        randomColor = '#'+ ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6);
+        backgroundColors.push(randomColor);
+        /*[/]*/
+        /*]]>*/
+        var donutChartCanvas = $('#categoryChart').get(0).getContext('2d')
+        var donutData        = {
+            labels: categoryNames,
+            datasets: [
+                {
+                    data: categoryData,
+                    backgroundColor : backgroundColors,
+                }
+            ]
+        }
+        var donutOptions     = {
+            maintainAspectRatio : false,
+            responsive : true,
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        var donutChart = new Chart(donutChartCanvas, {
+            type: 'doughnut',
+            data: donutData,
+            options: donutOptions
+        })
+    }
+
+    function filmTypeChart(){
+        var filmTypeNames = [];
+        var filmTypeData = [];
+        var backgroundColors = [];
+        var randomColor;
+        /*<![CDATA[*/
+        /*[# th:each="filmType : ${filmTypes}"]*/
+        filmTypeNames.push(/*[[${filmType.name}]]*/);
+        filmTypeData.push(/*[[${filmType.totalFilm}]]*/)
+        randomColor = '#'+ ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6);
+        backgroundColors.push(randomColor);
+        /*[/]*/
+        /*]]>*/
+        var donutChartCanvas = $('#filmTypeChart').get(0).getContext('2d')
+        var donutData        = {
+            labels: filmTypeNames,
+            datasets: [
+                {
+                    data: filmTypeData,
+                    backgroundColor : backgroundColors,
+                }
+            ]
+        }
+        var donutOptions     = {
+            maintainAspectRatio : false,
+            responsive : true,
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        var donutChart = new Chart(donutChartCanvas, {
+            type: 'doughnut',
+            data: donutData,
+            options: donutOptions
+        })
+    }
+
+</script>
 </body>
 </html>

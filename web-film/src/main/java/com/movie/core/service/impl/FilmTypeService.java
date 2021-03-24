@@ -31,8 +31,7 @@ public class FilmTypeService implements IFilmTypeService {
     public List<FilmTypeDTO> findAll() {
         List<FilmTypeDTO> results = new ArrayList<FilmTypeDTO>();
         for (FilmTypeEntity filmTypeEntity : filmTypeRepository.findAll()) {
-            FilmTypeDTO filmTypeDTO = new FilmTypeDTO();
-            BeanUtils.copyProperties(filmTypeEntity, filmTypeDTO, "films");
+            FilmTypeDTO filmTypeDTO = filmTypeConvert.toDTO(filmTypeEntity);
             results.add(filmTypeDTO);
         }
         return results;

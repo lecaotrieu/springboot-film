@@ -43,6 +43,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/account/login-admin").permitAll()
                 .antMatchers("/admin/employee/**").hasRole("ADMIN")
                 .antMatchers("/admin/user/**").hasAnyRole("ADMIN", "MANAGER")
+                .antMatchers("/admin/video/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/api/admin/film**").hasAnyRole("ADMIN", "POSTER")
                 .antMatchers("/api/admin/employee**").hasRole("ADMIN")
                 .antMatchers("/api/admin/user**").hasAnyRole("ADMIN", "MANAGER")

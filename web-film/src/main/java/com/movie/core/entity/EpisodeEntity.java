@@ -22,17 +22,6 @@ public class EpisodeEntity extends BaseEntity {
     @JoinColumn(name = "film_id")
     private FilmEntity film;
 
-    @OneToMany(mappedBy = "episode", fetch = FetchType.LAZY)
-    private List<VideoEntity> videos;
-
-    public List<VideoEntity> getVideos() {
-        return videos;
-    }
-
-    public void setVideos(List<VideoEntity> videos) {
-        this.videos = videos;
-    }
-
     public String getEpisodeId() {
         return episodeId;
     }

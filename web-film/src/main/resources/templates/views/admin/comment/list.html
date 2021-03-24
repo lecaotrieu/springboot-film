@@ -22,6 +22,21 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .btn-close{
+            float: right;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .5;
+            padding: 0;
+            background-color: transparent;
+            border: 0;
+        }
+        .alert-hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -34,14 +49,10 @@
                     <span th:text="#{label.home.page}" th:remove="tag"></span>
                 </a>
             </li>
-            <li class="breadcrumb-item" th:if="${!#strings.isEmpty(items.filmId)}"><a th:href="@{/admin/film/show(filmId=${film.id})}" th:text="${film.name}"></a>
+            <li class="breadcrumb-item" th:if="${!#strings.isEmpty(items.filmId)}"><a
+                    th:href="@{/admin/film/show(filmId=${film.id})}" th:text="${film.name}"></a>
             </li>
             <li class="breadcrumb-item active" aria-current="page" th:text="#{label.comment.list}"></li>
-            <!-- <li class="breadcrumb-item" th:if="${param.filmId}"><a
-                     th:href="@{/admin/film/show(filmId=${items.filmDTO.id})}"
-                     th:text="${items.filmDTO.name}"></a>
-             </li>-->
-            <!--            <li class="breadcrumb-item active" aria-current="page" th:text="#{label.episode.list}"></li>-->
         </ol>
     </nav>
 </div>
@@ -53,11 +64,18 @@
         <div th:text="${messageResponse}" th:remove="tag"></div>
     </div>
 </th:block>
+<div class="alert alert-primary alert-hidden comment-content-alert" role="alert">
+    <button type="button" class="btn-close">
+        <i class="ace-icon fa fa-times"></i>
+    </button>
+    <h5 class="alert-heading" th:text="#{label.comment.content}"></h5>
+    <p id="comment-content-show"></p>
+</div>
 <div class="row">
-   <!-- <div class="col float-right"></div>
-    <a th:href="@{/admin/film/edit}" class="btn btn-outline-success">
-        <div th:text="#{label.comment}" th:remove="tag"></div>
-    </a>-->
+    <!-- <div class="col float-right"></div>
+     <a th:href="@{/admin/film/edit}" class="btn btn-outline-success">
+         <div th:text="#{label.comment}" th:remove="tag"></div>
+     </a>-->
 </div>
 <div id="dtBasicExample_wrapper" class="dataTables_wrapper dt-bootstrap4">
     <form th:action="@{/admin/comment/list}" method="get" id="formUrl">
@@ -118,20 +136,21 @@
                     <th:block th:each="comment: ${items.listResult}">
                         <tr th:class="comment_+${comment.id}">
                             <td>
-                                <button type="button" class="btn btn-sm btn-outline-primary" th:id="btn-add-subComment_+${comment.id}"
+                                <button type="button" class="btn btn-sm btn-outline-primary"
+                                        th:id="btn-add-subComment_+${comment.id}"
                                         th:onclick="loadSubComment([[${comment.id}]], [[${comment.subCommentCount}]])">
                                     <i class="fas fa-plus"></i></button>
                             </td>
                             <td style="text-align: center;">
                                 <a th:href="@{/admin/comment/list(commentId=${comment.id})}"
                                    th:text="${comment.id}"
-                                   style="color: #0b51c5; font-weight: bold";></a>
+                                   style="color: #0b51c5; font-weight: bold" ;></a>
                             </td>
                             <td th:text="${comment.user.userName}">
                             <td><a th:href="@{/admin/film/show(filmId=${comment.film.id})}"
                                    th:text="${comment.film.name}"
                                    style="color: #0b51c5; font-weight: bold"></a></td>
-                            <td th:text="${comment.content}"></td>
+                            <td th:text="${comment.content}"  style="color: #0b51c5; font-weight: bold; cursor: pointer" th:onclick="loadCommentContent([[${comment.id}]])"></td>
                             <td th:text="${comment.totalLike}"></td>
                             <td th:text="${comment.subCommentCount}"></td>
                             <td th:text="${comment.createdBy}"></td>
@@ -196,7 +215,7 @@
     });
 
     function loadSubComment(id, subCommentCount) {
-        var btn = "#btn-add-subComment_"+id;
+        var btn = "#btn-add-subComment_" + id;
         var nut = $(btn);
         var a = ".sub-comment_" + id;
         if (nut.hasClass("show")) {
@@ -204,11 +223,11 @@
             nut.find("i").removeClass("fa-minus");
             nut.find("i").addClass("fa-plus");
             $(a).hide();
-        } else{
+        } else {
             nut.addClass("show");
             nut.find("i").removeClass("fa-plus");
             nut.find("i").addClass("fa-minus");
-            if ($(a).length == 0){
+            if ($(a).length == 0) {
                 if (subCommentCount > 10) {
                     window.location.href = "/admin/comment/list?commentId=" + id;
                 } else {
@@ -216,7 +235,7 @@
                         $("#subComment").replaceWith($(data).find("tr"));
                     });
                 }
-            } else{
+            } else {
                 $(a).show();
             }
         }
@@ -277,6 +296,7 @@
     }
 
     var apiComment = "/api/film/comment";
+
     function deleteComment(data) {
         $.ajax({
             url: apiComment,
@@ -291,6 +311,17 @@
             }
         });
     }
+
+    function loadCommentContent(id) {
+        $("#comment-content-show").load("/api/admin/comment/content?commentId=" + id, function () {
+            $('.comment-content-alert').removeClass("alert-hidden");
+        });
+    }
+
+    $('.btn-close').click(function (){
+        $('.comment-content-alert').addClass("alert-hidden");
+    })
+
 </script>
 </body>
 </body>

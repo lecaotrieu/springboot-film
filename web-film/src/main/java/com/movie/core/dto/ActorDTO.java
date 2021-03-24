@@ -1,5 +1,7 @@
 package com.movie.core.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class ActorDTO extends AbstractDTO<ActorDTO>{
@@ -7,6 +9,7 @@ public class ActorDTO extends AbstractDTO<ActorDTO>{
     private String code;
     private String description;
     private String avatar;
+    private String avatarUrl;
     private List<FilmDTO> films;
     private Integer totalFilm;
 
@@ -56,5 +59,13 @@ public class ActorDTO extends AbstractDTO<ActorDTO>{
 
     public void setTotalFilm(Integer totalFilm) {
         this.totalFilm = totalFilm;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

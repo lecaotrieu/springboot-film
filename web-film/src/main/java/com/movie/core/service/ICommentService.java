@@ -17,6 +17,7 @@ public interface ICommentService {
 
     List<CommentDTO> findAllByCommentId(Long commentId);
 
+    CommentDTO findOneById(Long commentId);
     void save(CommentDTO commentDTO);
 
     int totalComment(Long filmId);

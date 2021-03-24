@@ -54,4 +54,6 @@ public interface IFilmService {
     void updateScores(Long id);
 
     void updateView(Long id);
+
+    int getTotalItem();
 }

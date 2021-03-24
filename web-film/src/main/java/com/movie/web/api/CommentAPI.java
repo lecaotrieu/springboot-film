@@ -22,10 +22,8 @@ public class CommentAPI {
         commentService.deleteComment(ids);
     }
 
-   /* @GetMapping("/ajax/admin/subComment/list")
-    public List<CommentDTO> loadSubComment(@RequestBody Long commentId) {
-        String employeeUserName = SecurityUtils.getPrincipal().getUsername();
-        List<CommentDTO> commentDTOS = commentService.findAllByCommentId(commentId, employeeUserName);
-        return commentDTOS;
-    }*/
+    @GetMapping("/api/admin/comment/content")
+    public String loadCommentContent(@RequestParam Long commentId) {
+        return commentService.findOneById(commentId).getContent();
+    }
 }

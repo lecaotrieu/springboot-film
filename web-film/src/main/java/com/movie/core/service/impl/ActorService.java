@@ -6,6 +6,7 @@ import com.movie.core.entity.ActorEntity;
 import com.movie.core.repository.ActorRepository;
 import com.movie.core.service.IActorService;
 import com.movie.core.service.utils.StringGlobalUtils;
+import com.movie.core.utils.UploadUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ public class ActorService implements IActorService {
         } else{
             entity = actorConvert.toEntity(actorDTO);
         }
-        if (entity.getCode() == null) {
+        if (entity.getCode() == null || entity.getCode().isEmpty()) {
             entity.setCode(stringGlobalUtils.covertToString(entity.getName()));
         }
         entity = actorRepository.save(entity);
@@ -87,5 +89,12 @@ public class ActorService implements IActorService {
             actorRepository.save(actorEntity);
             actorRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public void updateActorAvatar(Long id, String fileName) {
+        ActorEntity entity = actorRepository.getOne(id);
+        entity.setAvatar(fileName);
+        actorRepository.save(entity);
     }
 }

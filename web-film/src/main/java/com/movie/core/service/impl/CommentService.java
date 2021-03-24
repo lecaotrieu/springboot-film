@@ -120,6 +120,12 @@ public class CommentService implements ICommentService {
         return commentDTOS;
     }
 
+    @Override
+    public CommentDTO findOneById(Long commentId) {
+        CommentEntity commentEntity = commentRepository.getOne(commentId);
+        return commentConvert.toDTO(commentEntity);
+    }
+
     @Transactional
     public void save(CommentDTO commentDTO) {
         CommentEntity entity;

@@ -12,6 +12,8 @@ public interface IEmployeeService {
 
     int getTotalItem(List<String> roleCodes, String search);
 
+    int getTotalItem();
+
     EmployeeDTO findOneById(Long id);
 
     EmployeeDTO save(EmployeeDTO employeeDTO) throws Exception;

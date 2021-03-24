@@ -17,4 +17,6 @@ public interface IActorService {
     int getTotalItem(String search);
 
     void delete(Long[] ids);
+
+    void updateActorAvatar(Long id, String fileName);
 }
