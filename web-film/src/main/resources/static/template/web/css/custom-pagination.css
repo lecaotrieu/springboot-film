@@ -1,0 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.pagination2 span {
+    padding: 6px;
+}
+
+a.page-link {
+    border: none !important;
+    padding: 0 !important;
+}

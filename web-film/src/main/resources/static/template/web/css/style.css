@@ -3574,6 +3574,13 @@ td {
   padding: 0;
   vertical-align: baseline;
 }
+
+.flex-wrap-movielist .image-film {
+  overflow: hidden;
+  height: 227px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
 html {
   -webkit-text-size-adjust: 100%;
   /* Prevents iOS text size adjust after orientation change, without disabling user zoom */
@@ -4552,7 +4559,7 @@ ul {
   text-transform: none;
 }
 .topbar-filter select {
-  width: 215px;
+  width: 153px;
   -webkit-appearance: none;
   -moz-appearance: none;
   /* Firefox */
@@ -4602,7 +4609,6 @@ ul {
   color: #dcf836;
 }
 .topbar-filter .pagination2 {
-  padding-left: 100px;
 }
 @media (max-width: 767px) {
   .topbar-filter .pagination2 {
@@ -5935,7 +5941,7 @@ ul {
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
   border-right: 10px solid #dd003f;
-  /* Tam giÃ¡c pháº£i Ä‘Æ°á»£c Ä‘á»• mÃ u */
+  /* Tam giÃƒÆ’Ã‚Â¡c phÃƒÂ¡Ã‚ÂºÃ‚Â£i Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ mÃƒÆ’Ã‚Â u */
 }
 .social-btn .hover-bnt:hover .hvr-item {
   -moz-opacity: 1;

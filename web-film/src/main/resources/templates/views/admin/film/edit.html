@@ -406,7 +406,7 @@
         $('#description').val(desc);
         var formData = $('#formSubmit').serializeArray();
         var data = convertToJson(formData);
-        if (id != "") {
+        if (id != "" && id != undefined) {
             updateFilm(data);
         } else {
             addFilm(data);

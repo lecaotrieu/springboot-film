@@ -7,10 +7,12 @@ public class FilmCommand extends AbstractCommand<FilmDTO> {
     public FilmCommand() {
         this.pojo = new FilmDTO();
     }
+
     private String filmType = "";
     private String year = "";
     private String country = "";
     private String category = "";
+    private String sort;
 
     public String getFilmType() {
         return filmType;
@@ -42,5 +44,45 @@ public class FilmCommand extends AbstractCommand<FilmDTO> {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        switch (sort) {
+            case "view": {
+                setSortExpression("view");
+                setSortDirection("1");
+                break;
+            }
+            case "view-d": {
+                setSortExpression("view");
+                setSortDirection("0");
+                break;
+            }
+            case "scores": {
+                setSortExpression("scores");
+                setSortDirection("1");
+                break;
+            }
+            case "scores-d": {
+                setSortExpression("scores");
+                setSortDirection("0");
+                break;
+            }
+            case "createdDate": {
+                setSortExpression("createdDate");
+                setSortDirection("1");
+                break;
+            }
+            case "createdDate-d": {
+                setSortExpression("createdDate");
+                setSortDirection("0");
+            }
+            break;
+        }
+        this.sort = sort;
     }
 }

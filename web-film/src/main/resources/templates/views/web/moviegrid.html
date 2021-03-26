@@ -23,7 +23,7 @@
         </div>
     </div>
 </div>
-<div class="page-single movie_list">
+<div class="page-single">
     <div class="container">
         <div class="row ipad-width2">
             <div class="col-md-8 col-sm-12 col-xs-12">
@@ -38,24 +38,22 @@
                         <option value="createdDate">Ngày phát hành giảm dần</option>
                         <option value="createdDate-d">Ngày phát hành tăng dần</option>
                     </select>
-                    <a class="list"><i class="ion-ios-list-outline active"></i></a>
-                    <a style="cursor: pointer;" onclick="gridView()" class="grid"><i class="ion-grid"></i></a>
+                    <a style="cursor: pointer;" onclick="listView()" class="list"><i class="ion-ios-list-outline"></i></a>
+                    <a class="grid"><i class="ion-grid active"></i></a>
                 </div>
-                <div class="movie-item-style-2" th:each="film : ${items.listResult}">
-                    <img th:src="@{${film.image1Url}}" alt="">
-                    <div class="mv-item-infor">
-                        <h6><a href="#">
-                            <div th:text="${film.name}" th:remove="tag"></div>
-                            <span th:text="'('+${film.year}+')'"></span></a></h6>
-                        <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
-                        <p class="describe" th:utext="${film.description}">
-                        </p>
-                        <p class="run-time"> Thời lượng:
-                        <div th:text="${film.time}" th:remove="tag"></div>
-                        </p>
-                        <p>Đạo diễn: <a href="#" th:text="${film.director.name}"></a></p>
-                        <p>Diễn viên chính: <a href="#" th:each="actor: ${film.actors}"
-                                               th:text="${actor.name}+', '"></a></p>
+                <div class="flex-wrap-movielist">
+                    <div class="movie-item-style-2 movie-item-style-1" th:each="film: ${items.listResult}">
+                        <div class="image-film">
+                            <img th:src="@{${film.image1Url}}" alt="">
+                        </div>
+                        <div class="hvr-inner">
+                            <a href="#"> Xem ngay <i class="ion-android-arrow-dropright"></i> </a>
+                        </div>
+                        <div class="mv-item-infor">
+                            <h6><a href="#" th:text="${film.name}"></a></h6>
+                            <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="topbar-filter">
@@ -67,7 +65,8 @@
                         <option value="20">20 Phim</option>
                     </select>
                     <div class="pagination2">
-                        <span style="float: left;" th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">Trang 1 trên 2:</span>
+                        <span style="float: left;"
+                              th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">Trang 1 trên 2:</span>
                         <ul class="pagination" id="pagination" style="margin: 0;"></ul>
                     </div>
                 </div>
@@ -126,6 +125,7 @@
                             <input type="hidden" name="limit" id="limit" th:value="${items.limit}">
                             <input type="hidden" name="page" id="page" th:value="${items.page}">
                             <input type="hidden" name="search" th:value="${items.search}">
+                            <input type="hidden" name="v" value="2">
                         </form>
                     </div>
                     <div class="ads">
@@ -159,12 +159,8 @@
         pagingFilm();
     });
 
-    function gridView(){
-        $('<input>').attr({
-            type: 'hidden',
-            value: 2,
-            name: 'v'
-        }).appendTo('#form-search');
+    function listView() {
+        $('#form-search input[name="v"]').remove();
         $('#form-search').submit();
     }
 
@@ -198,7 +194,6 @@
         }).appendTo('#form-search');
         $('#form-search').submit();
     });
-
 
     $('#select-limit').change(function () {
         $('#limit').val($('#select-limit').val());

@@ -22,7 +22,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(filmHandelInterceptor).addPathPatterns("/admin/film/**");
-        registry.addInterceptor(webHandelInterceptor).addPathPatterns("/phim**").excludePathPatterns("/admin/**","/account/**");
+        registry.addInterceptor(webHandelInterceptor).addPathPatterns("/**").excludePathPatterns("/admin/**","/account/**","/template/**","/fileUpload/**");
     }
 
     @Override
