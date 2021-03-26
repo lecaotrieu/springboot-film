@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class CountryConvert {
     public CountryDTO toDTO(CountryEntity entity) {
         CountryDTO dto = new CountryDTO();
-        BeanUtils.copyProperties(entity, dto);
+        BeanUtils.copyProperties(entity, dto, "films");
         return dto;
     }
 

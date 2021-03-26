@@ -33,15 +33,15 @@ public class HomeController {
     private GoogleUtils googleUtils;
 
     @RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
-    public ModelAndView homePage() {
-        List<FilmDTO> filmNominates = filmService.findByProperties(1, 3, "view", CoreConstant.SORT_ASC);
+    public String homePage() {
+       /* List<FilmDTO> filmNominates = filmService.findByProperties(1, 3, "view", CoreConstant.SORT_ASC);
         List<FilmDTO> movieNewUpdate = filmService.findByProperties("phim-chieu-rap", 1, 8, "createdDate", CoreConstant.SORT_DESC);
         List<FilmDTO> oddFilmNewUpdate = filmService.findByProperties("phim-le", 1, 8, "modifiedDate", CoreConstant.SORT_DESC);
         ModelAndView mav = new ModelAndView("web/home");
         mav.addObject(WebConstant.FILM_NOMINATE, filmNominates);
         mav.addObject(WebConstant.FILM_CHIEU_RAP, movieNewUpdate);
-        mav.addObject(WebConstant.ODD_FILM_NEW_UPDATE, oddFilmNewUpdate);
-        return mav;
+        mav.addObject(WebConstant.ODD_FILM_NEW_UPDATE, oddFilmNewUpdate);*/
+        return "views/web/home";
     }
 
     @RequestMapping(value = "/dang-nhap", method = RequestMethod.GET)

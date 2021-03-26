@@ -4,6 +4,7 @@ import com.movie.core.dto.CategoryDTO;
 import com.movie.core.entity.CategoryEntity;
 import com.movie.core.repository.CategoryRepository;
 import com.movie.core.service.ICategoryService;
+import com.movie.core.service.IFilmService;
 import com.movie.core.service.utils.StringGlobalUtils;
 import com.movie.core.convert.CategoryConvert;
 import org.springframework.beans.BeanUtils;
@@ -26,10 +27,13 @@ public class CategoryService implements ICategoryService {
     @Autowired
     private StringGlobalUtils stringGlobalUtils;
 
+    @Autowired
+    private IFilmService filmService;
     public List<CategoryDTO> findAll() {
         List<CategoryDTO> results = new ArrayList<CategoryDTO>();
         for (CategoryEntity categoryEntity : categoryRepository.findAll()) {
             CategoryDTO categoryDTO = categoryConvert.toDTO(categoryEntity);
+            categoryDTO.setTotalFilm(filmService.getTotalItemByCategory(categoryDTO.getCode(),1));
             results.add(categoryDTO);
         }
         return results;

@@ -5,6 +5,7 @@ import java.util.List;
 public class CountryDTO extends AbstractDTO<CountryDTO> {
     private String code;
     private String name;
+    private Integer totalFilm;
     private List<FilmDTO> films;
     private List<EmployeeDTO> employees;
 
@@ -40,4 +41,11 @@ public class CountryDTO extends AbstractDTO<CountryDTO> {
         this.employees = employees;
     }
 
+    public Integer getTotalFilm() {
+        return totalFilm;
+    }
+
+    public void setTotalFilm(Integer totalFilm) {
+        this.totalFilm = totalFilm;
+    }
 }

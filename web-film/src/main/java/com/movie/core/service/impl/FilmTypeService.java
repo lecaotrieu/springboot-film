@@ -27,11 +27,14 @@ public class FilmTypeService implements IFilmTypeService {
 
     @Autowired
     private FilmTypeConvert filmTypeConvert;
+    @Autowired
+    private FilmService filmService;
 
     public List<FilmTypeDTO> findAll() {
         List<FilmTypeDTO> results = new ArrayList<FilmTypeDTO>();
         for (FilmTypeEntity filmTypeEntity : filmTypeRepository.findAll()) {
             FilmTypeDTO filmTypeDTO = filmTypeConvert.toDTO(filmTypeEntity);
+            filmTypeDTO.setTotalFilm(filmService.getTotalItemByFilmType(filmTypeDTO.getCode(), 1));
             results.add(filmTypeDTO);
         }
         return results;

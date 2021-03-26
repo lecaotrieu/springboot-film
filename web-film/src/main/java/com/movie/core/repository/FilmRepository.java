@@ -45,4 +45,11 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
 
     @Query("select count(distinct f.id) from FilmEntity f join f.categories c where (lower(f.name) like %?1% or lower(f.code) like %?1%) and f.filmType.code like %?2% and f.country.code like %?4% and f.year like %?5% and c.code like %?3% and f.status = ?6")
     long countAllByProperties(String search, String filmType, String category, String country, String year, Integer status);
+
+    @Query("select count(distinct f.id) from FilmEntity f join f.categories c where c.code = ?1 and f.status = ?2")
+    long countAllByCategory(String category, Integer status);
+
+    long countAllByCountry_CodeAndStatus(String country, Integer status);
+
+    long countAllByFilmType_CodeAndStatus(String filmType, Integer status);
 }

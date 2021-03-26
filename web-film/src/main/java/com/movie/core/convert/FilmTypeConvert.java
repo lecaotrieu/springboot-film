@@ -10,8 +10,6 @@ public class FilmTypeConvert {
     public FilmTypeDTO toDTO(FilmTypeEntity entity) {
         FilmTypeDTO dto = new FilmTypeDTO();
         BeanUtils.copyProperties(entity, dto, "films");
-        if (entity.getFilms() != null)
-            dto.setTotalFilm(entity.getFilms().size());
         return dto;
     }
 

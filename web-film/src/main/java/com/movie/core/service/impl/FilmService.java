@@ -134,6 +134,21 @@ public class FilmService implements IFilmService {
         return (int) filmRepository.countAllByProperties(search, filmType, category, country, year, status);
     }
 
+    @Override
+    public int getTotalItemByCategory(String categoryCode, Integer status) {
+        return (int) filmRepository.countAllByCategory(categoryCode, status);
+    }
+
+    @Override
+    public int getTotalItemByCountry(String country, Integer status) {
+        return (int) filmRepository.countAllByCountry_CodeAndStatus(country, status);
+    }
+
+    @Override
+    public int getTotalItemByFilmType(String filmType, Integer status) {
+        return (int) filmRepository.countAllByFilmType_CodeAndStatus(filmType, status);
+    }
+
     public int getTotalItem(String userName, String filmType, String category, String country, String year, String search) {
         if (!userName.equals("ADMIN")) {
             return (int) filmRepository.countAllByPosterAndProperties(userName, search, CoreConstant.ACTIVE_STATUS, filmType, category, country, year);

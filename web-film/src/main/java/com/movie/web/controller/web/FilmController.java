@@ -2,9 +2,11 @@ package com.movie.web.controller.web;
 
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
+import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.EpisodeDTO;
 import com.movie.core.dto.EvaluateDTO;
 import com.movie.core.dto.FilmDTO;
+import com.movie.core.service.ICategoryService;
 import com.movie.core.service.IEpisodeService;
 import com.movie.core.service.IEvaluateService;
 import com.movie.core.service.IFilmService;
@@ -12,6 +14,7 @@ import com.movie.web.command.FilmCommand;
 import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,7 +43,7 @@ public class FilmController {
                 mav.addObject("evaluate", evaluateDTO);
             }
         }
-        List<FilmDTO> relatedFilms = filmService.findByProperties("", filmDTO.getFilmType().getCode(),"","","",1,8,"modifiedDate",CoreConstant.SORT_ASC);
+        List<FilmDTO> relatedFilms = filmService.findByProperties("", filmDTO.getFilmType().getCode(), "", "", "", 1, 8, "modifiedDate", CoreConstant.SORT_ASC);
         mav.addObject("film", filmDTO);
         mav.addObject("relatedFilms", relatedFilms);
         mav.addObject("episode", episodeDTO);
@@ -48,27 +51,32 @@ public class FilmController {
         return mav;
     }
 
+    @Autowired
+    private ICategoryService categoryService;
 
-    @RequestMapping(value = {"/phim","/phim/tim-kiem", "/phim/nam-{year}", "/phim/quoc-gia/{country}", "/phim/quoc-gia/{country}/{year}", "/phim/the-loai/{category}",
+    @RequestMapping(value = {"/phim", "/phim/tim-kiem", "/phim/nam-{year}", "/phim/quoc-gia/{country}", "/phim/quoc-gia/{country}/{year}", "/phim/the-loai/{category}",
             "/phim/the-loai/{category}/{country}", "/phim/the-loai/{category}/{country}/{year}", "/phim/the-loai/{category}/nam-{year}",
             "/phim/{filmType}", "/phim/{filmType}/nam-{year}", "/phim/{filmType}/nuoc-{country}", "/phim/{filmType}/nuoc-{country}/{year}", "/phim/{filmType}/{category}",
             "/phim/{filmType}/{category}/nam-{year}", "/phim/{filmType}/{category}/{country}", "/phim/{filmType}/{category}/{country}/{year}"}, method = RequestMethod.GET)
-    public ModelAndView showListFilm(@PathVariable(value = "year", required = false) String year,
-                                     @PathVariable(value = "country", required = false) String country,
-                                     @PathVariable(value = "category", required = false) String category,
-                                     @PathVariable(value = "filmType", required = false) String filmType,
-                                     @RequestParam(value = "sort", required = false) String sortExpression,
-                                     @RequestParam(value = "search", required = false) String search,
-                                     @RequestParam(value = "page", required = false) Integer page) {
-        ModelAndView mav = new ModelAndView("web/film/list");
+    public String showListFilm(@PathVariable(value = "year", required = false) String year,
+                               @PathVariable(value = "country", required = false) String country,
+                               @PathVariable(value = "category", required = false) String category,
+                               @PathVariable(value = "filmType", required = false) String filmType,
+                               @RequestParam(value = "sort", required = false) String sortExpression,
+                               @RequestParam(value = "d", required = false) String sortDsc,
+                               @RequestParam(value = "search", required = false) String search,
+                               @RequestParam(value = "limit", required = false) Integer limit,
+                               @RequestParam(value = "page", required = false) Integer page, Model model) {
         FilmCommand command = new FilmCommand();
         command = setValueForCommand(command, search, page, sortExpression, filmType, category, country, year);
-        List<FilmDTO> filmDTOS = filmService.findByProperties(command.getSearch(), command.getFilmType(), command.getCategory(), command.getCountry(), command.getYear(), command.getPage(), command.getLimit(), sortExpression, "1");
+        if (limit != null) command.setLimit(limit);
+        List<FilmDTO> filmDTOS = filmService.findByProperties(command.getSearch(), command.getFilmType(), command.getCategory(), command.getCountry(), command.getYear(), command.getPage(), command.getLimit(), sortExpression, sortDsc);
         command.setListResult(filmDTOS);
         command.setTotalItems(filmService.getTotalItem(command.getSearch(), command.getFilmType(), command.getCategory(), command.getCountry(), command.getYear()));
-        command.setTotalPage((int) Math.ceil((double)command.getTotalItems() / command.getLimit()));
-        mav.addObject(WebConstant.LIST_ITEM, command);
-        return mav;
+        command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
+        model.addAttribute(WebConstant.LIST_ITEM, command);
+
+        return "views/web/movielist";
     }
 
     private FilmCommand setValueForCommand(FilmCommand command, String search, Integer page, String sortExpression, String filmType, String category, String country, String year) {
@@ -93,7 +101,7 @@ public class FilmController {
         if (search != null) {
             command.setSearch(search);
         }
-        command.setLimit(18);
+        command.setLimit(5);
         return command;
     }
 

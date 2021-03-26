@@ -18,7 +18,7 @@ public class CategoryEntity extends BaseEntity {
     @Column
     private String avatar;
 
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
     private List<FilmEntity> films;
 
     public String getCode() {

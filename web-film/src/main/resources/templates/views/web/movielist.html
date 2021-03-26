@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.search}"></title>
+</head>
+<body>
+<div class="hero common-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1 th:text="#{label.film.list}"></h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a th:href="@{/trang-chu}" th:text="#{label.home.page}"></a></li>
+                        <li><span class="ion-ios-arrow-right"></span>
+                            <p th:text="#{label.film.list}" th:remove="tag"></p></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single movie_list">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="topbar-filter">
+                    <p>Đa tìm thấy <span th:text="${items.totalItems}+' Phim'"></span> trong danh sách</p>
+                    <label>Sắp xếp theo:</label>
+                    <select id="select-sort">
+                        <option value="view">Độ phổ biến giảm dần</option>
+                        <option value="view-d">Độ phổ biến tăng dần</option>
+                        <option value="scores">Đánh giá giảm dần</option>
+                        <option value="scores-d">Đánh giá tăng dần</option>
+                        <option value="createdDate">Ngày phát hành giảm dần</option>
+                        <option value="createdDate-d">Ngày phát hành tăng dần</option>
+                    </select>
+                    <a href="#" class="list"><i class="ion-ios-list-outline active"></i></a>
+                </div>
+                <div class="movie-item-style-2" th:each="film : ${items.listResult}">
+                    <img th:src="@{${film.image1Url}}" alt="">
+                    <div class="mv-item-infor">
+                        <h6><a href="#">
+                            <div th:text="${film.name}" th:remove="tag"></div>
+                            <span th:text="'('+${film.year}+')'"></span></a></h6>
+                        <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                        <p class="describe" th:utext="${film.description}">
+                        </p>
+                        <p class="run-time"> Thời lượng:
+                        <div th:text="${film.time}" th:remove="tag"></div>
+                        </p>
+                        <p>Đạo diễn: <a href="#" th:text="${film.director.name}"></a></p>
+                        <p>Diễn viên chính: <a href="#" th:each="actor: ${film.actors}"
+                                               th:text="${actor.name}+', '"></a></p>
+                    </div>
+                </div>
+                <!--                x5-->
+
+                <div class="topbar-filter">
+                    <label> Phim trên mỗi trang:</label>
+                    <select>
+                        <option value="range">5 Phim</option>
+                        <option value="saab">10 Phim</option>
+                    </select>
+                    <div class="pagination2">
+                        <span>Trang 1 trên 2:</span>
+                        <a class="active" href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#"><i class="ion-arrow-right-b"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="sidebar">
+                    <div class="searh-form">
+                        <h4 class="sb-title">Tìm kiếm phim</h4>
+                        <form class="form-style-1" id="form-search" method="get">
+                            <div class="row">
+                                <div class="col-md-12 form-it">
+                                    <label th:text="#{label.film.name}"></label>
+                                    <input type="text" name="search" placeholder="Nhập từ khóa">
+                                </div>
+                                <div class="col-md-12 form-it">
+                                    <label th:text="#{label.category}"></label>
+                                    <div class="group-ip">
+                                        <select name="category" id="select-category">
+                                            <option value="">Chọn thể loại</option>
+                                            <option th:value="${category.code}" th:each="category: ${category_list}"
+                                                    th:field="${items.category}" th:text="${category.name}"></option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12 form-it">
+                                    <label th:text="#{label.film.type}"></label>
+                                    <select name="filmType" id="select-filmType">
+                                        <option th:value="${filmType.code}" th:each="filmType: ${film_type_list}"
+                                                th:field="${items.filmType}" th:text="${filmType.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 form-it">
+                                    <label th:text="#{label.country}"></label>
+                                    <select name="country" id="select-country">
+                                        <option th:value="${country.code}" th:each="country: ${country_list}"
+                                                th:field="${items.country}" th:text="${country.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 form-it">
+                                    <label th:text="#{label.year}"></label>
+                                    <select name="year" id="select-year">
+                                        <option th:value="${year}" th:each="year: ${years}" th:field="${items.year}"
+                                                th:text="${year}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 ">
+                                    <input class="submit" type="button" id="btn-search" value="submit">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ads">
+                        <img src="images/uploads/ads1.png" alt="">
+                    </div>
+                    <div class="sb-facebook sb-it">
+                        <h4 class="sb-title">Tìm chúng tôi trên Facebook</h4>
+                        <iframe src="#"
+                                data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftemplatespoint.net%2F%3Ffref%3Dts&tabs=timeline&width=340&height=315px&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=true&appId"
+                                height="315" style="width:100%;border:none;overflow:hidden"></iframe>
+                    </div>
+                    <div class="sb-twitter sb-it">
+                        <h4 class="sb-title">Tweet to us</h4>
+                        <div class="slick-tw">
+                            <div class="tweet item" id="">
+                                <!-- Put your twiter id here -->
+                            </div>
+                            <div class="tweet item" id="">
+                                <!-- Put your 2nd twiter account id here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        loadTitle();
+    });
+    $('#select-sort').change(function () {
+        var value = $('#select-sort').val();
+        var pr = getDataSort(value);
+        $('<input>').attr({
+            type: 'hidden',
+            value: pr[0],
+            name: 'sort'
+        }).appendTo('#formUrl');
+        $('<input>').attr({
+            type: 'hidden',
+            value: pr[1],
+            name: 'sortDsc'
+        }).appendTo('#form-search');
+        $('#form-search').submit();
+    });
+
+    function getDataSort(value) {
+        switch (value) {
+            case "view":
+                return ["view", 1];
+                break;
+            case "view-d":
+                return ["view", 0];
+                break;
+            case "scores":
+                return ["scores", 1];
+                break;
+            case "scores-d":
+                return ["scores", 0];
+                break;
+            case "createdDate":
+                return ["createdDate", 1];
+                break;
+            case "createdDate-d":
+                return ["createdDate", 0];
+                break;
+        }
+    }
+
+    $('#btn-search').on("click", function () {
+        var filmType = $('#select-filmType').val();
+        var category = $('#select-category').val();
+        var country = $('#select-country').val();
+        var year = $('#select-year').val();
+        var url = getUrl(filmType, category, country, year);
+        $('#form-search').attr("action", url);
+        $('#form-search').submit();
+    });
+
+    function loadTitle() {
+        var filmType = $('#select-filmType option:selected').text();
+        var category = $('#select-category option:selected').text();
+        var country = $('#select-country option:selected').text();
+        var year = $('#select-year option:selected').text();
+        var title = "";
+        if (filmType != "" && $('#select-filmType').val() != "") {
+            title = title + filmType + "/";
+        }
+        if (category != "" && $('#select-category').val() != "") {
+            title = title + category + "/";
+        }
+        if (country != "" && $('#select-country').val() != "") {
+            title = title + country + "/";
+        }
+        if (year != "" && $('#select-year').val() != "") {
+            title = title + year + "/";
+        }
+        if (title != "") {
+            title = title.substr(0, title.length - 1);
+        }
+        $('#title-search').text(title);
+        $('title').text(title);
+    }
+
+    function getUrl(filmType, category, country, year) {
+        var url = "/phim";
+        if (filmType != "") {
+            url = url + "/" + filmType;
+            if (category != "") {
+                url = url + "/" + category;
+                if (country != "") {
+                    url = url + "/" + country;
+                    if (year != "") {
+                        url = url + "/" + year;
+                    }
+                } else if (year != "") {
+                    url = url + "/nam-" + year;
+                }
+            } else if (country != "") {
+                url = url + "/nuoc-" + country;
+                if (year != "") {
+                    url = url + "/" + year;
+                }
+            } else if (year != "") {
+                url = url + "/nam-" + year;
+            }
+        } else if (category != "") {
+            url = url + "/the-loai/" + category;
+            if (country != "") {
+                url = url + "/" + country;
+                if (year != "") {
+                    url = url + "/" + year;
+                }
+            } else if (year != "")
+                url = url + "/nam-" + year;
+        } else if (country != "") {
+            url = url + "/quoc-gia/" + country;
+            if (year != "") {
+                url = url + "/" + year;
+            }
+        } else if (year != "") {
+            url = url + "/nam-" + year;
+        }
+        return url;
+    }
+</script>
+</body>
+</html>

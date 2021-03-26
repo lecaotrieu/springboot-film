@@ -10,8 +10,6 @@ public class CategoryConvert {
     public CategoryDTO toDTO(CategoryEntity entity) {
         CategoryDTO dto = new CategoryDTO();
         BeanUtils.copyProperties(entity, dto, "films");
-        if (entity.getFilms() != null)
-            dto.setTotalFilm(entity.getFilms().size());
         return dto;
     }
 

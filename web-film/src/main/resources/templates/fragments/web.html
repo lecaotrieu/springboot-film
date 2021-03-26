@@ -4,171 +4,255 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<section class="header" th:fragment="header">
-    <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="/trang-chu">
-        <img th:src="@{/web/img/phimhay.png}" height="40" alt="">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <form class="form-inline search" action="/phim/tim-kiem"/>" method="get">
-        <input id="search-input" class="form-control" name="search" type="text" value="${items.search}"
-               placeholder="Tìm: tên phim, đạo diễn, diễn viên">
-        <div class="input-group-append button">
-            <button class="input-group-text">
-                <i class="fas fa-search text-white"></i>
-            </button>
-        </div>
-        </form>
-        <div class="collapse navbar-collapse " id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto login-manager">
-                <li class="nav-item dropdown">
-                        <a href="/dang-nhap"/>" class="btn btn-primary float-right"><fmt:message
-                            key="label.login"
-                            bundle="${lang}"/></a>
-                        <a href="/dang-ky"/>" class="btn btn-primary float-right"><fmt:message
-                            key="label.register"
-                            bundle="${lang}"/></a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="clear"></div>
-    <hr style="border: solid 1px #e8e800;">
-    <nav id="menu">
-        <ul>
-            <li><a href="/phim?sort=view"/>">Phim Hay</a></li>
-            <li>
-                <a>Thể loại</a>
-                <ul class="sub-menu">
-                  <!--  <c:forEach items="${category_list}" var="category">
-                        <li><a href="/phim/the-loai/${category.code}"/>">Phim ${category.name}</a></li>
-                    </c:forEach>-->
-                </ul>
-            </li>
-            <li>
-                <a>Quốc gia</a>
-                <ul class="sub-menu">
-                   <!-- <c:forEach var="country" items="${country_list}">
-                        <li><a href="/phim/quoc-gia/${country.code}"/>">${country.name}</a></li>
-                    </c:forEach>-->
-                </ul>
-            </li>
-         <!--   <c:forEach items="${film_type_list}" var="filmType">
-                <li>
-                    <a href="/phim/${filmType.code}"/>">${filmType.name}</a>
-                    <c:if test="${filmType.code == 'phim-bo'}">
-                        <ul class="sub-menu">
-                            <c:forEach var="country" items="${country_list}">
-                                <li><a href="/phim/${filmType.code}/nuoc-${country.code}"/>">Phim bộ ${country.name}</a></li>
-                            </c:forEach>
-                        </ul>
-                    </c:if>
-                    <c:if test="${filmType.code == 'phim-le'}">
-                        <ul class="sub-menu">
-                            <c:forEach items="${years}" var="year">
-                                <li><a href="/phim/${filmType.code}/nam-${year}"/>">Phim lẻ ${year}</a></li>
-                            </c:forEach>
-                            <li><a href="#">Phim lẻ trước ${years[4]-1}</a></li>
-                        </ul>
-                    </c:if>
-                </li>
-            </c:forEach>-->
-            <li><a href="#">Trailer</a></li>
-        </ul>
-    </nav>
-</section>
-<section class="footer" th:fragment="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <img th:src="@{/web/img/phimhay.png}" alt="">
+<!--preloading-->
+<div id="preloader" th:fragment="preloading">
+    <img class="logo" th:src="@{/template/web/images/logo1.png}" alt="" width="119" height="58">
+    <div id="status">
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!--end of preloading-->
+<!--login form popup-->
+<div class="login-wrapper" th:fragment="login" id="login-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Đăng nhập</h3>
+        <form method="post" action="#">
+            <div class="row">
+                <label for="username">
+                    Tài khoản:
+                    <input type="text" name="username" id="username" placeholder="hoangthai"
+                           pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required"/>
+                </label>
             </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="footer-title">
-                            <ul class="title-hover"> Phim mới ZZ
-                                <a href="#">
-                                    <li>Phim lẻ mới</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim bộ mới</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim chiếu rạp</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim kinh điển</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim sắp chiếu</li>
-                                </a>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="footer-title">
-                            <ul> Phim lẻ
-                                <a href="#">
-                                    <li>Phim hành động</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim kiếm hiệp</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim kinh dị</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim viển tưởng</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim hoạt hình</li>
-                                </a>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="footer-title">
-                            <ul> Phim bộ
-                                <a href="#">
-                                    <li>Phim Việt Nam</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim Hàn Quốc</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim Mỹ</li>
-                                </a>
-                                <a href="#">
-                                    <li>Phim Thái Lan</li>
-                                </a>
 
-                            </ul>
-                        </div>
+            <div class="row">
+                <label for="password">
+                    Mật khẩu:
+                    <input type="password" name="password" id="password" placeholder="******"
+                           pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                           required="required"/>
+                </label>
+            </div>
+            <div class="row">
+                <div class="remember">
+                    <div>
+                        <input type="checkbox" name="remember" value="Remember me"><span>Nhớ mật khẩu</span>
                     </div>
+                    <a href="#">Quên mật khẩu ?</a>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div class="footer-title">
-                    <ul> Thông tin liên hệ
-                        <a href="#">
-                            <li>Email: contact@phimmoi.net</li>
-                        </a>
-                        <a href="#">
-                            <li>IP của bạn:</li>
-                        </a>
-                        <a href="#">
-                            <li>171.231.241.105</li>
-                        </a>
-                    </ul>
+            <div class="row">
+                <button type="submit">Đăng nhập</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--end of login form popup-->
+<!--signup form popup-->
+<div class="login-wrapper"  th:fragment="signup" id="signup-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Đăng ký</h3>
+        <form method="post" action="#">
+            <div class="row">
+                <label for="username-2">
+                    Tài khoản:
+                    <input type="text" name="username" id="username-2" placeholder="hoangthai"
+                           pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required"/>
+                </label>
+            </div>
+
+            <div class="row">
+                <label for="email-2">
+                    Email của bạn:
+                    <input type="password" name="email" id="email-2" placeholder=""
+                           pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                           required="required"/>
+                </label>
+            </div>
+            <div class="row">
+                <label for="password-2">
+                    Mật khẩu:
+                    <input type="password" name="password" id="password-2" placeholder=""
+                           pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                           required="required"/>
+                </label>
+            </div>
+            <div class="row">
+                <label for="repassword-2">
+                    Nhập lại mật khẩu:
+                    <input type="password" name="password" id="repassword-2" placeholder=""
+                           pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                           required="required"/>
+                </label>
+            </div>
+            <div class="row">
+                <button type="submit">Đăng ký</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--end of signup form popup-->
+
+<!-- BEGIN | Header -->
+<header th:fragment="header" class="ht-header">
+    <div class="container">
+        <nav class="navbar navbar-default navbar-custom">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header logo">
+                <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Chuyển đổi</span>
+                    <div id="nav-icon1">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
+                <a href="index-2.html"><img class="logo" src="images/logo1.png" alt="" width="119" height="58"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav flex-child-menu menu-left">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+                            Trang chủ <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu level1">
+                            <li><a href="index-2.html">Trang chủ 01</a></li>
+                            <li><a href="homev2.html">Trang chủ 02</a></li>
+                            <li><a href="homev3.html">Trang chủ 03</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                            Phim<i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu level1">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lưới phim<i
+                                        class="ion-ios-arrow-forward"></i></a>
+                                <ul class="dropdown-menu level2">
+                                    <li><a href="moviegrid.html"></a>Lưới phim</li>
+                                    <li><a href="moviegridfw.html">Toàn bộ lưới phim</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="movielist.html">Danh sách phim</a></li>
+                            <li><a href="moviesingle.html">Phim đơn</a></li>
+                            <li class="it-last"><a href="seriessingle.html">Chuổi đơn</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                            Người nổi tiếng <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                            Tin tức <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu level1">
+                            <li><a href="bloglist.html">Danh sách blog</a></li>
+                            <li class="it-last"><a href="blogdetail.html">Chi tiết blog</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                            Cộng đồng <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu level1">
+                            <li><a href="userfavoritegrid.html">Yêu thích của người dùng</a></li>
+                            <li><a href="userfavoritelist.html">Danh sách yêu thích người dùng</a></li>
+                            <li><a href="userprofile.html">Thông tin người dùng</a></li>
+                            <li class="it-last"><a href="userrate.html">Tỉ lệ người dùng</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav flex-child-menu menu-right">
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                            pages <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu level1">
+                            <li><a href="landing.html">Đổ bộ</a></li>
+                            <li><a href="404.html">404 Page</a></li>
+                            <li class="it-last"><a href="comingsoon.html">Sắp có</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Trợ giúp</a></li>
+                    <li class="loginLink"><a href="#">Đăng nhập</a></li>
+                    <li class="btn signupLink"><a href="#">Đăng ký</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <!-- top search form -->
+        <div class="top-search">
+            <select>
+                <option value="united">Phim</option>
+                <option value="saab">Khác</option>
+            </select>
+            <input type="text"
+                   placeholder="Tìm kiếm một phim, chương trình truyền hình hoặc người nổi tiếng mà bạn tìm kiếm.">
+        </div>
+    </div>
+</header>
+<!-- END | Header -->
+<!-- footer section-->
+<footer class="ht-footer" th:fragment="footer">
+    <div class="container">
+        <div class="flex-parent-ft">
+            <div class="flex-child-ft item1">
+                <a href="index-2.html"><img class="logo" src="images/logo1.png" alt=""></a>
+                <p>366 Lê Đại Hành<br>
+                    Đà Nẵng</p>
+                <p>SĐT: <a href="#">0342552949</a></p>
+            </div>
+            <div class="flex-child-ft item2">
+                <h4>Tài nguyên</h4>
+                <ul>
+                    <li><a href="#">Trong khoản</a></li>
+                    <li><a href="#">Bom tấn</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Diễn đàn </a></li>
+                    <li><a href="#">Trung tâm trợ giúp</a></li>
+                </ul>
+            </div>
+            <div class="flex-child-ft item3">
+                <h4>Hợp pháp</h4>
+                <ul>
+                    <li><a href="#">Điều khoản sử dụng</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                    <li><a href="#">Bảo vệ</a></li>
+                </ul>
+            </div>
+            <div class="flex-child-ft item4">
+                <h4>Tài khoản</h4>
+                <ul>
+                    <li><a href="#">Tài khoản của tôi</a></li>
+                    <li><a href="#">Danh sách theo dõi</a></li>
+                    <li><a href="#">Bộ sưu tập</a></li>
+                    <li><a href="#">Hướng dẫn sử dụng</a></li>
+                </ul>
             </div>
 
         </div>
     </div>
-
+    <div class="ft-copyright">
+        <div class="ft-left">
+            <p><a target="_blank" href="https://www.templateshub.net">Trung Tâm</a></p>
+        </div>
+        <div class="backtotop">
+            <p><a href="#" id="back-to-top">Trở lại trang đầu <i class="ion-ios-arrow-thin-up"></i></a></p>
+        </div>
+    </div>
+</footer>
+<!-- end of footer section-->
 </section>
 </body>
 </html>

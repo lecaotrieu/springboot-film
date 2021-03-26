@@ -40,12 +40,6 @@ public class WebHandelInterceptor implements HandlerInterceptor {
         List<CategoryDTO> categoryDTOS = categoryService.findAll();
         List<CountryDTO> countryDTOS = countryService.findAll();
         List<FilmTypeDTO> filmTypeDTOS = filmTypeService.findAll();
-        List<FilmDTO> newFilmHaveTrailer = filmService.findByProperties(true, 1, 8, "modifiedDate", CoreConstant.SORT_DESC);
-        List<FilmDTO> seriesFilmHot = filmService.findByProperties("phim-bo", 1, 8, "view", CoreConstant.SORT_DESC);
-        if (SecurityUtils.getUserAuthorities().contains("USER")){
-            List<FilmDTO> filmFollowed = filmService.findByProperties(SecurityUtils.getUserPrincipal().getId(),1,20);
-            request.setAttribute(WebConstant.FILM_FOLLOWED, filmFollowed);
-        }
         List<Integer> years = new ArrayList<Integer>();
         int year = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 0; i < 5; i++) {
@@ -55,8 +49,6 @@ public class WebHandelInterceptor implements HandlerInterceptor {
         request.setAttribute(WebConstant.CATEGORY_LIST, categoryDTOS);
         request.setAttribute(WebConstant.COUNTRY_LIST, countryDTOS);
         request.setAttribute(WebConstant.FILM_TYPE_LIST, filmTypeDTOS);
-        request.setAttribute(WebConstant.NEW_FILM_HAVE_TRAILER, newFilmHaveTrailer);
-        request.setAttribute(WebConstant.SERIES_FILM_HOT, seriesFilmHot);
         request.setAttribute(WebConstant.YEARS, years);
         return true;
     }

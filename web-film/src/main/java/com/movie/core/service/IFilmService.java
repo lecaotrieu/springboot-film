@@ -22,6 +22,12 @@ public interface IFilmService {
 
     int getTotalItem(String search, String filmType, String category, String country, String year);
 
+    int getTotalItemByCategory(String categoryCode, Integer status);
+
+    int getTotalItemByCountry(String country, Integer status);
+
+    int getTotalItemByFilmType(String filmType, Integer status);
+
     int getTotalItem(String userName, String filmType, String category, String country, String year, String search);
 
     FilmDTO findOneById(Long id);
