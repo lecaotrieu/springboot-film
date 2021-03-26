@@ -5,6 +5,7 @@ import com.movie.core.dto.ActorDTO;
 import com.movie.core.entity.ActorEntity;
 import com.movie.core.repository.ActorRepository;
 import com.movie.core.service.IActorService;
+import com.movie.core.service.utils.PagingUtils;
 import com.movie.core.service.utils.StringGlobalUtils;
 import com.movie.core.utils.UploadUtil;
 import org.springframework.beans.BeanUtils;
@@ -43,12 +44,12 @@ public class ActorService implements IActorService {
     @Transactional
     public ActorDTO save(ActorDTO actorDTO) throws IOException {
         ActorEntity entity;
-        if (actorDTO.getId()!=null){
+        if (actorDTO.getId() != null) {
             entity = actorRepository.getOne(actorDTO.getId());
             entity.setCode(actorDTO.getCode());
             entity.setName(actorDTO.getName());
             entity.setDescription(actorDTO.getDescription());
-        } else{
+        } else {
             entity = actorConvert.toEntity(actorDTO);
         }
         if (entity.getCode() == null || entity.getCode().isEmpty()) {
@@ -62,13 +63,12 @@ public class ActorService implements IActorService {
         return actorConvert.toDTO(actorRepository.getOne(id));
     }
 
+    @Autowired
+    private PagingUtils pagingUtils;
+
     public List<ActorDTO> findByProperties(String search, int page, int limit, String sortExpression, String sortDirection) {
-        Sort sort = null;
         search = search.toLowerCase();
-        if (sortExpression != null && sortDirection != null) {
-            sort = Sort.by(sortDirection.equals("1") ? Sort.Direction.ASC : Sort.Direction.DESC, sortExpression);
-        }
-        Pageable pageable = PageRequest.of(page - 1, limit, sort);
+        Pageable pageable = pagingUtils.setPageable(page,limit,sortExpression,sortDirection);
         List<ActorDTO> actorDTOS = new ArrayList<ActorDTO>();
         List<ActorEntity> actorEntities = actorRepository.findAllByNameOrCode(search, search, pageable);
         for (ActorEntity entity : actorEntities) {

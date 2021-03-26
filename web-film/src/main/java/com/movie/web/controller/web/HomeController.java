@@ -2,9 +2,11 @@ package com.movie.web.controller.web;
 
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
+import com.movie.core.dto.ActorDTO;
 import com.movie.core.dto.FilmDTO;
 import com.movie.core.dto.GoogleDTO;
 import com.movie.core.dto.MyUser;
+import com.movie.core.service.IActorService;
 import com.movie.core.service.IFilmService;
 import com.movie.core.utils.GoogleUtils;
 import com.movie.core.utils.RestFB;
@@ -15,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,18 +34,44 @@ public class HomeController {
     private IFilmService filmService;
     @Autowired
     private GoogleUtils googleUtils;
+    @Autowired
+    private IActorService actorService;
 
     @RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
-    public String homePage() {
-       /* List<FilmDTO> filmNominates = filmService.findByProperties(1, 3, "view", CoreConstant.SORT_ASC);
-        List<FilmDTO> movieNewUpdate = filmService.findByProperties("phim-chieu-rap", 1, 8, "createdDate", CoreConstant.SORT_DESC);
-        List<FilmDTO> oddFilmNewUpdate = filmService.findByProperties("phim-le", 1, 8, "modifiedDate", CoreConstant.SORT_DESC);
-        ModelAndView mav = new ModelAndView("web/home");
-        mav.addObject(WebConstant.FILM_NOMINATE, filmNominates);
-        mav.addObject(WebConstant.FILM_CHIEU_RAP, movieNewUpdate);
-        mav.addObject(WebConstant.ODD_FILM_NEW_UPDATE, oddFilmNewUpdate);*/
+    public String homePage(Model model) {
+        List<FilmDTO> filmNews = filmService.findByProperties(1, 8, "createdDate", "1");
+        model.addAttribute("filmNews", filmNews);
+        //phim lẻ
+        List<ActorDTO> actorDTOS = actorService.findByProperties("", 1, 4, null, null);
+        model.addAttribute("actors", actorDTOS);
+
+        List<FilmDTO> filmles = filmService.findByProperties("phim-le", 1, 8, "view", "1");
+        model.addAttribute("filmles", filmles);
+
+        List<FilmDTO> filmTop = filmService.findByProperties("phim-le", 1, 8, "scores", "1");
+        model.addAttribute("filmTop", filmTop);
+
+        List<FilmDTO> filmVote = filmService.findByProperties("phim-le", 1, 8, "totalVote", "1");
+        model.addAttribute("filmVote", filmVote);
+
+        List<FilmDTO> filmCommings = filmService.findByProperties("phim-le", true, 1, 8, "createdDate", "1");
+        model.addAttribute("filmCommings", filmCommings);
+        ///phim bộ
+        List<FilmDTO> filmBoPhoBien = filmService.findByProperties("phim-bo", 1, 8, "view", "1");
+        model.addAttribute("filmBoPhoBien", filmBoPhoBien);
+
+        List<FilmDTO> filmBoTop = filmService.findByProperties("phim-bo", 1, 8, "scores", "1");
+        model.addAttribute("filmBoTop", filmBoTop);
+
+        List<FilmDTO> filmBoVote = filmService.findByProperties("phim-bo", 1, 8, "totalVote", "1");
+        model.addAttribute("filmBoVote", filmBoVote);
+
+        List<FilmDTO> filmBoCommings = filmService.findByProperties("phim-bo", true, 1, 8, "createdDate", "1");
+        model.addAttribute("filmBoCommings", filmBoCommings);
+
         return "views/web/home";
     }
+
 
     @RequestMapping(value = "/dang-nhap", method = RequestMethod.GET)
     public ModelAndView homeLoginPage(HttpServletRequest request, HttpServletResponse response) {

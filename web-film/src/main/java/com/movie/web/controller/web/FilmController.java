@@ -108,17 +108,16 @@ public class FilmController {
 
     @Autowired
     private IEvaluateService evaluateService;
-
+    // /film/naruto-12
     @RequestMapping(value = "/film/{filmCode}-{filmId}", method = RequestMethod.GET)
-    public ModelAndView showFilmDetail(@PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode) {
-        ModelAndView mav = new ModelAndView("web/film/movie-info");
+    public String showFilmDetail(@PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode, Model model) {
         FilmDTO filmDTO = filmService.findOne(filmId, filmCode, CoreConstant.ACTIVE_STATUS);
         if (SecurityUtils.getUserAuthorities().contains("USER")) {
             EvaluateDTO evaluateDTO = evaluateService.findOneByUserAndFilm(filmId, SecurityUtils.getUserPrincipal().getId());
             if (evaluateDTO != null)
-                mav.addObject("evaluate", evaluateDTO);
+                model.addAttribute("evaluate", evaluateDTO);
         }
-        mav.addObject("film", filmDTO);
-        return mav;
+        model.addAttribute("film", filmDTO);
+        return "views/web/MovieInformation";
     }
 }

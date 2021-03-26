@@ -117,6 +117,18 @@ public class FilmService implements IFilmService {
         return filmDTOS;
     }
 
+    @Override
+    public List<FilmDTO> findByProperties(String filmTypeCode, boolean trailer, int page, int limit, String sortExpression, String sortDirection) {
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
+        List<FilmEntity> filmEntities = filmRepository.findAllByFilmType_CodeAndTrailerNotNull(1, filmTypeCode, pageable);
+        List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
+        for (FilmEntity entity : filmEntities) {
+            FilmDTO filmDTO = filmConvert.toDTO(entity);
+            filmDTOS.add(filmDTO);
+        }
+        return filmDTOS;
+    }
+
     public List<FilmDTO> findByProperties(Long userId, int page, int limit) {
         Pageable pageable = PageRequest.of(page - 1, limit);
         List<FilmEntity> filmEntities;
