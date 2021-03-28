@@ -110,8 +110,9 @@
                         <span></span>
                     </div>
                 </div>
-                <a href="index-2.html"><img class="logo" th:src="@{/template/web/images/logo1.png}" alt="" width="119" height="58"></a>
+                <a th:href="@{/trang-chu}"><img class="logo" th:src="@{/template/web/images/logo1.png}" alt="" width="119" height="58"></a>
             </div>
+
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav flex-child-menu menu-left">
@@ -122,65 +123,62 @@
                         <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
                             Trang chủ <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
-                        <ul class="dropdown-menu level1">
-                            <li><a href="index-2.html">Trang chủ 01</a></li>
-                        </ul>
+
                     </li>
-                    <li class="dropdown first">
+                    <li class="dropdown first" >
                         <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
                             Phim<i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
+                            <li class="dropdown first">
+                                <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+                                    Phim mới
+                                </a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lưới phim<i
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Phim lẻ<i
                                         class="ion-ios-arrow-forward"></i></a>
                                 <ul class="dropdown-menu level2">
-                                    <li><a href="moviegrid.html"></a>Lưới phim</li>
-                                    <li><a href="moviegridfw.html">Toàn bộ lưới phim</a></li>
+                                    <li  th:each="year: ${years}">
+                                        <a href="moviegrid.html" th:text="'Phim lẻ ' + ${year}"></a>
+                                    </li>
                                 </ul>
                             </li>
-                            <li><a href="movielist.html">Danh sách phim</a></li>
-                            <li><a href="moviesingle.html">Phim đơn</a></li>
-                            <li class="it-last"><a href="seriessingle.html">Chuổi đơn</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Phim bộ<i
+                                        class="ion-ios-arrow-forward"></i></a>
+                                <ul class="dropdown-menu level2">
+                                    <li  th:each="film: ${country_list}"><a href="moviegrid.html" th:text="${film.name}"></a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown first">
                         <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-                            Người nổi tiếng <i class="fa fa-angle-down" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li class="dropdown first">
-                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-                            Tin tức <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            Thể loại<i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
-                            <li><a href="bloglist.html">Danh sách blog</a></li>
-                            <li class="it-last"><a href="blogdetail.html">Chi tiết blog</a></li>
+                            <li  th:each="category: ${category_list}"><a href="moviegrid.html" th:text="${category.name}"></a></li>
+
                         </ul>
                     </li>
                     <li class="dropdown first">
                         <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-                            Cộng đồng <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            Phim chiếu rạp <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+
+                    </li>
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                            MYTV <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
-                            <li><a href="userfavoritegrid.html">Yêu thích của người dùng</a></li>
-                            <li><a href="userfavoritelist.html">Danh sách yêu thích người dùng</a></li>
-                            <li><a href="userprofile.html">Thông tin người dùng</a></li>
-                            <li class="it-last"><a href="userrate.html">Tỉ lệ người dùng</a></li>
+                            <li><a href="userfavoritegrid.html">Xem phim</a></li>
+                            <li><a href="userfavoritelist.html">Quản lý</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav flex-child-menu menu-right">
-                    <li class="dropdown first">
-                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-                            pages <i class="fa fa-angle-down" aria-hidden="true"></i>
-                        </a>
-                        <ul class="dropdown-menu level1">
-                            <li><a href="landing.html">Đổ bộ</a></li>
-                            <li><a href="404.html">404 Page</a></li>
-                            <li class="it-last"><a href="comingsoon.html">Sắp có</a></li>
-                        </ul>
-                    </li>
+
                     <li><a href="#">Trợ giúp</a></li>
                     <li class="loginLink"><a href="#">Đăng nhập</a></li>
                     <li class="btn signupLink"><a href="#">Đăng ký</a></li>
@@ -190,13 +188,14 @@
         </nav>
 
         <!-- top search form -->
-        <form th:action="@{/phim}" class="top-search">
-                <select>
-                    <option value="united">Phim</option>
-                </select>
-                <input type="text" name="search"
-                       placeholder="Tìm kiếm phim, diễn viên, đạo diễn ">
-        </form>
+        <div class="top-search">
+            <select>
+                <option value="united">Phim</option>
+                <option value="saab">Khác</option>
+            </select>
+            <input type="text"
+                   placeholder="Tìm kiếm một phim, chương trình truyền hình hoặc người nổi tiếng mà bạn tìm kiếm.">
+        </div>
     </div>
 </header>
 <!-- END | Header -->
@@ -206,26 +205,26 @@
         <div class="flex-parent-ft">
             <div class="flex-child-ft item1">
                 <a href="index-2.html"><img class="logo" src="images/logo1.png" alt=""></a>
-                <p>366 Lê Đại Hành<br>
-                    Đà Nẵng</p>
-                <p>SĐT: <a href="#">0342552949</a></p>
+                <p>Quảng Nam<br>
+                    VIỆT NAM</p>
+                <p>SĐT: <a href="#">0123456789</a></p>
             </div>
             <div class="flex-child-ft item2">
-                <h4>Tài nguyên</h4>
+                <h4>TEAM A</h4>
                 <ul>
-                    <li><a href="#">Trong khoản</a></li>
-                    <li><a href="#">Bom tấn</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                    <li><a href="#">Diễn đàn </a></li>
-                    <li><a href="#">Trung tâm trợ giúp</a></li>
+                    <li><a href="#">Nguyễn Hoàng Lộc</a></li>
+                    <li><a href="#">Lê Cao Triều</a></li>
+                    <li><a href="#">Lê Công hoàng Thái</a></li>
+                    <li><a href="#">Đặng Mậu Hiếu </a></li>
+                    <li><a href="#">Phạm Đăng An Sơn</a></li>
                 </ul>
             </div>
             <div class="flex-child-ft item3">
-                <h4>Hợp pháp</h4>
+                <h4>ĐẠI HỌC DUY TÂN</h4>
                 <ul>
-                    <li><a href="#">Điều khoản sử dụng</a></li>
-                    <li><a href="#">Chính sách bảo mật</a></li>
-                    <li><a href="#">Bảo vệ</a></li>
+                    <li><a href="#">CÔNG NGHỆ THÔNG TIN</a></li>
+                    <li><a href="#">CÔNG NGHỆ PHẦN MỀM</a></li>
+                    <li><a href="#">WEB DEVELOPER</a></li>
                 </ul>
             </div>
             <div class="flex-child-ft item4">
