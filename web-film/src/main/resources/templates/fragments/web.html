@@ -188,14 +188,13 @@
         </nav>
 
         <!-- top search form -->
-        <div class="top-search">
+        <form th:action="@{/phim}" class="top-search">
             <select>
                 <option value="united">Phim</option>
-                <option value="saab">Khác</option>
             </select>
-            <input type="text"
-                   placeholder="Tìm kiếm một phim, chương trình truyền hình hoặc người nổi tiếng mà bạn tìm kiếm.">
-        </div>
+            <input type="text" name="search"
+                   placeholder="Nhập tên phim, diễn viên, đạo diễn.">
+        </form>
     </div>
 </header>
 <!-- END | Header -->
