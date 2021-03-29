@@ -213,7 +213,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a href="moviesingle.html"> Xem Phim <i
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
                                                         class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">

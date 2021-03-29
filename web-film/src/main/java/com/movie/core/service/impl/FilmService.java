@@ -2,6 +2,7 @@ package com.movie.core.service.impl;
 
 import com.google.api.services.drive.model.File;
 import com.movie.core.constant.CoreConstant;
+import com.movie.core.convert.ActorConvert;
 import com.movie.core.dto.ActorDTO;
 import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.FilmDTO;
@@ -178,6 +179,8 @@ public class FilmService implements IFilmService {
         return filmDTO;
     }
 
+    @Autowired
+    private ActorConvert actorConvert;
     public FilmDTO findOne(Long id, String code, Integer status) {
         FilmEntity entity = filmRepository.findByIdAndCodeAndStatus(id, code, status);
         if (entity == null) {
@@ -185,6 +188,12 @@ public class FilmService implements IFilmService {
         }
         Integer countEpisode = episodeRepository.countAllByFilm_IdAndStatus(entity.getId(), CoreConstant.ACTIVE_STATUS);
         FilmDTO filmDTO = filmConvert.toDTO(entity);
+        List<ActorDTO> actorDTOS = new ArrayList<>();
+        for (ActorEntity actorEntity: entity.getActors()){
+            ActorDTO actorDTO = actorConvert.toDTO(actorEntity);
+            actorDTOS.add(actorDTO);
+        }
+        filmDTO.setActors(actorDTOS);
         filmDTO.setEpisodesCount(countEpisode);
         return filmDTO;
     }

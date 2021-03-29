@@ -2,14 +2,8 @@ package com.movie.web.controller.web;
 
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
-import com.movie.core.dto.CategoryDTO;
-import com.movie.core.dto.EpisodeDTO;
-import com.movie.core.dto.EvaluateDTO;
-import com.movie.core.dto.FilmDTO;
-import com.movie.core.service.ICategoryService;
-import com.movie.core.service.IEpisodeService;
-import com.movie.core.service.IEvaluateService;
-import com.movie.core.service.IFilmService;
+import com.movie.core.dto.*;
+import com.movie.core.service.*;
 import com.movie.web.command.FilmCommand;
 import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +23,8 @@ public class FilmController {
     private IFilmService filmService;
     @Autowired
     private IEpisodeService episodeService;
-
+    @Autowired
+    private IActorService actorService;
 
     @RequestMapping(value = "/film/{filmCode}-{filmId}/{episode}", method = RequestMethod.GET)
     public ModelAndView showFilmAndEpisode(@PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode, @PathVariable("episode") Integer epCode) {
