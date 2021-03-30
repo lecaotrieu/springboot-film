@@ -59,7 +59,6 @@ public class FilmController {
                                @PathVariable(value = "filmType", required = false) String filmType,
                                @RequestParam(value = "sort", required = false) String sortExpression,
                                @RequestParam(value = "d", required = false) String sortDsc,
-                               @RequestParam(value = "v", required = false) Integer v,
                                @RequestParam(value = "search", required = false) String search,
                                @RequestParam(value = "limit", required = false) Integer limit,
                                @RequestParam(value = "page", required = false) Integer page, Model model) {
@@ -104,7 +103,6 @@ public class FilmController {
 
     @Autowired
     private IEvaluateService evaluateService;
-
     // /film/naruto-12
     @RequestMapping(value = "/film/{filmCode}-{filmId}", method = RequestMethod.GET)
     public String showFilmDetail(@PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode, Model model) {

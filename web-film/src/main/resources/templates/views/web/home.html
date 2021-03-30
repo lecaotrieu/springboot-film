@@ -19,7 +19,7 @@
                         <div class="cate">
                             <span class="blue"><a href="#" th:text="${film.categories.get(0).name}"></a></span>
                         </div>
-                        <h6><a href="#" th:text="${film.name}"></a></h6>
+                        <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
                         <p><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
             <div class="col-md-8">
                 <div class="title-hd">
                     <h2>Phim lẻ</h2>
-                    <a href="#" class="viewall">Xem tất cả <i class="ion-ios-arrow-right"></i></a>
+                    <a th:href="@{'/phim/phim-le'}" class="viewall">Xem tất cả <i class="ion-ios-arrow-right"></i></a>
                 </div>
                 <div class="tabs">
                     <ul class="tab-links">
@@ -52,7 +52,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a href="#"> Xem phim <i
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem phim <i
                                                         class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
@@ -73,7 +73,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a  href="moviesingle.html"> Xem phim <i class="ion-android-arrow-dropright"></i> </a>
+                                                <a  th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem phim <i class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
                                                 <h6><a href="#" th:text="${film.name}"></a></h6>
@@ -94,7 +94,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a  href="moviesingle.html"> Xem phim <i class="ion-android-arrow-dropright"></i> </a>
+                                                <a  th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem phim <i class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
                                                 <h6><a href="#" th:text="${film.name}"></a></h6>
@@ -114,7 +114,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a  href="moviesingle.html"> Xem phim <i class="ion-android-arrow-dropright"></i> </a>
+                                                <a  th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem phim <i class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
                                                 <h6><a href="#" th:text="${film.name}"></a></h6>
@@ -129,7 +129,7 @@
                 </div>
                 <div class="title-hd">
                     <h2>Phim Bộ</h2>
-                    <a href="#" class="viewall">Xem tất cả <i class="ion-ios-arrow-right"></i></a>
+                    <a th:href="@{'/phim/phim-bo'}" class="viewall">Xem tất cả <i  class="ion-ios-arrow-right"></i></a>
                 </div>
                 <div class="tabs">
                     <ul class="tab-links">
@@ -148,7 +148,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a href="moviesingle.html"> Xem Phim <i
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
                                                         class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
@@ -169,7 +169,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a href="moviesingle.html"> Xem Phim <i
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
                                                         class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">
@@ -191,7 +191,7 @@
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
                                             </div>
                                             <div class="hvr-inner">
-                                                <a href="moviesingle.html"> Xem Phim <i
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
                                                         class="ion-android-arrow-dropright"></i> </a>
                                             </div>
                                             <div class="title-in">

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <title th:text="#{label.user.profile}"></title>
+</head>
+<body>
+
+
+<div class="login-wrapper"  id="signup-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Đăng ký</h3>
+        <form method="post" action="#">
+            <div class="row">
+                <label for="username-2">
+                    Tài khoản:
+                    <input type="text" name="username" id="username-2" placeholder="hoangthai" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required" />
+                </label>
+            </div>
+
+            <div class="row">
+                <label for="email-2">
+                    Email của bạn:
+                    <input type="password" name="email" id="email-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
+                </label>
+            </div>
+            <div class="row">
+                <label for="password-2">
+                    Mật khẩu:
+                    <input type="password" name="password" id="password-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
+                </label>
+            </div>
+            <div class="row">
+                <label for="repassword-2">
+                    Nhập lại mật khẩu:
+                    <input type="password" name="password" id="repassword-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
+                </label>
+            </div>
+            <div class="row">
+                <button type="submit">Đăng ký</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--end of signup form popup-->
+
+
+
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1 ></h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a href="#">Trang chủ</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span>Hồ sơ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="user-information">
+                    <div class="user-img">
+                        <a href="#"><img src="images/uploads/user-img.png" alt=""><br></a>
+                        <a href="#" class="redbtn">Thay đổi ảnh đại diện</a>
+                    </div>
+                    <div class="user-fav">
+                        <p>Chi tiết tài khoản</p>
+                        <ul>
+                            <li  class="active"><a href="userprofile.html">Hồ sơ</a></li>
+                            <li><a href="userfavoritelist.html">Phim yêu thích</a></li>
+                            <li><a href="userrate.html">Phim đã sắp xếp</a></li>
+                        </ul>
+                    </div>
+                    <div class="user-fav">
+                        <p>Khác</p>
+                        <ul>
+                            <li><a href="#">Đổi mật khẩu</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div class="form-style-1 user-pro" action="#">
+                    <form action="#" class="user">
+                        <h4>01. Chi tiết hồ sơ</h4>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Tài khoản</label>
+                                <input type="text" placeholder="hoangthai">
+                            </div>
+                            <div class="col-md-6 form-it">
+                                <label>Email</label>
+                                <input type="text" placeholder="hoangthai150199@gmai..com">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Tên</label>
+                                <input type="text" placeholder="Thái ">
+                            </div>
+                            <div class="col-md-6 form-it">
+                                <label>Họ</label>
+                                <input type="text" placeholder="Lê">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Quốc gia</label>
+                                <select>
+                                    <option value="united">Việt Nam</option>
+                                    <option value="saab">Khác</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-it">
+                                <label>Tỉnh/Thành phố</label>
+                                <select>
+                                    <option value="united">Đà Nẵng</option>
+                                    <option value="saab">Khác</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input class="submit" type="submit" value="Lưu">
+                            </div>
+                        </div>
+                    </form>
+                    <form action="#" class="password">
+                        <h4>02. Thay đổi mật khẩu</h4>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Mật khẩu cũ</label>
+                                <input type="text" placeholder="**********">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>mật khẩu mới</label>
+                                <input type="text" placeholder="***************">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Xác nhận mật khẩu</label>
+                                <input type="text" placeholder="*************** ">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input class="submit" type="submit" value="Thay đổi">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- footer section-->
+<footer class="ht-footer">
+    <div class="container">
+        <div class="flex-parent-ft">
+            <div class="flex-child-ft item1">
+                <a href="index-2.html"><img class="logo" src="images/logo1.png" alt=""></a>
+                <p>366 Lê Đại Hành<br>
+                    Đà Nẵng</p>
+                <p>SĐT: <a href="#">0342552949</a></p>
+            </div>
+            <div class="flex-child-ft item2">
+                <h4>Tài nguyên</h4>
+                <ul>
+                    <li><a href="#">Trong khoản</a></li>
+                    <li><a href="#">Bom tấn</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Diễn đàn </a></li>
+                    <li><a href="#">Trung tâm trợ giúp</a></li>
+                </ul>
+            </div>
+            <div class="flex-child-ft item3">
+                <h4>Hợp pháp</h4>
+                <ul>
+                    <li><a href="#">Điều khoản sử dụng</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                    <li><a href="#">Bảo vệ</a></li>
+                </ul>
+            </div>
+            <div class="flex-child-ft item4">
+                <h4>Tài khoản</h4>
+                <ul>
+                    <li><a href="#">Tài khoản của tôi</a></li>
+                    <li><a href="#">Danh sách theo dõi</a></li>
+                    <li><a href="#">Bộ sưu tập</a></li>
+                    <li><a href="#">Hướng dẫn sử dụng</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="ft-copyright">
+        <div class="ft-left">
+            <p><a target="_blank" href="https://www.templateshub.net">Trung Tâm</a></p>
+        </div>
+        <div class="backtotop">
+            <p><a href="#" id="back-to-top">Trở lại trang đầu  <i class="ion-ios-arrow-thin-up"></i></a></p>
+        </div>
+    </div>
+</html>
