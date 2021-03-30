@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
 </head>
@@ -51,7 +52,7 @@
 </div>
 <!--end of login form popup-->
 <!--signup form popup-->
-<div class="login-wrapper"  th:fragment="signup" id="signup-content">
+<div class="login-wrapper" th:fragment="signup" id="signup-content">
     <div class="login-content">
         <a href="#" class="close">x</a>
         <h3>Đăng ký</h3>
@@ -110,7 +111,8 @@
                         <span></span>
                     </div>
                 </div>
-                <a th:href="@{/trang-chu}"><img class="logo" th:src="@{/template/web/images/logo1.png}" alt="" width="119" height="58"></a>
+                <a th:href="@{/trang-chu}"><img class="logo" th:src="@{/template/web/images/logo1.png}" alt=""
+                                                width="119" height="58"></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -120,25 +122,26 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="dropdown first">
-                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" >
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
                             Trang chủ <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
 
                     </li>
-                    <li class="dropdown first" >
+                    <li class="dropdown first">
                         <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
                             Phim<i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
                             <li class="dropdown first">
-                                <a th:href="@{'/phim'}" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" >
+                                <a th:href="@{'/phim'}" class="btn btn-default dropdown-toggle lv1"
+                                   data-toggle="dropdown">
                                     Phim mới
                                 </a></li>
                             <li class="dropdown">
-                                <a  class="dropdown-toggle" data-toggle="dropdown" >Phim lẻ<i
+                                <a class="dropdown-toggle" data-toggle="dropdown">Phim lẻ<i
                                         class="ion-ios-arrow-forward"></i></a>
                                 <ul class="dropdown-menu level2">
-                                    <li  th:each="year: ${years}">
+                                    <li th:each="year: ${years}">
                                         <a th:href="@{'/phim/phim-le/nam-'+${year}}" th:text="'Phim lẻ ' + ${year}"></a>
                                     </li>
                                 </ul>
@@ -147,7 +150,9 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Phim bộ<i
                                         class="ion-ios-arrow-forward"></i></a>
                                 <ul class="dropdown-menu level2">
-                                    <li  th:each="film: ${country_list}"><a th:href="@{'/phim/phim-bo/nuoc-'+${film.code}}" th:text="${film.name}"></a></li>
+                                    <li th:each="film: ${country_list}"><a
+                                            th:href="@{'/phim/phim-bo/nuoc-'+${film.code}}" th:text="${film.name}"></a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -157,10 +162,9 @@
                             Thể loại<i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
-                            <li  th:each="category: ${category_list}">
+                            <li th:each="category: ${category_list}">
                                 <a th:href="@{'/phim/the-loai-'+${category.code}}" th:text="${category.name}"></a>
                             </li>
-
                         </ul>
                     </li>
                     <li class="dropdown first">
@@ -180,10 +184,27 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav flex-child-menu menu-right">
-
-                    <li><a th:href="@{/trang-ca-nhan}">Hồ Sơ</a></li>
-                    <li class="loginLink"><a href="#">Đăng nhập</a></li>
-                    <li class="btn signupLink"><a href="#">Đăng ký</a></li>
+                    <li sec:authorize="!hasRole('USER')">
+                        <a th:href="@{/admin/home-page}" th:text="#{label.employee}"></a></li>
+                    <li sec:authorize="hasRole('USER')">
+                        <a th:href="@{/trang-ca-nhan}">Hồ Sơ</a></li>
+                    <li class="first user-name" sec:authorize="hasRole('USER')">
+                        <a class="btn btn-default lv1">
+                           <div th:text="'Xin Chào ' + ${#authentication.getPrincipal().fullName}" th:remove="tag"></div>
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right level1">
+                            <li>
+                                <a th:href="@{/dang-xuat}">Đăng xuất</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="loginLink" sec:authorize="!hasRole('USER')">
+                        <a href="#">Đăng nhập</a>
+                    </li>
+                    <li class="btn signupLink" sec:authorize="!hasRole('USER')">
+                        <a href="#">Đăng ký</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

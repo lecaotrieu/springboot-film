@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 @Configuration
 @EnableWebSecurity
-@Order(2)
+@Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedPage("/accessDenied-user")
                 .and()
-                .sessionManagement().invalidSessionUrl("/dang-nhap?sessionTimeout")
+                .sessionManagement().invalidSessionUrl("/trang-chu")
                 .and()
                 .logout().deleteCookies("JSESSIONID").invalidateHttpSession(true);
         http.csrf().disable();

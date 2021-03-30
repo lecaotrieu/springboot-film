@@ -13,9 +13,11 @@ import com.movie.core.utils.RestFB;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,16 +75,24 @@ public class HomeController {
     }
 
 
-    @RequestMapping(value = "/dang-nhap", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/dang-nhap", method = RequestMethod.GET)
     public ModelAndView homeLoginPage(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("web/login");
         return mav;
-    }
+    }*/
 
-    @RequestMapping(value = "/dang-ky", method = RequestMethod.GET)
-    public ModelAndView homeRegisterPage(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("web/register");
-        return mav;
+    /*  @RequestMapping(value = "/dang-ky", method = RequestMethod.GET)
+      public ModelAndView homeRegisterPage(HttpServletRequest request, HttpServletResponse response) {
+          ModelAndView mav = new ModelAndView("web/register");
+          return mav;
+      }*/
+    @RequestMapping(value = "/dang-xuat", method = RequestMethod.GET)
+    public String logoutOfUser(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/dang-nhap/google", method = RequestMethod.GET)
@@ -126,10 +136,10 @@ public class HomeController {
         return "redirect:/trang-chu";
     }
 
-    @GetMapping("/a")
+   /* @GetMapping("/a")
     public String index() {
         return "index";
-    }
+    }*/
 
     @GetMapping("/")
     public String index1() {

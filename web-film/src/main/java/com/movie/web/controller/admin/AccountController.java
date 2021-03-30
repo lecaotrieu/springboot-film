@@ -29,15 +29,6 @@ public class AccountController {
         return new ModelAndView("redirect:/account/login-admin");
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ModelAndView logoutOfUser(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return new ModelAndView("redirect:/dang-nhap");
-    }
-
     @RequestMapping(value = "/accessDenied-admin", method = RequestMethod.GET)
     public ModelAndView accessDeniedOfAdmin() {
         return new ModelAndView("redirect:/account/logout-admin?accessDenied");

@@ -38,8 +38,14 @@
 <script th:src="@{/template/web/js/plugins2.js}"></script>
 <script th:src="@{/template/web/js/custom.js}"></script>
 <script>
-    var data = $("#login-user-form").ajaxSubmit({url: '/dang-nhap', type: 'post'});
-    console.log(data);
+   $("#login-user-form").ajaxSubmit({url: '/dang-nhap', type: 'post'});
+   $('li.user-name a').click(function (){
+       if ($("li.user-name").hasClass("open")){
+           $('li.user-name').removeClass("open");
+       } else{
+           $('li.user-name').addClass("open");
+       }
+   });
 </script>
 </body>
 </html>

@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
+@Order(2)
 public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -61,7 +61,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedPage("/accessDenied-admin")
                 .and()
-                .sessionManagement().invalidSessionUrl("/account/login-admin?sessionTimeout")
+                .sessionManagement().invalidSessionUrl("/trang-chu")
                 .and()
                 .logout().deleteCookies("JSESSIONID");
 
