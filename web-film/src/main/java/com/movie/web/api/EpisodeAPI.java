@@ -24,12 +24,6 @@ public class EpisodeAPI {
 
     @Autowired
     private IDriveService driveService;
-
-    /*  titleValue.add("film.id");
-            titleValue.add("name");
-            titleValue.add("episodeCode");
-            titleValue.add("id");
-            titleValue.add("status");*/
     @PostMapping("/api/admin/film/episode")
     public EpisodeDTO saveEpisode(@RequestParam(value = "video", required = false) MultipartFile video, @RequestParam("filmId") Long filmId,
                                   @RequestParam(value = "name", required = false) String name,

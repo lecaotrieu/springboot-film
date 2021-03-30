@@ -22,6 +22,7 @@ public class FilmDTO extends AbstractDTO<FilmDTO> {
     private Integer view;
     private Integer totalVote;
     private Integer episodesCount;
+    private Integer totalComment = 0;
     private List<CommentDTO> comments;
     private List<EvaluateDTO> evaluates;
     private List<EpisodeDTO> episodes;
@@ -254,5 +255,13 @@ public class FilmDTO extends AbstractDTO<FilmDTO> {
 
     public void setTrailerYoutube(String trailerYoutube) {
         this.trailerYoutube = trailerYoutube;
+    }
+
+    public Integer getTotalComment() {
+        return totalComment;
+    }
+
+    public void setTotalComment(Integer totalComment) {
+        this.totalComment = totalComment;
     }
 }

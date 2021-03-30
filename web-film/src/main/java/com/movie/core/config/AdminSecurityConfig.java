@@ -40,7 +40,6 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/account/login-admin").permitAll()
                 .antMatchers("/admin/employee/**").hasRole("ADMIN")
                 .antMatchers("/admin/user/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/video/**").hasAnyRole("ADMIN", "MANAGER")
@@ -54,7 +53,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/account/login-admin")
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
-                .loginProcessingUrl("/j_spring_security_check_admin")
+                .loginProcessingUrl("/admin_login")
                 .defaultSuccessUrl("/admin/home-page")
                 .successHandler(customSuccessHandler)
                 .failureUrl("/account/login-admin?incorrectAccount")

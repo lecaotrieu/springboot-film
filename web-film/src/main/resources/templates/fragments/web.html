@@ -17,28 +17,28 @@
 <div class="login-wrapper" th:fragment="login" id="login-content">
     <div class="login-content">
         <a href="#" class="close">x</a>
-        <h3>Đăng nhập</h3>
-        <form method="post" action="#">
+        <h3 th:text="#{label.login}"></h3>
+        <form method="post" th:action="@{/user_login}" id="login-user-form">
             <div class="row">
                 <label for="username">
                     Tài khoản:
-                    <input type="text" name="username" id="username" placeholder="hoangthai"
-                           pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required"/>
+                    <input type="text" name="j_username_user" id="username" placeholder="Tên đăng nhập"
+                           pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{4,20}$" required="required"/>
                 </label>
             </div>
 
             <div class="row">
                 <label for="password">
                     Mật khẩu:
-                    <input type="password" name="password" id="password" placeholder="******"
-                           pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                           required="required"/>
+                    <input type="password" name="j_password_user" id="password" placeholder="*********"
+                           pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{6,50}$"
+                    />
                 </label>
             </div>
             <div class="row">
                 <div class="remember">
                     <div>
-                        <input type="checkbox" name="remember" value="Remember me"><span>Nhớ mật khẩu</span>
+                        <input type="checkbox" name="remember-me" value="Remember me"><span>Nhớ mật khẩu</span>
                     </div>
                     <a href="#">Quên mật khẩu ?</a>
                 </div>

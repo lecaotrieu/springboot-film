@@ -30,8 +30,8 @@ public class HomeController {
 
     @RequestMapping(value = {"/admin/home-page", "/admin/trang-chu"}, method = RequestMethod.GET)
     public String homePage(Model model) {
-        String userInfo = SecurityUtils.getPrincipal().getUsername();
-        model.addAttribute("userInfo", userInfo);
+//        String userInfo = SecurityUtils.getPrincipal().getUsername();
+//        model.addAttribute("userInfo", userInfo);
         int totalUser = userService.getTotalItem("");
         int totalEmployee = employeeService.getTotalItem();
         int totalVideo = videoService.getTotalItem("", "");

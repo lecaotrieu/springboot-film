@@ -5,7 +5,6 @@ import com.movie.core.dto.MyEmployee;
 import com.movie.core.entity.EmployeeEntity;
 import com.movie.core.entity.RoleEntity;
 import com.movie.core.repository.EmployeeRepository;
-import com.movie.core.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,8 +20,6 @@ import java.util.List;
 public class CustomEmployeeDetailsService implements UserDetailsService {
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private RoleRepository roleRepository;
 
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         EmployeeEntity entity = employeeRepository.findByUserNameAndStatus(userName, CoreConstant.ACTIVE_STATUS);

@@ -5,10 +5,12 @@ import com.movie.core.dto.CommentDTO;
 import com.movie.core.dto.CommentLikeDTO;
 import com.movie.core.service.ICommentLikeService;
 import com.movie.core.service.ICommentService;
+import com.movie.core.utils.RequestUtil;
 import com.movie.web.command.CommentCommand;
 import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,9 +28,10 @@ public class CommentController {
     private ICommentLikeService commentLikeService;
 
     @RequestMapping(value = "/ajax/comment/list", method = RequestMethod.GET)
-    public ModelAndView loadCommentList(@ModelAttribute CommentCommand command) {
-        ModelAndView mav = new ModelAndView("web/comment/list");
-        List<CommentDTO> commentDTOS = commentService.findByProperties(command.getFilmId(), command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
+    public String loadCommentList(CommentCommand command, Model model) {
+        command.setLimit(10);
+        command.setSortDirection("0");
+        List<CommentDTO> commentDTOS = commentService.findByProperties(command.getFilmId(), null, "", "", command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
         command.setListResult(commentDTOS);
         if (SecurityUtils.getUserAuthorities().contains("USER")) {
             for (CommentDTO commentDTO : commentDTOS) {
@@ -38,8 +41,10 @@ public class CommentController {
                 }
             }
         }
-        mav.addObject(WebConstant.LIST_ITEM, command);
-        return mav;
+        command.setTotalItems(commentService.totalComment(command.getFilmId(), null, command.getSearch(), ""));
+        command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
+        model.addAttribute(WebConstant.LIST_ITEM, command);
+        return "views/web/comment/list";
     }
 
     @RequestMapping(value = "/ajax/comment/edit", method = RequestMethod.GET)
@@ -53,11 +58,11 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/ajax/subComment/list", method = RequestMethod.GET)
-    public ModelAndView loadSubCommentList(@ModelAttribute CommentCommand command) {
-        ModelAndView mav = new ModelAndView("web/comment/subcomment/list");
+    public String loadSubCommentList(CommentCommand command, Model model) {
+        command.setLimit(10);
         List<CommentDTO> commentDTOS = commentService.findByProperties(command.getCommentId(), command.getFilmId(), command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
         command.setListResult(commentDTOS);
-        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             for (CommentDTO commentDTO : commentDTOS) {
                 CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentDTO.getId());
                 if (commentLikeDTO != null) {
@@ -72,7 +77,7 @@ public class CommentController {
         } else {
             command.setNextCountItem(n);
         }
-        mav.addObject(WebConstant.LIST_ITEM, command);
-        return mav;
+        model.addAttribute(WebConstant.LIST_ITEM, command);
+        return "views/web/comment/subcm-list";
     }
 }

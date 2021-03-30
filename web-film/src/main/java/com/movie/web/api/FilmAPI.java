@@ -87,19 +87,4 @@ public class FilmAPI {
     public void deleteFilm(@RequestBody Long[] ids) throws Exception {
         filmService.deleteById(ids);
     }
-
-    private FilmDTO returnValueOfDTO(FilmDTO dto, Map<String, Object> mapValue) {
-        for (Map.Entry<String, Object> item : mapValue.entrySet()) {
-            if (item.getKey().equals("id") && StringUtils.isNotBlank((String) item.getValue())) {
-                dto.setId(Long.parseLong(item.getValue().toString()));
-            }
-        }
-        return dto;
-    }
-
-    private Set<String> buildTitleValue() {
-        Set<String> titleValue = new HashSet<String>();
-        titleValue.add("id");
-        return titleValue;
-    }
 }

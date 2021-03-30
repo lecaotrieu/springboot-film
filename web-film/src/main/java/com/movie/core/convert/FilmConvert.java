@@ -21,7 +21,7 @@ public class FilmConvert {
 
     public FilmDTO toDTO(FilmEntity entity) {
         FilmDTO dto = new FilmDTO();
-        BeanUtils.copyProperties(entity, dto);
+        BeanUtils.copyProperties(entity, dto, "comments");
         if (entity.getCountry() != null) {
             dto.setCountry(countryConvert.toDTO(entity.getCountry()));
         }

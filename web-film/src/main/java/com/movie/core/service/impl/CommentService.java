@@ -84,11 +84,7 @@ public class CommentService implements ICommentService {
     }
 
     public List<CommentDTO> findByProperties(Long commentId, Long filmId, int page, int limit, String sortExpression, String sortDirection) {
-        Sort sort = null;
-        if (sortExpression != null && sortDirection != null) {
-            sort = Sort.by(sortDirection.equals("1") ? Sort.Direction.ASC : Sort.Direction.DESC, sortExpression);
-        }
-        Pageable pageable = PageRequest.of(page - 1, limit, sort);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<CommentEntity> commentEntities = commentRepository.findAllByComment_IdAndFilm_Id(commentId, filmId, pageable);
         List<CommentDTO> commentDTOS = new ArrayList<CommentDTO>();
         for (CommentEntity entity : commentEntities) {
@@ -144,7 +140,7 @@ public class CommentService implements ICommentService {
     }
 
     public int totalComment(Long commentId, Long filmId) {
-        int result = (int) commentRepository.countAllByFilm_IdAndComment_Id(commentId, filmId);
+        int result = (int) commentRepository.countAllByFilm_IdAndComment_Id(filmId, commentId);
         return result;
     }
 

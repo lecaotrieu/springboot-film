@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -31,21 +32,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
+    @Autowired
+    private PersistentTokenRepository persistentTokenRepository;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .antMatcher("/**")
-                .authorizeRequests()
-                .antMatchers("/chinh-sua-trang-ca-nhan/**").hasRole("USER")
+        http.antMatcher("/user**")
+                .authorizeRequests().anyRequest().hasRole("USER")
                 .and()
                 .formLogin()
                 .loginPage("/dang-nhap")
                 .usernameParameter("j_username_user")
                 .passwordParameter("j_password_user")
-                .loginProcessingUrl("j_spring_security_check_user")
+                .loginProcessingUrl("/user_login")
                 .defaultSuccessUrl("/trang-chu")
                 .successHandler(customUserSuccessHandler)
-                .failureUrl("/dang-nhap?incorrectAccount")
+                .failureUrl("/trang-chu?incorrectAccount")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/accessDenied-user")
@@ -54,5 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().deleteCookies("JSESSIONID").invalidateHttpSession(true);
         http.csrf().disable();
+        // Cấu hình Remember Me.
+        http.authorizeRequests().and() //
+                .rememberMe().tokenRepository(persistentTokenRepository).key("uniqueAndSecret") //
+                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
     }
 }

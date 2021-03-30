@@ -104,6 +104,8 @@ public class FilmController {
 
     @Autowired
     private IEvaluateService evaluateService;
+    @Autowired
+    private ICommentService commentService;
 
     // /film/naruto-12
     @RequestMapping(value = "/film/{filmCode}-{filmId}", method = RequestMethod.GET)
@@ -114,6 +116,9 @@ public class FilmController {
             if (evaluateDTO != null)
                 model.addAttribute("evaluate", evaluateDTO);
         }
+        List<CommentDTO> commentDTOS = commentService.findByProperties(filmId, null, "", "", 1, 10, "createdDate", "0");
+        filmDTO.setComments(commentDTOS);
+        filmDTO.setTotalComment(commentService.totalComment(filmId));
         model.addAttribute("film", filmDTO);
         return "views/web/MovieInformation";
     }

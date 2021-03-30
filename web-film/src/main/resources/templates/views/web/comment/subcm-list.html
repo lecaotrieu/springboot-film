@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title></title>
+</head>
+<body>
+<div class="cmt-item flex-it reply" th:each="comment: ${items.listResult}">
+    <img th:src="@{${comment.user.photoUrl}}" alt="" style="width: 65px;height: 65px; border-radius: 50px;">
+    <div class="author-infor">
+        <div class="flex-it2">
+            <h6><a href="#" th:text="${comment.user.userName}"></a></h6> <span class="time"
+                                                                               th:text="${comment.thoiGianDang}"></span>
+        </div>
+        <p th:text="${comment.content}" style="min-width: 525px;"></p>
+        <div class="evaluate">
+            <span th:text="${comment.totalLike}"></span>
+            <p class="like-cm"><i
+                    class="fas fa-thumbs-up"></i></p>
+            <p class="delete-cm"><i class="far fa-trash-alt"></i></p>
+        </div>
+    </div>
+</div>
+<div th:class="'sub-comment-list_'+${items.commentId}">
+    <p class="scm-xemthem" th:onclick="loadSubComment2([[${items.commentId}]],[[${items.page+1}]])"
+       th:if="${items.nextCountItem>0}">Xem thêm phản hồi</p>
+</div>
+</body>
+</html>
