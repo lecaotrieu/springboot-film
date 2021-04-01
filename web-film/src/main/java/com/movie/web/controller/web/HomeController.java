@@ -2,14 +2,12 @@ package com.movie.web.controller.web;
 
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
-import com.movie.core.dto.ActorDTO;
-import com.movie.core.dto.FilmDTO;
-import com.movie.core.dto.GoogleDTO;
-import com.movie.core.dto.MyUser;
+import com.movie.core.dto.*;
 import com.movie.core.service.IActorService;
 import com.movie.core.service.IFilmService;
 import com.movie.core.utils.GoogleUtils;
 import com.movie.core.utils.RestFB;
+import com.movie.web.utils.SecurityUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -114,6 +112,7 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new ModelAndView("redirect:/trang-chu");
     }
+
 
     @Autowired
     private RestFB restFB;

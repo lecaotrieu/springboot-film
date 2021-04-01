@@ -9,43 +9,7 @@
 <body>
 
 
-<div class="login-wrapper"  id="signup-content">
-    <div class="login-content">
-        <a href="#" class="close">x</a>
-        <h3>Đăng ký</h3>
-        <form method="post" action="#">
-            <div class="row">
-                <label for="username-2">
-                    Tài khoản:
-                    <input type="text" name="username" id="username-2" placeholder="hoangthai" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required" />
-                </label>
-            </div>
 
-            <div class="row">
-                <label for="email-2">
-                    Email của bạn:
-                    <input type="password" name="email" id="email-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
-                </label>
-            </div>
-            <div class="row">
-                <label for="password-2">
-                    Mật khẩu:
-                    <input type="password" name="password" id="password-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
-                </label>
-            </div>
-            <div class="row">
-                <label for="repassword-2">
-                    Nhập lại mật khẩu:
-                    <input type="password" name="password" id="repassword-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
-                </label>
-            </div>
-            <div class="row">
-                <button type="submit">Đăng ký</button>
-            </div>
-        </form>
-    </div>
-</div>
-<!--end of signup form popup-->
 
 
 
@@ -56,7 +20,7 @@
                 <div class="hero-ct">
                     <h1 ></h1>
                     <ul class="breadcumb">
-                        <li class="active"><a href="#">Trang chủ</a></li>
+                        <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
                         <li> <span class="ion-ios-arrow-right"></span>Hồ sơ</li>
                     </ul>
                 </div>
@@ -64,6 +28,7 @@
         </div>
     </div>
 </div>
+
 <div class="page-single">
     <div class="container">
         <div class="row ipad-width">
@@ -91,43 +56,53 @@
                 </div>
             </div>
             <div class="col-md-9 col-sm-12 col-xs-12">
+                <th:block th:if="${param.message!=null}">
+                    <div th:class="${'alert alert-block alert-'+ alert}">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="ace-icon fa fa-times"></i>
+                        </button>
+                        <div th:text="${messageResponse}" th:remove="tag"></div>
+                    </div>
+                </th:block>
                 <div class="form-style-1 user-pro" action="#">
-                    <form action="#" class="user">
+                    <form th:action="@{/trang-ca-nhan/edit}" method="post" class="user">
                         <h4>01. Chi tiết hồ sơ</h4>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Tài khoản</label>
-                                <input type="text" placeholder="hoangthai">
+                                <input type="text" disabled th:placeholder="#{label.username}" th:value="${user.userName}">
                             </div>
                             <div class="col-md-6 form-it">
                                 <label>Email</label>
-                                <input type="text" placeholder="hoangthai150199@gmai..com">
+                                <input type="text" th:placeholder="#{label.email}" th:field="${user.email}">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Tên</label>
-                                <input type="text" placeholder="Thái ">
+                                <input type="text" th:placeholder="#{label.last.name}" th:field="${user.lastName}">
                             </div>
                             <div class="col-md-6 form-it">
                                 <label>Họ</label>
-                                <input type="text" placeholder="Lê">
+                                <input type="text" th:placeholder="#{label.first.name}" th:field="${user.firstName}">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
-                                <label>Quốc gia</label>
-                                <select>
-                                    <option value="united">Việt Nam</option>
-                                    <option value="saab">Khác</option>
-                                </select>
+                                <label>Địa chỉ</label>
+                                <input type="text" th:placeholder="#{label.address} " th:field="${user.address}">
+
                             </div>
                             <div class="col-md-6 form-it">
-                                <label>Tỉnh/Thành phố</label>
-                                <select>
-                                    <option value="united">Đà Nẵng</option>
-                                    <option value="saab">Khác</option>
-                                </select>
+                                <label th:text="#{label.birth.date}"></label>
+                                <input type="date"   th:field="${user.birthDate}">
+                            </div>
+                            <input type="hidden" th:field="${user.status}">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Số Điện Thoại</label>
+                                <input type="text" th:placeholder="#{label.phone} " th:field="${user.phone}">
                             </div>
                         </div>
                         <div class="row">
@@ -141,19 +116,19 @@
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Mật khẩu cũ</label>
-                                <input type="text" placeholder="**********">
+                                <input type="text" placeholder="Nhập mật khẩu cũ">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>mật khẩu mới</label>
-                                <input type="text" placeholder="***************">
+                                <input type="text" placeholder="Nhập mật khẩu mới">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Xác nhận mật khẩu</label>
-                                <input type="text" placeholder="*************** ">
+                                <input type="text" placeholder="Nhập lại mật khẩu">
                             </div>
                         </div>
                         <div class="row">
