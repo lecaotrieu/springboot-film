@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <title th:text="#{label.actor.list}"></title>
+</head>
+<body style="overflow: visible;">
+
+<div class="hero common-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1>celebrity list</h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span> CELEBRITY</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- celebrity grid v1 section-->
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="topbar-filter">
+                    <p>Found <span>1,608 celebrities</span> in total</p>
+                    <label>Sort by:</label>
+                    <select>
+                        <option value="popularity">Popularity Descending</option>
+                        <option value="popularity">Popularity Ascending</option>
+                        <option value="rating">Rating Descending</option>
+                        <option value="rating">Rating Ascending</option>
+                        <option value="date">Release date Descending</option>
+                        <option value="date">Release date Ascending</option>
+                    </select>
+                    <a href="celebritylist.html" class="list"><i class="ion-ios-list-outline "></i></a>
+                    <a href="celebritygrid01.html" class="grid"><i class="ion-grid active"></i></a>
+                </div>
+                <div class="celebrity-items">
+                    <div class="ceb-item" th:each="actor: ${actors}">
+                        <a href="#"><img th:src="@{${actor.avatarUrl}}" style="height: 300px;width: 270px"></a>
+                        <div class="ceb-infor">
+                            <h2><a href="celebritylist.html" th:text="${actor.name}"></a></h2>
+                            <span>actor, usa</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="topbar-filter">
+                    <label>Reviews per page:</label>
+                    <select>
+                        <option value="range">9 Reviews</option>
+                        <option value="saab">10 Reviews</option>
+                    </select>
+
+                    <div class="pagination2">
+                        <span>Page 1 of 6:</span>
+                        <a class="active" href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#"><i class="ion-arrow-right-b"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--end of celebrity grid v1 section-->
+<!-- footer section-->
+
+
+
+<!-- celebritygrid0111:44-->
+<iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" title="Twitter analytics iframe"></iframe></body>
+</html>
