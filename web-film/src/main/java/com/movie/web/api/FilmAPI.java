@@ -25,7 +25,7 @@ public class FilmAPI {
     private IFilmService filmService;
 
     @PostMapping("/api/admin/film")
-    public FilmDTO createFilm(@RequestBody FilmDTO filmDTO) {
+    public FilmDTO createFilm(@RequestBody FilmDTO filmDTO) throws Exception {
         return filmService.save(filmDTO);
     }
 
@@ -69,7 +69,7 @@ public class FilmAPI {
     }
 
     @PutMapping("/api/admin/film")
-    public Long updateFilm(@RequestBody FilmDTO filmDTO) {
+    public Long updateFilm(@RequestBody FilmDTO filmDTO) throws Exception {
         return filmService.save(filmDTO).getId();
     }
 

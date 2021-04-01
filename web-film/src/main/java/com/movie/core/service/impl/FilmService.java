@@ -181,6 +181,7 @@ public class FilmService implements IFilmService {
 
     @Autowired
     private ActorConvert actorConvert;
+
     public FilmDTO findOne(Long id, String code, Integer status) {
         FilmEntity entity = filmRepository.findByIdAndCodeAndStatus(id, code, status);
         if (entity == null) {
@@ -189,7 +190,7 @@ public class FilmService implements IFilmService {
         Integer countEpisode = episodeRepository.countAllByFilm_IdAndStatus(entity.getId(), CoreConstant.ACTIVE_STATUS);
         FilmDTO filmDTO = filmConvert.toDTO(entity);
         List<ActorDTO> actorDTOS = new ArrayList<>();
-        for (ActorEntity actorEntity: entity.getActors()){
+        for (ActorEntity actorEntity : entity.getActors()) {
             ActorDTO actorDTO = actorConvert.toDTO(actorEntity);
             actorDTOS.add(actorDTO);
         }
@@ -244,7 +245,7 @@ public class FilmService implements IFilmService {
     private StringGlobalUtils stringGlobalUtils;
 
     @Transactional
-    public FilmDTO save(FilmDTO filmDTO) {
+    public FilmDTO save(FilmDTO filmDTO) throws Exception {
         FilmEntity entity;
         String code = stringGlobalUtils.covertToString(filmDTO.getName());
         if (filmDTO.getId() != null) {
@@ -257,12 +258,14 @@ public class FilmService implements IFilmService {
         }
         entity.setCode(code);
         List<CategoryEntity> categoryEntities = new ArrayList<CategoryEntity>();
-        if (filmDTO.getCategories() != null) {
+        if (filmDTO.getCategories() != null && filmDTO.getCategories().size() > 0) {
             for (CategoryDTO categoryDTO : filmDTO.getCategories()) {
                 CategoryEntity categoryEntity = new CategoryEntity();
                 BeanUtils.copyProperties(categoryDTO, categoryEntity);
                 categoryEntities.add(categoryEntity);
             }
+        } else {
+            throw new Exception();
         }
         List<ActorEntity> actorEntities = new ArrayList<ActorEntity>();
         if (filmDTO.getActors() != null) {

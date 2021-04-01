@@ -44,7 +44,7 @@ public interface IFilmService {
 
     boolean checkPosterFilm(Long id, String userName);
 
-    FilmDTO save(FilmDTO filmDTO);
+    FilmDTO save(FilmDTO filmDTO) throws Exception;
 
     boolean updateFilmStatus(FilmDTO filmDTO);
 
