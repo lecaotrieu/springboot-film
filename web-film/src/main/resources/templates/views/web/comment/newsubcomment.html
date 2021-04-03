@@ -4,7 +4,8 @@
 <head>
 </head>
 <body>
-<div th:class="'cmt-item flex-it reply scm_'+${comment.comment.id}" th:id="cm_+${comment.id}" th:each="comment: ${items.listResult}">
+<div th:id="new-sub-cm_+${comment.id}"></div>
+<div th:class="'cmt-item flex-it reply scm_'+${comment.comment.id}" th:id="cm_+${comment.id}">
     <img th:src="@{${comment.user.photoUrl}}" alt="" style="width: 65px;height: 65px; border-radius: 50px;">
     <div class="author-infor">
         <div class="flex-it2">
@@ -23,10 +24,6 @@
             </p>
         </div>
     </div>
-</div>
-<div th:class="'sub-comment-list_'+${items.commentId}">
-    <p class="scm-xemthem" th:onclick="loadSubComment2([[${items.commentId}]],[[${items.page+1}]])"
-       th:if="${items.nextCountItem>0}">Xem thêm phản hồi</p>
 </div>
 </body>
 </html>

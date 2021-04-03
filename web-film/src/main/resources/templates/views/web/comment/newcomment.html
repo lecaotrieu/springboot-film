@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+</head>
+<body>
+<div id="new-comment"></div>
+<div class="cmt-item flex-it" th:id="cm_+${comment.id}">
+    <img th:src="@{${comment.user.photoUrl}}" alt=""
+         style="width: 65px;height: 65px; border-radius:50px; ">
+    <div class="author-infor">
+        <div class="flex-it2">
+            <h6><a href="#" th:text="${comment.user.userName}"></a></h6>
+            <span class="time" th:text="${comment.thoiGianDang}"></span>
+        </div>
+        <p th:text="${comment.content}" class="cm-content" style="min-width: 600px;"></p>
+        <p><a class="rep-btn" th:onclick="showReplyCm([[${comment.id}]])">+ Trả lời</a></p>
+        <p class="show-subcomment" th:if="${comment.subCommentCount>0}"
+           th:onclick="loadSubComment([[${comment.id}]])"
+           th:text="'Xem phản hồi'"></p>
+        <div class="evaluate">
+            <span th:text="${comment.totalLike}"></span>
+            <p class="like-cm"><i
+                    class="fas fa-thumbs-up"></i></p>
+            <p class="delete-cm" sec:authorize="hasRole('USER')"
+               th:onclick="warningBeforeDelete([[${comment.id}]])"
+               th:if="${comment.user.id.equals(#authentication.principal.id)}">
+                <i class="far fa-trash-alt"></i>
+            </p>
+        </div>
+    </div>
+</div>
+<div th:class="'sub-comment_'+${comment.id}">
+    <input type="hidden" th:id="'sub-page_'+${comment.id}" value="1">
+</div>
+</body>
+</html>

@@ -29,8 +29,8 @@ public class CommentController {
 
     @RequestMapping(value = "/ajax/comment/list", method = RequestMethod.GET)
     public String loadCommentList(CommentCommand command, Model model) {
-        command.setLimit(10);
         command.setSortDirection("0");
+        command.setLimit(8);
         List<CommentDTO> commentDTOS = commentService.findByProperties(command.getFilmId(), null, "", "", command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
         command.setListResult(commentDTOS);
         if (SecurityUtils.getUserAuthorities().contains("USER")) {
@@ -46,6 +46,34 @@ public class CommentController {
         model.addAttribute(WebConstant.LIST_ITEM, command);
         return "views/web/comment/list";
     }
+
+
+    @RequestMapping(value = "/ajax/comment/new", method = RequestMethod.GET)
+    public String loadCommentNew(@RequestParam("id") Long commentId, Model model) {
+        CommentDTO commentDTO = commentService.findOneById(commentId);
+        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+            CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentId);
+            if (commentLikeDTO != null) {
+                commentDTO.setLike(commentLikeDTO.getStatus());
+            }
+        }
+        model.addAttribute("comment", commentDTO);
+        return "views/web/comment/newcomment";
+    }
+
+    @RequestMapping(value = "/ajax/sub-comment/new", method = RequestMethod.GET)
+    public String loadSubCommentNew(@RequestParam("id") Long commentId, Model model) {
+        CommentDTO commentDTO = commentService.findOneById(commentId);
+        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+            CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentId);
+            if (commentLikeDTO != null) {
+                commentDTO.setLike(commentLikeDTO.getStatus());
+            }
+        }
+        model.addAttribute("comment", commentDTO);
+        return "views/web/comment/newsubcomment";
+    }
+
 
     @RequestMapping(value = "/ajax/comment/edit", method = RequestMethod.GET)
     public ModelAndView loadCommentEdit(@RequestParam("filmId") Long filmId) {

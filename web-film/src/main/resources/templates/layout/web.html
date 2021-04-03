@@ -13,6 +13,9 @@
     <meta name="format-detection" content="telephone-no">
     <link rel="stylesheet" th:href="@{/template/fontawesome-5.12.1/css/fontawesome.min.css}">
     <link rel="stylesheet" th:href="@{/template/fontawesome-5.12.1/css/all.css}">
+    <!-- sweetalert -->
+    <link rel="stylesheet" th:href="@{/template/admin/sweetalert2/sweetalert2.min.css}">
+    <script type='text/javascript' th:src="@{/template/admin/sweetalert2/sweetalert2.min.js}"></script>
     <!-- CSS files -->
     <link rel="stylesheet" th:href="@{/template/web/css/plugins.css}">
     <link rel="stylesheet" th:href="@{/template/web/css/style.css}">
@@ -37,6 +40,7 @@
 <script th:src="@{/template/web/js/plugins.js}"></script>
 <script th:src="@{/template/web/js/plugins2.js}"></script>
 <script th:src="@{/template/web/js/custom.js}"></script>
+<script th:src="@{/template/admin/js/convert-json.js}"></script>
 <script>
    $("#login-user-form").ajaxSubmit({url: '/dang-nhap', type: 'post'});
    $('li.user-name a').click(function (){
@@ -46,6 +50,22 @@
            $('li.user-name').addClass("open");
        }
    });
+   function showAlertBeforeDelete(callback) {
+       swal({
+           title: "Xác nhận xóa",
+           text: "Bạn có chắc muốn xóa những dữ liệu đã chọn !",
+           type: "warning",
+           showCancelButton: true,
+           confirmButtonText: "Xác nhận",
+           cancelButtonText: "Hủy bỏ",
+           confirmButtonClass: "btn btn-success",
+           cancelButtonClass: "btn btn-danger"
+       }).then(function (isConfirm) {
+           if (isConfirm) {
+               callback();
+           }
+       })
+   }
 </script>
 </body>
 </html>

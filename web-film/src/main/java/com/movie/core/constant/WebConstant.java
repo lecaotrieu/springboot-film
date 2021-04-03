@@ -14,7 +14,7 @@ public class WebConstant {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_MANAGER = "ROLE_MANAGER";
     public static final String ROLE_POSTER = "ROLE_POSTER";
-    public static final String ROLE_USER = "ROLE_POSTER";
+    public static final String ROLE_USER = "ROLE_USER";
     public static final String FORM_ITEM = "item";
     public static final String LIST_ITEM = "items";
     public static final String MESSAGE_RESPONSE = "messageResponse";

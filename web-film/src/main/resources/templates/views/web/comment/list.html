@@ -2,11 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title></title>
 </head>
 <body>
 <th:block th:each="comment: ${items.listResult}">
-    <div class="cmt-item flex-it">
+    <div class="cmt-item flex-it" th:id="cm_+${comment.id}">
         <img th:src="@{${comment.user.photoUrl}}" alt=""
              style="width: 65px;height: 65px; border-radius:50px; ">
         <div class="author-infor">
@@ -14,16 +13,18 @@
                 <h6><a href="#" th:text="${comment.user.userName}"></a></h6>
                 <span class="time" th:text="${comment.thoiGianDang}"></span>
             </div>
-            <p th:text="${comment.content}" style="min-width: 600px;"></p>
-            <p><a class="rep-btn" href="#">+ Reply</a></p>
-            <p class="show-subcomment"
+            <p th:text="${comment.content}" class="cm-content" style="min-width: 600px;"></p>
+            <p><a class="rep-btn" th:onclick="showReplyCm([[${comment.id}]])">+ Trả lời</a></p>
+            <p class="show-subcomment" th:if="${comment.subCommentCount>0}"
                th:onclick="loadSubComment([[${comment.id}]])"
                th:text="'Xem phản hồi'"></p>
             <div class="evaluate">
                 <span th:text="${comment.totalLike}"></span>
                 <p class="like-cm"><i
                         class="fas fa-thumbs-up"></i></p>
-                <p class="delete-cm"><i class="far fa-trash-alt"></i></p>
+                <p class="delete-cm" sec:authorize="hasRole('USER')" th:if="${comment.user.id.equals(#authentication.principal.id)}">
+                    <i class="far fa-trash-alt"></i>
+                </p>
             </div>
         </div>
     </div>
@@ -32,7 +33,6 @@
     </div>
 </th:block>
 <div id="comment_list">
-    <input type="hidden" id="comment-page" name="page" value="1">
     <p class="show-comment" th:onclick="loadComment([[${items.filmId}]],[[${items.page+1}]])">
         Xem thêm bình luận</p>
 </div>

@@ -116,7 +116,7 @@ public class FilmController {
             if (evaluateDTO != null)
                 model.addAttribute("evaluate", evaluateDTO);
         }
-        List<CommentDTO> commentDTOS = commentService.findByProperties(filmId, null, "", "", 1, 10, "createdDate", "0");
+        List<CommentDTO> commentDTOS = commentService.findByProperties(filmId, null, "", "", 1, 5, "createdDate", "0");
         filmDTO.setComments(commentDTOS);
         filmDTO.setTotalComment(commentService.totalComment(filmId));
         model.addAttribute("film", filmDTO);

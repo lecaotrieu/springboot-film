@@ -7,9 +7,7 @@ import com.movie.core.service.ICommentService;
 import com.movie.core.convert.CommentConvert;
 import com.movie.core.service.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -123,15 +121,17 @@ public class CommentService implements ICommentService {
     }
 
     @Transactional
-    public void save(CommentDTO commentDTO) {
+    public Long save(CommentDTO commentDTO) throws Exception {
         CommentEntity entity;
         if (commentDTO.getId() != null) {
             entity = commentRepository.getOne(commentDTO.getId());
             entity.setContent(commentDTO.getContent());
         } else {
             entity = commentConvert.toEntity(commentDTO);
+            entity.setTotalLike(0);
         }
-        commentRepository.save(entity);
+        entity = commentRepository.save(entity);
+        return entity.getId();
     }
 
     public int totalComment(Long filmId) {
