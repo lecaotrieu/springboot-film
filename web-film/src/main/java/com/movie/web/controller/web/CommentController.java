@@ -33,7 +33,7 @@ public class CommentController {
         command.setLimit(8);
         List<CommentDTO> commentDTOS = commentService.findByProperties(command.getFilmId(), null, "", "", command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
         command.setListResult(commentDTOS);
-        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             for (CommentDTO commentDTO : commentDTOS) {
                 CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentDTO.getId());
                 if (commentLikeDTO != null) {
@@ -51,7 +51,7 @@ public class CommentController {
     @RequestMapping(value = "/ajax/comment/new", method = RequestMethod.GET)
     public String loadCommentNew(@RequestParam("id") Long commentId, Model model) {
         CommentDTO commentDTO = commentService.findOneById(commentId);
-        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentId);
             if (commentLikeDTO != null) {
                 commentDTO.setLike(commentLikeDTO.getStatus());
@@ -64,7 +64,7 @@ public class CommentController {
     @RequestMapping(value = "/ajax/sub-comment/new", method = RequestMethod.GET)
     public String loadSubCommentNew(@RequestParam("id") Long commentId, Model model) {
         CommentDTO commentDTO = commentService.findOneById(commentId);
-        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentId);
             if (commentLikeDTO != null) {
                 commentDTO.setLike(commentLikeDTO.getStatus());

@@ -2,6 +2,7 @@ package com.movie.core.service.impl;
 
 import com.movie.core.dto.CommentDTO;
 import com.movie.core.entity.CommentEntity;
+import com.movie.core.entity.CommentLikeEntity;
 import com.movie.core.repository.CommentRepository;
 import com.movie.core.service.ICommentService;
 import com.movie.core.convert.CommentConvert;
@@ -180,4 +181,6 @@ public class CommentService implements ICommentService {
             commentRepository.deleteById(id);
         }
     }
+
+
 }

@@ -107,7 +107,9 @@ public class FilmController {
     @Autowired
     private ICommentService commentService;
 
-    // /film/naruto-12
+    @Autowired
+    private ICommentLikeService commentLikeService;
+
     @RequestMapping(value = "/film/{filmCode}-{filmId}", method = RequestMethod.GET)
     public String showFilmDetail(@PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode, Model model) {
         FilmDTO filmDTO = filmService.findOne(filmId, filmCode, CoreConstant.ACTIVE_STATUS);
@@ -117,6 +119,14 @@ public class FilmController {
                 model.addAttribute("evaluate", evaluateDTO);
         }
         List<CommentDTO> commentDTOS = commentService.findByProperties(filmId, null, "", "", 1, 5, "createdDate", "0");
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
+            for (CommentDTO commentDTO : commentDTOS) {
+                CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentDTO.getId());
+                if (commentLikeDTO != null) {
+                    commentDTO.setLike(commentLikeDTO.getStatus());
+                }
+            }
+        }
         filmDTO.setComments(commentDTOS);
         filmDTO.setTotalComment(commentService.totalComment(filmId));
         model.addAttribute("film", filmDTO);

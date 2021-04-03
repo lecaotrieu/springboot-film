@@ -30,4 +30,5 @@ public interface ICommentService {
     int totalComment(Long filmId, Long commentId, String search, String employeeName, String userName);
 
     void deleteComment(Long[] ids);
+
 }

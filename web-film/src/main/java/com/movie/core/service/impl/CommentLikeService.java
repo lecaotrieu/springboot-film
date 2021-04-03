@@ -2,11 +2,15 @@ package com.movie.core.service.impl;
 
 import com.movie.core.convert.CommentLikeConvert;
 import com.movie.core.dto.CommentLikeDTO;
+import com.movie.core.entity.CommentEntity;
 import com.movie.core.entity.CommentLikeEntity;
 import com.movie.core.repository.CommentLikeRepository;
+import com.movie.core.repository.CommentRepository;
 import com.movie.core.service.ICommentLikeService;
+import com.movie.core.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommentLikeService implements ICommentLikeService {
@@ -24,10 +28,15 @@ public class CommentLikeService implements ICommentLikeService {
     }
 
     public int totalCommentLike(Long commentId) {
-        int result = (int) commentLikeRepository.countAllByComment_Id(commentId);
+        int result = (int) commentLikeRepository.countAllByComment_IdAndStatus(commentId, 1);
         return result;
     }
 
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Transactional
     public void save(CommentLikeDTO dto) {
         CommentLikeEntity entity = commentLikeRepository.findByUser_IdAndComment_Id(dto.getUser().getId(), dto.getComment().getId());
         if (entity == null) {
@@ -37,5 +46,8 @@ public class CommentLikeService implements ICommentLikeService {
             entity2.setId(entity.getId());
             commentLikeRepository.save(entity2);
         }
+        CommentEntity commentEntity = commentRepository.getOne(dto.getComment().getId());
+        commentEntity.setTotalLike((int) commentLikeRepository.countAllByComment_IdAndStatus(commentEntity.getId(), 1));
+        commentRepository.save(commentEntity);
     }
 }

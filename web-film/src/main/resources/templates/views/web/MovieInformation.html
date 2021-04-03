@@ -143,9 +143,22 @@
                                                        th:onclick="loadSubComment([[${comment.id}]])"
                                                        th:text="'Xem phản hồi'"></p>
                                                     <div class="evaluate">
-                                                        <span th:text="${comment.totalLike}"></span>
-                                                        <p class="like-cm">
-                                                            <i class="fas fa-thumbs-up"></i>
+                                                        <span th:text="${comment.totalLike}"
+                                                              th:id="totalLike+${comment.id}"></span>
+                                                        <p class="like-cm" sec:authorize="hasRole('USER')"
+                                                           th:onclick="likeComment([[${comment.id}]])"
+                                                           th:id="like-cm_+${comment.id}">
+                                                            <i class="fas fa-thumbs-up"
+                                                               th:if="${comment.like == 1}"></i>
+                                                            <i class="far fa-thumbs-up"
+                                                               th:if="${comment.like != 1}"></i>
+                                                            <input type="hidden" th:name="comment_like_+${comment.id}"
+                                                                   th:id="ip-content_+${comment.id}"
+                                                                   th:value="${comment.like}">
+                                                        </p>
+                                                        <p class="like-cm" sec:authorize="!hasRole('USER')"
+                                                           th:id="like-cm_+${comment.id}">
+                                                            <i class="far fa-thumbs-up"></i>
                                                         </p>
                                                         <p class="delete-cm" sec:authorize="hasRole('USER')"
                                                            th:onclick="warningBeforeDelete([[${comment.id}]])"
@@ -356,6 +369,38 @@
             }
         });
     }
+
+    var apiCommentLike = "/api/film/comment/like";
+
+    function likeComment(comment_id) {
+        var name = "input[name='comment_like_" + comment_id + "']";
+        var like = $(name).val();
+        var data = {};
+        if (like == "1") {
+            data["status"] = 0;
+            $(name).val(0);
+            $("#like-cm_" + comment_id + " i").removeClass("fas");
+            $("#like-cm_" + comment_id + " i").addClass("far");
+        } else {
+            data["status"] = 1;
+            $(name).val(1);
+            $("#like-cm_" + comment_id + " i").removeClass("far");
+            $("#like-cm_" + comment_id + " i").addClass("fas");
+        }
+        data["comment"] = {id: comment_id};
+        $.ajax({
+            url: apiCommentLike,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (totalLike) {
+                $('#totalLike' + comment_id).text(totalLike);
+            },
+            error: function (result) {
+            }
+        });
+    }
+
 </script>
 </body>
 </html>
