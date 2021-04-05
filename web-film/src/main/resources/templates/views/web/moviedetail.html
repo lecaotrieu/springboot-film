@@ -130,7 +130,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <input type="hidden" th:value="${episode.episodeCode}" id="episode-code">
+                                <input type="hidden" th:value="${episode.episodeCode}" th:if="${episode!=null}" id="episode-code">
                             </div>
                         </div>
                     </div>
