@@ -40,9 +40,11 @@
 <script th:src="@{/template/web/js/plugins.js}"></script>
 <script th:src="@{/template/web/js/plugins2.js}"></script>
 <script th:src="@{/template/web/js/custom.js}"></script>
+
+
 <script th:src="@{/template/admin/js/convert-json.js}"></script>
 <script>
-   $("#login-user-form").ajaxSubmit({url: '/dang-nhap', type: 'post'});
+/*   $("#login-user-form").ajaxSubmit({url: '/dang-nhap', type: 'post'});*/
    $('li.user-name a').click(function (){
        if ($("li.user-name").hasClass("open")){
            $('li.user-name').removeClass("open");

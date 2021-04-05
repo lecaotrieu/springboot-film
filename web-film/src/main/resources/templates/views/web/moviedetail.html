@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${film.name}"></title>
+
+    <link rel="stylesheet" th:href="@{/template/web/css2/bootstrap-reboot.min.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/bootstrap-grid.min.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/jquery.mCustomScrollbar.min.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/nouislider.min.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/plyr.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/photoswipe.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/default-skin.css}">
+    <link rel="stylesheet" th:href="@{/template/web/css2/main.css}">
+</head>
+<body>
+<!-- details -->
+<section class="section details">
+    <!-- details background -->
+    <div class="details__bg" th:data-bg="@{${film.image2Url}}"></div>
+    <!-- end details background -->
+
+    <!-- details content -->
+    <div class="container" style="margin-top: 200px;">
+        <div class="row">
+            <!-- title -->
+            <div class="col-12">
+                <h1 class="details__title"><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"  th:text="${film.name}"></a></h1>
+            </div>
+            <!-- end title -->
+
+            <!-- content -->
+            <div class="col-10">
+                <div class="card card--details card--series">
+                    <div class="row">
+                        <!-- card cover -->
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                            <div class="card__cover">
+                                <img th:src="@{${film.image1Url}}" alt="">
+                            </div>
+                        </div>
+                        <!-- end card cover -->
+
+                        <!-- card content -->
+                        <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+                            <div class="card__content">
+                                <div class="card__wrap">
+                                    <span class="card__rate"><i class="icon ion-ios-star"></i><div
+                                            th:text="${film.scores}" th:remove="tag"></div></span>
+                                    <ul class="card__list">
+                                        <li th:text="${film.quality}"></li>
+                                        <li>16+</li>
+                                    </ul>
+                                </div>
+
+                                <ul class="card__meta">
+                                    <li>
+                                        <span>Thể loại:</span>
+                                        <a href="#" th:each="category: ${film.categories}"
+                                           th:text="${category.name}"></a>
+                                    </li>
+                                    <li><span>Năm:</span>
+                                        <div th:text="${film.year}" th:remove="tag"></div>
+                                    </li>
+                                    <li><span>Thời gian:</span>
+                                        <div th:text="${film.time}" th:remove="tag"></div>
+                                        phút
+                                    </li>
+                                    <li><span>Quốc gia:</span> <a href="#" th:text="${film.country.name}"></a></li>
+                                </ul>
+
+                                <div class="card__description card__description--details"
+                                     th:utext="${film.description}">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card content -->
+                    </div>
+                </div>
+            </div>
+            <!-- end content -->
+
+            <!-- player -->
+            <div class="col-12 col-xl-6">
+                <video controls playsinline id="player">
+                    <!-- Video files -->
+                    <source th:if="${episode!=null}" th:src="@{${episode.videoUrl}}"  type="video/mp4" size="576">
+                </video>
+            </div>
+            <!-- end player -->
+
+            <!-- accordion -->
+            <div class="col-12 col-xl-6">
+                <div class="accordion" id="accordion">
+                    <div class="accordion__card">
+                        <div class="card-header" id="headingOne">
+                            <button type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                <span th:text="#{label.episode.list}"></span>
+                            </button>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                             data-parent="#accordion">
+                            <div class="card-body">
+                                <table class="accordion__list">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th th:text="#{label.title}"></th>
+                                        <th th:text="#{label.create.upload}"></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="chapter: ${film.episodes}">
+                                        <th>
+                                            <a th:href="@{'/film/'+${film.code}+'-'+${film.id}+'/'+${chapter.episodeCode}}"
+                                               th:text="${chapter.episodeCode}"></a>
+                                        </th>
+                                        <th>
+                                            <a th:href="@{'/film/'+${film.code}+'-'+${film.id}+'/'+${chapter.episodeCode}}"
+                                               th:text="${chapter.name}"></a>
+                                        </th>
+                                        <td th:text="${chapter.createdDate}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end accordion -->
+
+            <div class="col-12">
+                <div class="details__wrap">
+                    <!-- availables -->
+                    <div class="details__devices">
+                        <span class="details__devices-title">Available on devices:</span>
+                        <ul class="details__devices-list">
+                            <li><i class="icon ion-logo-apple"></i><span>IOS</span></li>
+                            <li><i class="icon ion-logo-android"></i><span>Android</span></li>
+                            <li><i class="icon ion-logo-windows"></i><span>Windows</span></li>
+                            <li><i class="icon ion-md-tv"></i><span>Smart TV</span></li>
+                        </ul>
+                    </div>
+                    <!-- end availables -->
+
+                    <!-- share -->
+                    <div class="details__share">
+                        <span class="details__share-title">Share with friends:</span>
+
+                        <ul class="details__share-list">
+                            <li class="facebook"><a href="#"><i class="icon ion-logo-facebook"></i></a></li>
+                            <li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
+                            <li class="twitter"><a href="#"><i class="icon ion-logo-twitter"></i></a></li>
+                            <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- end share -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end details content -->
+</section>
+<!-- end details -->
+
+<!-- content -->
+<section class="content blog-detail-ct ">
+    <div class="content__head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- content title -->
+                    <!-- end content title -->
+
+                    <!-- content tabs nav -->
+                    <ul class="nav content__tabs" id="content__tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" role="tab" aria-controls="tab-1"
+                               aria-selected="true" th:text="#{label.comment}"></a>
+                        </li>
+                    </ul>
+                    <!-- end content tabs nav -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-8">
+                <!-- content tabs -->
+                <div id="comments" class="tab review">
+                    <div class="comments">
+                        <h4 th:text="${film.totalComment}+' Bình luận'"></h4>
+                        <div id="new-comment"></div>
+                        <th:block th:each="comment: ${film.comments}">
+                            <div class="cmt-item flex-it" th:id="cm_+${comment.id}">
+                                <img th:src="@{${comment.user.photoUrl}}" alt=""
+                                     style="width: 65px;height: 65px; border-radius:50px; ">
+                                <div class="author-infor">
+                                    <div class="flex-it2">
+                                        <h6><a href="#" th:text="${comment.user.userName}"></a></h6>
+                                        <span class="time" th:text="${comment.thoiGianDang}"></span>
+                                    </div>
+                                    <p th:text="${comment.content}" class="cm-content"
+                                       style="min-width: 600px;"></p>
+                                    <p><a class="rep-btn" th:onclick="showReplyCm([[${comment.id}]])">+
+                                        Trả lời</a></p>
+                                    <p th:if="${comment.subCommentCount>0}" class="show-subcomment"
+                                       th:onclick="loadSubComment([[${comment.id}]])"
+                                       th:text="'Xem phản hồi'"></p>
+                                    <div class="evaluate">
+                                                        <span th:text="${comment.totalLike}"
+                                                              th:id="totalLike+${comment.id}"></span>
+                                        <p class="like-cm" sec:authorize="hasRole('USER')"
+                                           th:onclick="likeComment([[${comment.id}]])"
+                                           th:id="like-cm_+${comment.id}">
+                                            <i class="fas fa-thumbs-up"
+                                               th:if="${comment.like == 1}"></i>
+                                            <i class="far fa-thumbs-up"
+                                               th:if="${comment.like != 1}"></i>
+                                            <input type="hidden" th:name="comment_like_+${comment.id}"
+                                                   th:id="ip-content_+${comment.id}"
+                                                   th:value="${comment.like}">
+                                        </p>
+                                        <p class="like-cm" sec:authorize="!hasRole('USER')"
+                                           th:id="like-cm_+${comment.id}">
+                                            <i class="far fa-thumbs-up"></i>
+                                        </p>
+                                        <p class="delete-cm" sec:authorize="hasRole('USER')"
+                                           th:onclick="warningBeforeDelete([[${comment.id}]])"
+                                           th:if="${comment.user.id.equals(#authentication.principal.id)}">
+                                            <i class="far fa-trash-alt"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:id="new-sub-cm_+${comment.id}"></div>
+                            <div th:class="'sub-comment_'+${comment.id}">
+                                <input type="hidden" th:id="'sub-page_'+${comment.id}" value="1">
+                            </div>
+                        </th:block>
+                        <div id="comment_list">
+                            <input type="hidden" id="comment-page" name="page" value="1">
+                            <p class="show-comment" th:onclick="loadComment([[${film.id}]],2)">
+                                Xem thêm bình luận</p>
+                        </div>
+                    </div>
+                    <div class="comment-form">
+                        <h4 th:text="#{label.comment.please}"></h4>
+                        <div class="cmt-item flex-it hide" id="cm-reply">
+                            <div class="author-infor">
+                                <div class="flex-it2">
+                                    <h6><a href="#"></a></h6>
+                                    <span class="time"></span>
+                                </div>
+                                <div class="close"><a><i class="fas fa-times"></i></a></div>
+                                <p id="reply-content" style="min-width: 600px;"></p>
+                            </div>
+                        </div>
+                        <form action="#" id="form-comment">
+                            <div class="row">
+                                <div class="col-md-12">
+                                                    <textarea name="content" id="comment-content-txt"
+                                                              th:placeholder="#{label.comment}"></textarea>
+                                </div>
+                                <input type="hidden" name="film.id" th:value="${film.id}">
+                                <input type="hidden" id="reply-cm-id">
+                            </div>
+                            <input class="submit" type="submit" placeholder="submit">
+                        </form>
+                    </div>
+                </div>
+                <!-- end content tabs -->
+            </div>
+
+            <!-- sidebar -->
+            <div class="col-12 col-lg-4 col-xl-4">
+                <div class="row">
+                    <!-- section title -->
+                    <div class="col-12">
+                        <h2 class="section__title section__title--sidebar">Các phim tương tự...</h2>
+                    </div>
+                    <!-- end section title -->
+
+                    <!-- card -->
+                    <div class="col-6 col-sm-4 col-lg-6" th:each="relatedFilm: ${relatedFilms}">
+                        <div class="card">
+                            <div class="card__cover">
+                                <img th:src="@{${relatedFilm.image1Url}}" alt="">
+                                <a th:href="@{'/film/'+${relatedFilm.code}+'-'+${relatedFilm.id}}" class="card__play">
+                                    <i class="icon ion-ios-play"></i>
+                                </a>
+                            </div>
+                            <div class="card__content">
+                                <h3 class="card__title"><a th:href="@{'/film/'+${relatedFilm.code}+'-'+${relatedFilm.id}}"  th:text="${relatedFilm.name}"></a></h3>
+                                <span class="card__category">
+										<a th:href="@{'/phim/the-loai-'+${category.code}}"
+                                           th:each="category: ${relatedFilm.categories}" th:text="${category.name}"></a>
+									</span>
+                                <span class="card__rate">
+                                    <i class="icon ion-ios-star"></i>
+                                    <div th:text="${relatedFilm.scores}" th:remove="tag"></div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+            </div>
+            <!-- end sidebar -->
+        </div>
+    </div>
+</section>
+<input type="hidden" id="ip-filmId" name="filmId" th:value="${film.id}">
+<!-- end content -->
+<!-- JS -->
+<script th:src="@{/template/web/js2/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/template/web/js2/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/template/web/js2/owl.carousel.min.js}"></script>
+<script th:src="@{/template/web/js2/jquery.mousewheel.min.js}"></script>
+<script th:src="@{/template/web/js2/jquery.mCustomScrollbar.min.js}"></script>
+<script th:src="@{/template/web/js2/wNumb.js}"></script>
+<script th:src="@{/template/web/js2/nouislider.min.js}"></script>
+<script th:src="@{/template/web/js2/plyr.min.js}"></script>
+<script th:src="@{/template/web/js2/jquery.morelines.min.js}"></script>
+<script th:src="@{/template/web/js2/photoswipe.min.js}"></script>
+<script th:src="@{/template/web/js2/photoswipe-ui-default.min.js}"></script>
+<script th:src="@{/template/web/js2/main.js}"></script>
+<script th:src="@{/template/web/js/comment.js}"></script>
+</body>
+</html>

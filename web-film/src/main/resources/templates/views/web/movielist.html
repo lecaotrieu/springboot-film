@@ -44,7 +44,7 @@
                 <div class="movie-item-style-2" th:each="film : ${items.listResult}">
                     <img th:src="@{${film.image1Url}}" alt="">
                     <div class="mv-item-infor">
-                        <h6><a href="#">
+                        <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}">
                             <div th:text="${film.name}" th:remove="tag"></div>
                             <span th:text="'('+${film.year}+')'"></span></a></h6>
                         <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>

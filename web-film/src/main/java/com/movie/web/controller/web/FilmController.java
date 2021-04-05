@@ -27,24 +27,34 @@ public class FilmController {
     private IActorService actorService;
 
     @RequestMapping(value = "/film/{filmCode}-{filmId}/{episode}", method = RequestMethod.GET)
-    public ModelAndView showFilmAndEpisode(@PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode, @PathVariable("episode") Integer epCode) {
-        ModelAndView mav = new ModelAndView("web/film/episode/show");
+    public String showFilmAndEpisode(Model model, @PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode, @PathVariable("episode") Integer epCode) {
         FilmDTO filmDTO = filmService.findOne(filmId, filmCode, CoreConstant.ACTIVE_STATUS);
         filmDTO.setEpisodes(episodeService.findAllByFilmId(filmId));
         EpisodeDTO episodeDTO = episodeService.findOneByFilmAndCode(filmCode, epCode);
-        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             EvaluateDTO evaluateDTO = evaluateService.findOneByUserAndFilm(filmId, SecurityUtils.getUserPrincipal().getId());
             if (evaluateDTO != null) {
-                mav.addObject("evaluate", evaluateDTO);
+                model.addAttribute("evaluate", evaluateDTO);
             }
         }
         List<FilmDTO> relatedFilms = filmService.findByProperties("", filmDTO.getFilmType().getCode(), "", "", "", 1, 8, "modifiedDate", CoreConstant.SORT_ASC);
-        mav.addObject("film", filmDTO);
-        mav.addObject("relatedFilms", relatedFilms);
-        mav.addObject("episode", episodeDTO);
-        mav.addObject("comments", episodeDTO);
-        return mav;
+        model.addAttribute("relatedFilms", relatedFilms);
+        model.addAttribute("episode", episodeDTO);
+        List<CommentDTO> commentDTOS = commentService.findByProperties(filmId, null, "", "", 1, 5, "createdDate", "0");
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
+            for (CommentDTO commentDTO : commentDTOS) {
+                CommentLikeDTO commentLikeDTO = commentLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentDTO.getId());
+                if (commentLikeDTO != null) {
+                    commentDTO.setLike(commentLikeDTO.getStatus());
+                }
+            }
+        }
+        filmDTO.setComments(commentDTOS);
+        filmDTO.setTotalComment(commentService.totalComment(filmId));
+        model.addAttribute("film", filmDTO);
+        return "views/web/moviedetail";
     }
+
 
     @Autowired
     private ICategoryService categoryService;

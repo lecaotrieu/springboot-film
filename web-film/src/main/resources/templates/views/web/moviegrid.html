@@ -47,10 +47,10 @@
                             <img th:src="@{${film.image1Url}}" alt="">
                         </div>
                         <div class="hvr-inner">
-                            <a href="#"> Xem ngay <i class="ion-android-arrow-dropright"></i> </a>
+                            <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem ngay <i class="ion-android-arrow-dropright"></i> </a>
                         </div>
                         <div class="mv-item-infor">
-                            <h6><a href="#" th:text="${film.name}"></a></h6>
+                            <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
                             <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10
                             </p>
                         </div>
