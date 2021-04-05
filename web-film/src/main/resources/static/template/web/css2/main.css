@@ -2874,7 +2874,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 	Accordion
 ==============================*/
 .accordion {
-  background-color: hsl(210deg 55% 13%);
+  background-color: hsl(210deg 71% 9%);
   padding: 20px;
   overflow: hidden;
   max-height: 303px;
@@ -2947,6 +2947,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 .accordion__list {
   width: 100%;
+}
+
+table.accordion__list a {color: #6a6767;}
+
+table.accordion__list a:hover {
+  color: #fff;
 }
 .accordion__list thead tr {
   border-bottom: 1px solid rgba(255,255,255,0.05);

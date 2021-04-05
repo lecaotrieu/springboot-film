@@ -30,7 +30,8 @@
         <div class="row">
             <!-- title -->
             <div class="col-12">
-                <h1 class="details__title"><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"  th:text="${film.name}"></a></h1>
+                <h1 class="details__title"><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"
+                                              th:text="${film.name}"></a></h1>
             </div>
             <!-- end title -->
 
@@ -71,9 +72,9 @@
                                         <div th:text="${film.time}" th:remove="tag"></div>
                                         phút
                                     </li>
-                                    <li><span>Quốc gia:</span> <a href="#" th:text="${film.country.name}"></a></li>
+                                    <li><span>Quốc gia:</span> <a th:href="@{'/phim/quoc-gia/'+${film.country.code}}"
+                                                                  th:text="${film.country.name}"></a></li>
                                 </ul>
-
                                 <div class="card__description card__description--details"
                                      th:utext="${film.description}">
                                 </div>
@@ -89,7 +90,7 @@
             <div class="col-12 col-xl-6">
                 <video controls playsinline id="player">
                     <!-- Video files -->
-                    <source th:if="${episode!=null}" th:src="@{${episode.videoUrl}}"  type="video/mp4" size="576">
+                    <source th:if="${episode!=null}" th:src="@{${episode.videoUrl}}" type="video/mp4" size="576">
                 </video>
             </div>
             <!-- end player -->
@@ -118,19 +119,18 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr th:each="chapter: ${film.episodes}">
-                                        <th>
-                                            <a th:href="@{'/film/'+${film.code}+'-'+${film.id}+'/'+${chapter.episodeCode}}"
-                                               th:text="${chapter.episodeCode}"></a>
+                                    <tr th:each="chapter: ${film.episodes}" th:href="@{${chapter.videoUrl}}"
+                                        th:data="${chapter.episodeCode}"
+                                        th:id="chapter_+${chapter.episodeCode}" class="episode_chapter">
+                                        <th th:text="${chapter.episodeCode}">
                                         </th>
-                                        <th>
-                                            <a th:href="@{'/film/'+${film.code}+'-'+${film.id}+'/'+${chapter.episodeCode}}"
-                                               th:text="${chapter.name}"></a>
+                                        <th th:text="${chapter.name}">
                                         </th>
                                         <td th:text="${chapter.createdDate}"></td>
                                     </tr>
                                     </tbody>
                                 </table>
+                                <input type="hidden" th:value="${episode.episodeCode}" id="episode-code">
                             </div>
                         </div>
                     </div>
@@ -138,9 +138,9 @@
             </div>
             <!-- end accordion -->
 
-            <div class="col-12">
+            <!--<div class="col-12">
                 <div class="details__wrap">
-                    <!-- availables -->
+                    &lt;!&ndash; availables &ndash;&gt;
                     <div class="details__devices">
                         <span class="details__devices-title">Available on devices:</span>
                         <ul class="details__devices-list">
@@ -150,9 +150,9 @@
                             <li><i class="icon ion-md-tv"></i><span>Smart TV</span></li>
                         </ul>
                     </div>
-                    <!-- end availables -->
+                    &lt;!&ndash; end availables &ndash;&gt;
 
-                    <!-- share -->
+                    &lt;!&ndash; share &ndash;&gt;
                     <div class="details__share">
                         <span class="details__share-title">Share with friends:</span>
 
@@ -163,9 +163,9 @@
                             <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
                         </ul>
                     </div>
-                    <!-- end share -->
+                    &lt;!&ndash; end share &ndash;&gt;
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
     <!-- end details content -->
@@ -178,9 +178,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <!-- content title -->
-                    <!-- end content title -->
-
                     <!-- content tabs nav -->
                     <ul class="nav content__tabs" id="content__tabs" role="tablist">
                         <li class="nav-item">
@@ -302,7 +299,9 @@
                                 </a>
                             </div>
                             <div class="card__content">
-                                <h3 class="card__title"><a th:href="@{'/film/'+${relatedFilm.code}+'-'+${relatedFilm.id}}"  th:text="${relatedFilm.name}"></a></h3>
+                                <h3 class="card__title"><a
+                                        th:href="@{'/film/'+${relatedFilm.code}+'-'+${relatedFilm.id}}"
+                                        th:text="${relatedFilm.name}"></a></h3>
                                 <span class="card__category">
 										<a th:href="@{'/phim/the-loai-'+${category.code}}"
                                            th:each="category: ${relatedFilm.categories}" th:text="${category.name}"></a>
@@ -322,6 +321,7 @@
     </div>
 </section>
 <input type="hidden" id="ip-filmId" name="filmId" th:value="${film.id}">
+<input type="hidden" id="ip-filmCode" name="filmId" th:value="${film.code}">
 <!-- end content -->
 <!-- JS -->
 <script th:src="@{/template/web/js2/jquery-3.3.1.min.js}"></script>
@@ -337,5 +337,26 @@
 <script th:src="@{/template/web/js2/photoswipe-ui-default.min.js}"></script>
 <script th:src="@{/template/web/js2/main.js}"></script>
 <script th:src="@{/template/web/js/comment.js}"></script>
+<script>
+    $(document).ready(function () {
+        var episode_code = $('#episode-code').val();
+        $('#chapter_' + episode_code).addClass("active");
+    });
+    $('.episode_chapter').click(function () {
+        var code = $(this).attr("data");
+        if (code != $('#episode-code').val()) {
+            $('.episode_chapter').removeClass("active");
+            $(this).addClass("active");
+            $('#episode-code').val(code);
+            var url = $(this).attr("href");
+            if (url != "") {
+                $('#player').attr('src', url);
+                $('#player source').attr('src', url);
+                var urlc = "/film/" + $('#ip-filmCode').val() + "-" + $('#ip-filmId').val() + "/" + code;
+                window.history.pushState("", "", urlc);
+            }
+        }
+    });
+</script>
 </body>
 </html>

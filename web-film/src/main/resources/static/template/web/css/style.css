@@ -3575,6 +3575,18 @@ td {
   vertical-align: baseline;
 }
 
+tr.episode_chapter.active {
+  background: #021b36;
+}
+
+tr.episode_chapter.active:hover {
+  background: #042e57;
+}
+
+tr.episode_chapter.active th {
+  color: #fff;
+}
+
 .evaluate span {
   color: #fff;
   margin: 5px;
@@ -5988,7 +6000,7 @@ p.show-subcomment {
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
   border-right: 10px solid #dd003f;
-  /* Tam giÃƒÆ’Ã‚Â¡c phÃƒÂ¡Ã‚ÂºÃ‚Â£i Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ mÃƒÆ’Ã‚Â u */
+  /* Tam giÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡c phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£i ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£c ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ mÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â u */
 }
 .social-btn .hover-bnt:hover .hvr-item {
   -moz-opacity: 1;
@@ -7998,6 +8010,11 @@ header .top-search select {
   background: url('../images/uploads/drop-icon.png') no-repeat right 20px center;
   text-transform: uppercase;
   color: #ffffff;
+}
+
+.top-search select {
+  padding: 12px;
+  font-size: 14px;
 }
 header .top-search input::-webkit-input-placeholder {
   color: #abb7c4;
