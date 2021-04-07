@@ -19,6 +19,8 @@
     <div class="login-content">
         <a href="#" class="close">x</a>
         <h3 th:text="#{label.login}"></h3>
+        <div id="message-login">
+        </div>
         <form method="post" th:action="@{/user_login}" id="login-user-form">
             <div class="row">
                 <label for="username">
