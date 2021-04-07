@@ -138,8 +138,9 @@
                                     Phim mới
                                 </a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" th:href="@{'/phim/phim-le/'}" >Phim lẻ<i
-                                        class="ion-ios-arrow-forward"></i></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" th:href="@{'/phim/phim-le/'}">Phim
+                                    lẻ<i
+                                            class="ion-ios-arrow-forward"></i></a>
                                 <ul class="dropdown-menu level2">
                                     <li th:each="year: ${years}">
                                         <a th:href="@{'/phim/phim-le/nam-'+${year}}" th:text="'Phim lẻ ' + ${year}"></a>
@@ -147,7 +148,8 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" th:href="@{'/phim/phim-bo/'}">Phim bộ<i
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                                   th:href="@{'/phim/phim-bo/'}">Phim bộ<i
                                         class="ion-ios-arrow-forward"></i></a>
                                 <ul class="dropdown-menu level2">
                                     <li th:each="film: ${country_list}"><a
@@ -190,7 +192,8 @@
                         <a th:href="@{/trang-ca-nhan}">Hồ Sơ</a></li>
                     <li class="first user-name" sec:authorize="hasRole('USER')">
                         <a class="btn btn-default lv1">
-                           <div th:text="'Xin Chào ' + ${#authentication.getPrincipal().fullName}" th:remove="tag"></div>
+                            <div th:text="'Xin Chào ' + ${#authentication.getPrincipal().fullName}"
+                                 th:remove="tag"></div>
                             <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right level1">
@@ -226,7 +229,8 @@
     <div class="container">
         <div class="flex-parent-ft">
             <div class="flex-child-ft item1">
-                <a href="index-2.html"><img class="logo" th:src="@{/template/web/images/logo1.png}" alt="" style="height: 80px;"></a>
+                <a href="index-2.html"><img class="logo" th:src="@{/template/web/images/logo1.png}" alt=""
+                                            style="height: 80px;"></a>
                 <p>Quảng Nam<br>
                     VIỆT NAM</p>
                 <p>SĐT: <a href="#">0123456789</a></p>
@@ -272,5 +276,13 @@
 </footer>
 <!-- end of footer section-->
 </section>
+
+<div class="sb-facebook sb-it" th:fragment="facebook">
+    <h4 class="sb-title">Tìm chúng tôi trên Facebook</h4>
+    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=526264224943535"
+            height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+            allowfullscreen="true"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+</div>
 </body>
 </html>

@@ -230,9 +230,7 @@
             </div>
             <div class="col-md-4">
                 <div class="sidebar">
-                    <div class="ads">
-                        <img src="images/uploads/thai.jpg" alt="" width="336" height="296">
-                    </div>
+                    <div th:replace="fragments/web::facebook"></div>
                     <div class="celebrities">
                         <h4 class="sb-title"> Người diễn viên nổi bật</h4>
                         <div class="celeb-item" th:each="actor : ${actors}">
