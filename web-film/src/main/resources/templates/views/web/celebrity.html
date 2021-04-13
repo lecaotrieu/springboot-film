@@ -15,8 +15,8 @@
                 <div class="hero-ct">
                     <h1>celebrity list</h1>
                     <ul class="breadcumb">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li> <span class="ion-ios-arrow-right"></span> CELEBRITY</li>
+                        <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span> Danh sách diễn viên</li>
                     </ul>
                 </div>
             </div>
@@ -29,46 +29,38 @@
         <div class="row ipad-width2">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="topbar-filter">
-                    <p>Found <span>1,608 celebrities</span> in total</p>
-                    <label>Sort by:</label>
-                    <select>
-                        <option value="popularity">Popularity Descending</option>
-                        <option value="popularity">Popularity Ascending</option>
-                        <option value="rating">Rating Descending</option>
-                        <option value="rating">Rating Ascending</option>
-                        <option value="date">Release date Descending</option>
-                        <option value="date">Release date Ascending</option>
-                    </select>
-                    <a href="celebritylist.html" class="list"><i class="ion-ios-list-outline "></i></a>
-                    <a href="celebritygrid01.html" class="grid"><i class="ion-grid active"></i></a>
+                    <p>Tìm thấy <span><div th:text="${items.totalItems}" th:remove="tag"></div> diễn viên</span></p>
+                    <a href="" class="grid"><i class="ion-grid active"></i></a>
                 </div>
                 <div class="celebrity-items">
-                    <div class="ceb-item" th:each="actor: ${actors}">
+                    <div class="ceb-item" th:each="actor: ${items.listResult}">
                         <a href="#"><img th:src="@{${actor.avatarUrl}}" style="height: 300px;width: 270px"></a>
                         <div class="ceb-infor">
                             <h2><a href="celebritylist.html" th:text="${actor.name}"></a></h2>
-                            <span>actor, usa</span>
+                            <span>actor</span>
                         </div>
                     </div>
 
                 </div>
                 <div class="topbar-filter">
-                    <label>Reviews per page:</label>
-                    <select>
-                        <option value="range">9 Reviews</option>
-                        <option value="saab">10 Reviews</option>
+                    <label> Diễn viên trên mỗi trang:</label>
+                    <select id="select-limit" th:field="${items.limit}">
+                        <option value="5">5 diễn viên</option>
+                        <option value="10">10 diễn viên</option>
+                        <option value="15">15 diễn viên</option>
+                        <option value="20">20 diễn viên</option>
                     </select>
 
                     <div class="pagination2">
-                        <span>Page 1 of 6:</span>
-                        <a class="active" href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#">6</a>
-                        <a href="#"><i class="ion-arrow-right-b"></i></a>
+                        <span style="float: left;"
+                              th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">Trang 1 trên 2:</span>
+                        <ul class="pagination" id="pagination" style="margin: 0;"></ul>
                     </div>
+                    <form th:action="@{/danh-sach-dien-vien}" method="get" id="form-search">
+                        <input type="hidden" name="limit" id="limit" th:value="${items.limit}">
+                        <input type="hidden" name="page" id="page" th:value="${items.page}">
+                        <input type="hidden" name="search" th:value="${items.search}">
+                    </form>
                 </div>
             </div>
 
@@ -77,7 +69,50 @@
 </div>
 <!--end of celebrity grid v1 section-->
 <!-- footer section-->
+<script th:inline="javascript">
+    $(document).ready(function () {
+        pagingActor();
+    });
 
+
+    function pagingActor() {
+        /*<![CDATA[*/
+        var totalPage = /*[[${items.totalPage}]]*/;
+        var currentPage =/*[[${items.page}]]*/;
+        /*]]>*/
+
+        $(function () {
+            window.pagObj = $('#pagination').twbsPagination({
+                totalPages: totalPage,
+                startPage: currentPage,
+                visiblePages: 10,
+                onPageClick: function (event, page) {
+                    if (currentPage != page) {
+                        $('#page').val(page);
+                        $('#form-search').submit();
+                    }
+                }
+            })
+        });
+    }
+
+    $('#select-sort').change(function () {
+        var value = $('#select-sort').val();
+        $('<input>').attr({
+            type: 'hidden',
+            value: value,
+            name: 'sort'
+        }).appendTo('#form-search');
+        $('#form-search').submit();
+    });
+
+    $('#select-limit').change(function () {
+        $('#limit').val($('#select-limit').val());
+        $('#form-search').submit();
+    });
+
+</script>
+</body>
 
 
 <!-- celebritygrid0111:44-->

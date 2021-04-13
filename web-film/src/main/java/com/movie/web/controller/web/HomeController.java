@@ -134,18 +134,7 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return "redirect:/trang-chu";
     }
-    @RequestMapping(value = "/danh-sach-dien-vien", method = RequestMethod.GET)
-    public String celebrity(Model model) {
-        List<ActorDTO> actorDTOS = actorService.findByProperties("", 1, 8, null, null);
-        model.addAttribute("actors", actorDTOS);
-        return "views/web/celebrity";
-    }
-    @RequestMapping(value = "/dien-vien", method = RequestMethod.GET)
-    public String celebrityInfo(Model model) {
-        List<ActorDTO> actorDTOS = actorService.findByProperties("", 1, 8, null, null);
-        model.addAttribute("actors", actorDTOS);
-        return "views/web/celebrityInfo";
-    }
+
 
    /* @GetMapping("/a")
     public String index() {

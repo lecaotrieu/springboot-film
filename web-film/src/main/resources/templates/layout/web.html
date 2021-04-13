@@ -52,7 +52,13 @@
             $('li.user-name').addClass("open");
         }
     });
-
+    $('#top-search select').change(function (){
+        if($('#top-search select').val() == "film"){
+            $('#top-search').attr("action","/phim");
+        } else if ($('#top-search select').val() == "actor"){
+            $('#top-search').attr("action","/danh-sach-dien-vien");
+        }
+    });
     function showAlertBeforeDelete(callback) {
         swal({
             title: "Xác nhận xóa",
@@ -72,7 +78,6 @@
 
     $('#login-user-form').ajaxForm({
         success: function (response) {
-            console.log(response);
             if (response == "success") {
                 window.location.href = "/trang-chu";
             } else if (response == "failure" || response == null) {
@@ -89,25 +94,32 @@
             alert("authentication failure");
         }
     });
-    /*  $(document).ready(function () {
 
-          $("#login-user-form").submit(function (event) {
-              var formData = {
-                  j_username_user: $("#username").val(),
-                  j_password_user: $("#password").val(),
-              };
-              $.ajax({
-                  type: "POST",
-                  url: "/user_login",
-                  data: formData,
-                  dataType: "json",
-                  encode: true,
-              }).done(function (data) {
-                  console.log(data);
-              });
-              event.preventDefault();
-          });
-      });*/
+    $('#register-form').ajaxForm({
+        success: function (response) {
+            if (response == "success") {
+                $('#message-register').html("" +
+                    "<div class='alert alert-block alert-success'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Đăng ký tài khoản thành công" +
+                    "</div>")
+            } else if (response == "failure" || response == null) {
+                $('#message-register').html("" +
+                    "<div class='alert alert-block alert-danger'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Đăng ký tài khoản thất bại" +
+                    "</div>")
+            }
+        },
+        error: function (response) {
+            alert("authentication failure");
+        }
+    });
+
 </script>
 </body>
 </html>

@@ -42,7 +42,7 @@ public class WebCommonUtil {
         } else if (StringUtils.isNotBlank(message) && message.equals(WebConstant.REDIRECT_DELETE)) {
             model.addAttribute(WebConstant.MESSAGE_RESPONSE, mapMessage.get(WebConstant.REDIRECT_DELETE));
             model.addAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-        } else {
+        }else{
             model.addAttribute(WebConstant.MESSAGE_RESPONSE, mapMessage.get(message));
             model.addAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
         }

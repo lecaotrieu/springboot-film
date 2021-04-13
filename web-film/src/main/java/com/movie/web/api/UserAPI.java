@@ -1,6 +1,7 @@
 package com.movie.web.api;
 
 import com.movie.core.constant.CoreConstant;
+import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.UserDTO;
 import com.movie.core.service.IUserService;
 import com.movie.core.utils.UploadUtil;
@@ -49,11 +50,12 @@ public class UserAPI {
 
     @PutMapping("/api/user/password")
     public Long updateUserPasswordOfUser(@RequestBody UserDTO userDTO) throws Exception {
-        if (SecurityUtils.getUserAuthorities().contains("USER")) {
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             userDTO.setId(SecurityUtils.getUserPrincipal().getId());
             userService.updatePassword(userDTO);
+            return userDTO.getId();
         }
-        return userDTO.getId();
+        throw new Exception();
     }
 
 

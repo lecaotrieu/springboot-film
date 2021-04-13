@@ -68,7 +68,7 @@ public class ActorService implements IActorService {
 
     public List<ActorDTO> findByProperties(String search, int page, int limit, String sortExpression, String sortDirection) {
         search = search.toLowerCase();
-        Pageable pageable = pagingUtils.setPageable(page,limit,sortExpression,sortDirection);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<ActorDTO> actorDTOS = new ArrayList<ActorDTO>();
         List<ActorEntity> actorEntities = actorRepository.findAllByNameOrCode(search, search, pageable);
         for (ActorEntity entity : actorEntities) {

@@ -15,4 +15,14 @@ public class AccountAPI {
     public String loginFailure() {
         return "failure";
     }
+
+    @GetMapping("/ajax-register-success")
+    public String registerSuccess() {
+        return "success";
+    }
+
+    @GetMapping("/ajax-register-failure")
+    public String registerFailure() {
+        return "failure";
+    }
 }

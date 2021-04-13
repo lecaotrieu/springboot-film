@@ -55,7 +55,9 @@
     <div class="login-content">
         <a href="#" class="close">x</a>
         <h3>Đăng ký</h3>
-        <form method="post" th:action="@{/dang-ki}">
+        <div id="message-register">
+        </div>
+        <form method="post" th:action="@{/dang-ki}" id="register-form">
             <div class="row">
                 <label for="username-2">
                     Tài khoản:
@@ -192,7 +194,7 @@
                         <a th:href="@{/trang-ca-nhan}">Hồ Sơ</a></li>
                     <li class="first user-name" sec:authorize="hasRole('USER')">
                         <a class="btn btn-default lv1">
-                            <div th:text="'Xin Chào ' + ${#authentication.getPrincipal().fullName}"
+                            <div th:text="'Xin Chào ' + ${#authentication.getPrincipal().username}"
                                  th:remove="tag"></div>
                             <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
@@ -214,15 +216,17 @@
         </nav>
 
         <!-- top search form -->
-        <form th:action="@{/phim}" class="top-search">
+        <form th:action="@{/phim}" id="top-search" class="top-search">
             <select>
-                <option value="united">Phim</option>
+                <option value="film">Phim</option>
+                <option value="actor">Diễn viên</option>
             </select>
             <input type="text" name="search"
                    placeholder="Nhập tên phim, diễn viên, đạo diễn.">
         </form>
     </div>
 </header>
+
 <!-- END | Header -->
 <!-- footer section-->
 <footer class="ht-footer" th:fragment="footer">

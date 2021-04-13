@@ -29,7 +29,7 @@
             <div class="col-md-3 col-sm-12 col-xs-12">
                 <div class="user-information">
                     <div class="user-img">
-                        <a href="#"><img src="images/uploads/user-img.png" alt=""><br></a>
+                        <div class="user-img-img"><img th:src="@{${user.photoUrl}}" alt=""><br></div>
                         <a href="#" class="redbtn">Thay đổi ảnh đại diện</a>
                     </div>
                     <div class="user-fav">
@@ -57,7 +57,14 @@
                         </button>
                         <div th:text="${messageResponse}" th:remove="tag"></div>
                     </div>
+                        <div class="alert alert-block alert-success" th:if="${param.message == 'redirect_update_password'}">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="ace-icon fa fa-times"></i>
+                            </button>
+                            Đổi mật khẩu thành công !
+                        </div>
                 </th:block>
+
                 <div class="form-style-1 user-pro" action="#">
                     <form th:action="@{/trang-ca-nhan/edit}" method="post" class="user">
                         <h4>01. Chi tiết hồ sơ</h4>
@@ -105,29 +112,30 @@
                             </div>
                         </div>
                     </form>
-                    <form action="#" class="password">
+                    <form th:action="@{/trang-ca-nhan/doi-mat-khau}" method="post" class="password" id="form-change-password">
                         <h4>02. Thay đổi mật khẩu</h4>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Mật khẩu cũ</label>
-                                <input type="text" placeholder="Nhập mật khẩu cũ">
+                                <input type="text" th:placeholder="#{label.password.old} " name="password">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
-                                <label>mật khẩu mới</label>
-                                <input type="text" placeholder="Nhập mật khẩu mới">
+                                <label>Mật khẩu mới</label>
+                                <input type="text" th:placeholder="#{label.new.password}" name="newPassword">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Xác nhận mật khẩu</label>
-                                <input type="text" placeholder="Nhập lại mật khẩu">
+                                <input type="text" th:placeholder="#{label.confirm.password} " name="confirmPassword">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-2">
-                                <input class="submit" type="submit" value="Thay đổi">
+<!--                                <input class="submit" value="Thay đổi" onclick="changPassword()">-->
+                                <button class="btn btn-success">Thay đổi</button>
                             </div>
                         </div>
                     </form>
@@ -184,4 +192,26 @@
             <p><a href="#" id="back-to-top">Trở lại trang đầu  <i class="ion-ios-arrow-thin-up"></i></a></p>
         </div>
     </div>
+</footer>
+<script>
+    function changPassword() {
+        var url = $('#form-change-password').attr("action");
+        var formData = $('#form-change-password').serializeArray();
+        var data = convertToJson(formData);
+        $.ajax({
+            url: url,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href =  + "&message=redirect_error";
+            },
+            error: function (error) {
+                // window.location.href = editUserUrl + "?id=" + id + "&message=redirect_error";
+            }
+        });
+    }
+</script>
+</body>
 </html>
