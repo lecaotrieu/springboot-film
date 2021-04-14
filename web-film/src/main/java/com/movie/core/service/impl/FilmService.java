@@ -391,7 +391,7 @@ public class FilmService implements IFilmService {
 
     public Double updateScores(Long id) {
         FilmEntity filmEntity = filmRepository.getOne(id);
-        Double scores = evaluateService.getAvgScores(id);
+        Double scores = Math.ceil(evaluateService.getAvgScores(id) * 10) / 10;
         Integer total = evaluateService.getTotalVote(id);
         filmEntity.setScores(scores);
         filmEntity.setTotalVote(total);
