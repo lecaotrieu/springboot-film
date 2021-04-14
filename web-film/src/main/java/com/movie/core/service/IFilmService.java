@@ -59,7 +59,7 @@ public interface IFilmService {
 
     void updateTrailer(Long id, MultipartFile trailer, String trailerYoutube) throws IOException;
 
-    void updateScores(Long id);
+    Double updateScores(Long id);
 
     void updateView(Long id);
 

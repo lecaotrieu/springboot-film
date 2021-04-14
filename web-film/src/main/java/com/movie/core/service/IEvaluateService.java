@@ -14,4 +14,14 @@ public interface IEvaluateService {
     Long updateFollow(EvaluateDTO evaluateDTO);
 
     void delete(Long[] ids) throws Exception;
+
+    Integer updateLike(Long filmId, Integer like, Long userId);
+
+    Integer updateFollow(Long filmId, Integer follow, Long userId);
+
+    Integer updateScores(Long filmId, Integer scores, Long userId);
+
+    Double getAvgScores(Long filmId);
+
+    Integer getTotalVote(Long filmId);
 }

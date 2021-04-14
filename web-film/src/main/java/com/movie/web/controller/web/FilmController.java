@@ -30,12 +30,11 @@ public class FilmController {
         FilmDTO filmDTO = filmService.findOne(filmId, filmCode, CoreConstant.ACTIVE_STATUS);
         filmDTO.setEpisodes(episodeService.findAllByFilmId(filmId));
         EpisodeDTO episodeDTO = episodeService.findOneByFilmAndCode(filmCode, epCode);
+        EvaluateDTO evaluateDTO = new EvaluateDTO();
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
-            EvaluateDTO evaluateDTO = evaluateService.findOneByUserAndFilm(filmId, SecurityUtils.getUserPrincipal().getId());
-            if (evaluateDTO != null) {
-                model.addAttribute("evaluate", evaluateDTO);
-            }
+            evaluateDTO = evaluateService.findOneByUserAndFilm(filmId, SecurityUtils.getUserPrincipal().getId());
         }
+        model.addAttribute("evaluate", evaluateDTO);
         List<FilmDTO> relatedFilms = filmService.findByProperties("", filmDTO.getFilmType().getCode(), "", "", "", 1, 8, "modifiedDate", CoreConstant.SORT_ASC);
         model.addAttribute("relatedFilms", relatedFilms);
         model.addAttribute("episode", episodeDTO);
@@ -122,11 +121,11 @@ public class FilmController {
     @RequestMapping(value = "/film/{filmCode}-{filmId}", method = RequestMethod.GET)
     public String showFilmDetail(@PathVariable("filmId") Long filmId, @PathVariable("filmCode") String filmCode, Model model) {
         FilmDTO filmDTO = filmService.findOne(filmId, filmCode, CoreConstant.ACTIVE_STATUS);
-        if (SecurityUtils.getUserAuthorities().contains("USER")) {
-            EvaluateDTO evaluateDTO = evaluateService.findOneByUserAndFilm(filmId, SecurityUtils.getUserPrincipal().getId());
-            if (evaluateDTO != null)
-                model.addAttribute("evaluate", evaluateDTO);
+        EvaluateDTO evaluateDTO = new EvaluateDTO();
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
+            evaluateDTO = evaluateService.findOneByUserAndFilm(filmId, SecurityUtils.getUserPrincipal().getId());
         }
+        model.addAttribute("evaluate", evaluateDTO);
         List<CommentDTO> commentDTOS = commentService.findByProperties(filmId, null, "", "", 1, 5, "createdDate", "0");
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             for (CommentDTO commentDTO : commentDTOS) {

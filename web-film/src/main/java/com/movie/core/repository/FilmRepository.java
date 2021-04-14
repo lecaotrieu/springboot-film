@@ -55,4 +55,5 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
     long countAllByCountry_CodeAndStatus(String country, Integer status);
 
     long countAllByFilmType_CodeAndStatus(String filmType, Integer status);
+
 }

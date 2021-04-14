@@ -5977,6 +5977,29 @@ p.show-subcomment {
   text-transform: uppercase;
   margin-right: 35px;
 }
+
+a#btn-them-tu-phim {
+  color: #09bbff;
+}
+
+a#btn-them-tu-phim i {
+  border-color: #09bbff;
+  padding: 12px 13px;
+}
+
+a#btn-them-tu-phim.active i {
+  background: #09bbff;
+  color: #fff;
+  border-color: #fff;
+}
+
+a#btn-yeu-thich.active i {
+  background: #dd003f;
+  color: #Fff;
+  border-color: #fff;
+}
+
+a#btn-yeu-thich i {}
 @media (max-width: 767px) {
   .social-btn a.parent-btn {
     margin-bottom: 40px;

@@ -5,20 +5,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "evaluate")
 public class EvaluateEntity extends BaseEntity {
-    @Column(name = "scores")
-    private Double scores;
-
-    @Column(name = "liked")
-    private Integer liked;
-
-    @Column(name = "follow")
-    private Integer follow;
+    @Column
+    private Integer scores;
 
     @Column
-    private Integer watched;
+    private Integer liked = 0;
 
     @Column
-    private Integer status;
+    private Integer follow = 0;
+
+    @Column
+    private Integer watched = 0;
+
+    @Column
+    private Integer status = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -68,11 +68,11 @@ public class EvaluateEntity extends BaseEntity {
         this.status = status;
     }
 
-    public Double getScores() {
+    public Integer getScores() {
         return scores;
     }
 
-    public void setScores(Double scores) {
+    public void setScores(Integer scores) {
         this.scores = scores;
     }
 

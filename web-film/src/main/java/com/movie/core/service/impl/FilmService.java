@@ -20,7 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -250,7 +249,7 @@ public class FilmService implements IFilmService {
         String code = stringGlobalUtils.covertToString(filmDTO.getName());
         if (filmDTO.getId() != null) {
             entity = filmRepository.getOne(filmDTO.getId());
-            entity = filmConvert.toEntity(filmDTO, entity, "image", "image2");
+            entity = filmConvert.toEntity(filmDTO, entity, "image", "image2", "trailerYoutube", "trailer");
             if (entity.getScores() == null) entity.setScores(0.0);
         } else {
             entity = filmConvert.toEntity(filmDTO);
@@ -372,7 +371,7 @@ public class FilmService implements IFilmService {
         filmRepository.save(filmEntity);
     }
 
-    public void updateScores(Long id) {
+    /*public void updateScores(Long id) {
         FilmEntity filmEntity = filmRepository.getOne(id);
         Double total = 0.0;
         int n = 0;
@@ -385,6 +384,18 @@ public class FilmService implements IFilmService {
         filmEntity.setScores(total / n);
         filmEntity.setTotalVote(n);
         filmRepository.save(filmEntity);
+    }*/
+
+    @Autowired
+    private IEvaluateService evaluateService;
+
+    public Double updateScores(Long id) {
+        FilmEntity filmEntity = filmRepository.getOne(id);
+        Double scores = evaluateService.getAvgScores(id);
+        Integer total = evaluateService.getTotalVote(id);
+        filmEntity.setScores(scores);
+        filmEntity.setTotalVote(total);
+        return filmRepository.save(filmEntity).getScores();
     }
 
     public void updateView(Long id) {

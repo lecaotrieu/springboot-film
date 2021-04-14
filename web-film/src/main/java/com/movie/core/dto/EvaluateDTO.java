@@ -1,7 +1,7 @@
 package com.movie.core.dto;
 
 public class EvaluateDTO extends AbstractDTO<EvaluateDTO> {
-    private Double scores;
+    private Integer scores;
     private Integer liked;
     private Integer follow;
     private Integer status;
@@ -49,11 +49,11 @@ public class EvaluateDTO extends AbstractDTO<EvaluateDTO> {
         this.status = status;
     }
 
-    public Double getScores() {
+    public Integer getScores() {
         return scores;
     }
 
-    public void setScores(Double scores) {
+    public void setScores(Integer scores) {
         this.scores = scores;
     }
 
