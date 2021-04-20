@@ -5,6 +5,11 @@
       th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
 <head>
     <title th:text="#{label.user.profile}"></title>
+    <style>
+        .ho-so a{
+            color: #dcf836 !important;
+        }
+    </style>
 </head>
 <body>
 <div class="hero user-hero">
@@ -27,27 +32,7 @@
     <div class="container">
         <div class="row ipad-width">
             <div class="col-md-3 col-sm-12 col-xs-12">
-                <div class="user-information">
-                    <div class="user-img">
-                        <div class="user-img-img"><img th:src="@{${user.photoUrl}}" alt=""><br></div>
-                        <a href="#" class="redbtn">Thay đổi ảnh đại diện</a>
-                    </div>
-                    <div class="user-fav">
-                        <p>Chi tiết tài khoản</p>
-                        <ul>
-                            <li  class="active"><a href="userprofile.html">Hồ sơ</a></li>
-                            <li><a href="userfavoritelist.html">Phim yêu thích</a></li>
-                            <li><a href="userrate.html">Phim đã sắp xếp</a></li>
-                        </ul>
-                    </div>
-                    <div class="user-fav">
-                        <p>Khác</p>
-                        <ul>
-                            <li><a href="#">Đổi mật khẩu</a></li>
-                            <li><a href="#">Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <div th:replace="fragments/web/user-menu::user-menu"></div>
             </div>
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <th:block th:if="${param.message!=null}">
@@ -144,55 +129,6 @@
         </div>
     </div>
 </div>
-<!-- footer section-->
-<footer class="ht-footer">
-    <div class="container">
-        <div class="flex-parent-ft">
-            <div class="flex-child-ft item1">
-                <a href="index-2.html"><img class="logo" src="images/logo1.png" alt=""></a>
-                <p>366 Lê Đại Hành<br>
-                    Đà Nẵng</p>
-                <p>SĐT: <a href="#">0342552949</a></p>
-            </div>
-            <div class="flex-child-ft item2">
-                <h4>Tài nguyên</h4>
-                <ul>
-                    <li><a href="#">Trong khoản</a></li>
-                    <li><a href="#">Bom tấn</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                    <li><a href="#">Diễn đàn </a></li>
-                    <li><a href="#">Trung tâm trợ giúp</a></li>
-                </ul>
-            </div>
-            <div class="flex-child-ft item3">
-                <h4>Hợp pháp</h4>
-                <ul>
-                    <li><a href="#">Điều khoản sử dụng</a></li>
-                    <li><a href="#">Chính sách bảo mật</a></li>
-                    <li><a href="#">Bảo vệ</a></li>
-                </ul>
-            </div>
-            <div class="flex-child-ft item4">
-                <h4>Tài khoản</h4>
-                <ul>
-                    <li><a href="#">Tài khoản của tôi</a></li>
-                    <li><a href="#">Danh sách theo dõi</a></li>
-                    <li><a href="#">Bộ sưu tập</a></li>
-                    <li><a href="#">Hướng dẫn sử dụng</a></li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-    <div class="ft-copyright">
-        <div class="ft-left">
-            <p><a target="_blank" href="https://www.templateshub.net">Trung Tâm</a></p>
-        </div>
-        <div class="backtotop">
-            <p><a href="#" id="back-to-top">Trở lại trang đầu  <i class="ion-ios-arrow-thin-up"></i></a></p>
-        </div>
-    </div>
-</footer>
 <script>
     function changPassword() {
         var url = $('#form-change-password').attr("action");

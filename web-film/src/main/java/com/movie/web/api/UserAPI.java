@@ -77,7 +77,7 @@ public class UserAPI {
         try {
             if (file.getSize() > CoreConstant.IMAGE_UPLOAD_MAX) {
                 mav.setViewName("redirect:/admin/user/photo/edit?id=" + id + "&message=over_size");
-            } else{
+            } else {
                 if (!file.isEmpty()) {
                     String fileName = org.springframework.util.StringUtils.cleanPath(file.getOriginalFilename());
                     fileName = "film_img_" + id + getFieldName(fileName);
@@ -99,24 +99,20 @@ public class UserAPI {
     }
 
     @PostMapping("/api/user/photo")
-    public ModelAndView updatePhotoOfUser(HttpServletRequest request) {
-        UploadUtil uploadUtil = new UploadUtil();
-        Set<String> titleValue = buildTitleValue();
-        Object[] objects = uploadUtil.getFileInputStreams(request, titleValue);
-        UserDTO userDTO = new UserDTO();
-        userDTO = returnValueOfDTO(userDTO, (Map<String, Object>) objects[1]);
-        List<FileItem> fileItems = (List<FileItem>) objects[0];
-        ModelAndView mav;
-        try {
-            if (!fileItems.isEmpty()) {
-                userService.updatePhotoToDrive(userDTO.getId(), fileItems.get(0));
-                SecurityUtils.getUserPrincipal().setPhoto(userService.getPhotoId(SecurityUtils.getUserPrincipal().getId()));
+    public String updatePhotoOfUser(@RequestParam("img") MultipartFile file) throws Exception {
+        if (file.getSize() > CoreConstant.IMAGE_UPLOAD_MAX) {
+            return "over_size";
+        } else {
+            if (!file.isEmpty()) {
+                Long id = SecurityUtils.getUserPrincipal().getId();
+                String fileName = org.springframework.util.StringUtils.cleanPath(file.getOriginalFilename());
+                fileName = "film_img_" + id + getFieldName(fileName);
+                String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.USER_PHOTOS + File.separator + id;
+                UploadUtil.saveFile(uploadDir, fileName, file);
+                userService.updatePhoto(id, fileName);
             }
-            mav = new ModelAndView("redirect:/chinh-sua-trang-ca-nhan/doi-avatar?change_success");
-        } catch (Exception e) {
-            mav = new ModelAndView("redirect:/chinh-sua-trang-ca-nhan/doi-avatar?change_error");
+            return "success";
         }
-        return mav;
     }
 
     private UserDTO returnValueOfDTO(UserDTO dto, Map<String, Object> mapValue) {

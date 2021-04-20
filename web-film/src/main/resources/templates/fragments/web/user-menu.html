@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!--preloading-->
+<div class="user-information" th:fragment="user-menu">
+    <div class="user-img">
+        <div class="user-img-img"><img th:src="@{${user.photoUrl}}" alt=""><br></div>
+        <a th:href="@{/trang-ca-nhan/anh-dai-dien}" class="redbtn">Thay đổi ảnh đại diện</a>
+    </div>
+    <div class="user-fav">
+        <p>Chi tiết tài khoản</p>
+        <ul>
+            <li class="ho-so"><a th:href="@{/trang-ca-nhan}">Hồ sơ</a></li>
+            <li><a href="userfavoritelist.html">Phim yêu thích</a></li>
+            <li><a href="userrate.html">Phim đã sắp xếp</a></li>
+        </ul>
+    </div>
+    <div class="user-fav">
+        <p>Khác</p>
+        <ul>
+            <li><a th:href="@{/trang-ca-nhan}">Đổi mật khẩu</a></li>
+            <li><a th:href="@{/dang-xuat}">Đăng xuất</a></li>
+        </ul>
+    </div>
+</div>
+<!--end of preloading-->
+
+</body>
+</html>

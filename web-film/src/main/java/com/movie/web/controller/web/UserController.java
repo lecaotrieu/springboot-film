@@ -40,6 +40,16 @@ public class UserController {
         return "views/web/UserProfile";
     }
 
+    @RequestMapping(value = "/trang-ca-nhan/anh-dai-dien", method = RequestMethod.GET)
+    public String userAvatar(Model model, @RequestParam(value = "message", required = false) String message) throws Exception {
+        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
+        if (message != null) {
+            WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
+        }
+        model.addAttribute("user", userDTO);
+        return "views/web/userAvatar";
+    }
+
     private Map<String, String> getMapMessage() {
         Map<String, String> mapValue = new HashMap<String, String>();
         mapValue.put(WebConstant.REDIRECT_ERROR, bundle.getString("label.message.error"));
@@ -47,21 +57,6 @@ public class UserController {
         mapValue.put(WebConstant.REDIRECT_DELETE, bundle.getString("label.user.message.delete.success"));
         mapValue.put(WebConstant.REDIRECT_UPDATE, bundle.getString("label.user.message.update.success"));
         return mapValue;
-    }
-
-
-    @RequestMapping(value = "/chinh-sua-trang-ca-nhan/doi-avatar", method = RequestMethod.GET)
-    public ModelAndView changeAvatar() {
-        ModelAndView mav = new ModelAndView("web/user/change_avatar");
-        return mav;
-    }
-
-    @RequestMapping(value = "/chinh-sua-trang-ca-nhan/cap-nhat-thong-tin", method = RequestMethod.GET)
-    public ModelAndView updateInfo() throws Exception {
-        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
-        ModelAndView mav = new ModelAndView("web/user/update_info");
-        mav.addObject(WebConstant.FORM_ITEM, userDTO);
-        return mav;
     }
 
     @RequestMapping(value = "/trang-ca-nhan/edit", method = RequestMethod.POST)

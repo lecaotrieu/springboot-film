@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <link rel="stylesheet" th:href="@{/template/web/css/userAvatar.css}">
+    <title th:text="#{label.user.profile}"></title>
+</head>
+<body>
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1 ></h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span>Đổi ảnh đại diện</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div th:replace="fragments/web/user-menu::user-menu"></div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div id="message-avatar"></div>
+                <form class="avatar-wrapper" th:action="@{/api/user/photo}" method="post" id="form-avatar">
+                    <img class="profile-pic" th:src="@{${user.photoUrl}}" />
+                    <div class="upload-button">
+                        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                    </div>
+                    <input class="file-upload" type="file" name="img" accept="image/*" id="ip-user-avatar"/>
+                </form>
+                <div style="text-align: center; font-size: 2rem; color: RGB(221, 0, 63); padding: 2px; border: red; border: 2px;">Thay đổi ảnh đại diện</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#ip-user-avatar').change(function (){
+        $('#form-avatar').submit();
+    })
+    $('#form-avatar').ajaxForm({
+        success: function (response) {
+            if (response == "success") {
+                $('#message-avatar').html("" +
+                    "<div class='alert alert-block alert-success'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "  Đổi ảnh đại diện thành công" +
+                    "</div>")
+                var d = new Date();
+                var imageUrl =  $('.user-img-img img').attr("src");
+                $('.user-img-img img').attr("src", imageUrl+"?"+d.getTime());
+            } else if (response == "over_size" || response == null) {
+                $('#message-avatar').html("" +
+                    "<div class='alert alert-block alert-danger'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Ảnh quá lớn" +
+                    "</div>")
+            }
+        },
+        error: function (response) {
+            $('#message-avatar').html("" +
+                "<div class='alert alert-block alert-danger'>" +
+                "   <button type='button' class='close' data-dismiss='alert'>" +
+                "       <i class='ace-icon fa fa-times'></i>" +
+                "   </button>" +
+                "   Đổi ảnh đại diện thất bại!" +
+                "</div>")
+        }
+    });
+</script>
+</body>
+</html>
