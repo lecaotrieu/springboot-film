@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <title >Phim yêu thích</title>
+</head>
+<body>
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <ul class="breadcumb">
+                        <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span>Phim yêu thích</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single userfav_list">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="user-information">
+                    <div class="user-img">
+                        <a href="#"><img th:src="@{${item.photoUrl}}" alt=""><br></a>
+                        <a href="#" class="redbtn">đổi ảnh địa diện</a>
+                    </div>
+                    <div class="user-fav">
+                        <p>Chi tiết tài khoản</p>
+                        <ul>
+                            <li><a th:href="@{/trang-ca-nhan}">Hồ Sơ</a></li>
+                            <li class="active"><a th:href="@{'/trang-ca-nhan/phim-yeu-thich'}">Phim yêu thích</a></li>
+                            <li><a th:href="@{'/trang-ca-nhan/phim-theo-doi'}">Phim theo dõi</a></li>
+                        </ul>
+                    </div>
+                    <div class="user-fav">
+                        <p>Khác</p>
+                        <ul>
+                            <li><a href="#">Đổi mật khẩu</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div class="topbar-filter user">
+                    <p>Tìm thấy <span><div  th:remove="tag"></div> phim yêu thích</span></p>
+                    <a href="" class="grid"><i class="ion-grid active"></i></a>
+                </div>
+                <div class="flex-wrap-movielist user-fav-list" >
+                    <div class="movie-item-style-2" th:each="evaluate: ${item.evaluates}" >
+                        <div th:if="${evaluate.liked == 1}"></div>
+                        <img  th:src="@{${evaluate.film.image1Url}}" alt="">
+                        <div class="mv-item-infor">
+                            <h6><a th:href="@{'/film/'+${evaluate.film.code}+'-'+${evaluate.film.id}}" th:text="${evaluate.film.name}"></a></h6>
+                            <p class="rate"><i class="ion-android-star"></i><span th:text="${evaluate.film.scores}"></span> /10</p>
+                            <p class="describe" th:utext="${evaluate.film.description}"></p>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="topbar-filter">
+                    <label> Phim yêu thích trên mỗi trang:</label>
+                    <select id="select-limit" th:field="${items.limit}">
+                        <option value="5">5 Phim yêu thích</option>
+                        <option value="10">10 Phim yêu thích</option>
+                        <option value="15">15 Phim yêu thích</option>
+                        <option value="20">20 Phim yêu thích</option>
+                    </select>
+
+                    <div class="pagination2">
+                        <span style="float: left;"
+                              th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">Trang 1 trên 2:
+                        </span>
+                        <ul class="pagination" id="pagination" style="margin: 0;"></ul>
+                    </div>
+                    <form th:action="@{/trang-ca-nhan/phim-yeu-thich}" method="get" id="form-search">
+                        <input type="hidden" name="limit" id="limit" th:value="${items.limit}">
+                        <input type="hidden" name="page" id="page" th:value="${items.page}">
+                        <input type="hidden" name="search" th:value="${items.search}">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        pagingActor();
+    });
+
+
+    function pagingActor() {
+        /*<![CDATA[*/
+        var totalPage = /*[[${items.totalPage}]]*/;
+        var currentPage =/*[[${items.page}]]*/;
+        /*]]>*/
+
+        $(function () {
+            window.pagObj = $('#pagination').twbsPagination({
+                totalPages: totalPage,
+                startPage: currentPage,
+                visiblePages: 10,
+                onPageClick: function (event, page) {
+                    if (currentPage != page) {
+                        $('#page').val(page);
+                        $('#form-search').submit();
+                    }
+                }
+            })
+        });
+    }
+
+    $('#select-sort').change(function () {
+        var value = $('#select-sort').val();
+        $('<input>').attr({
+            type: 'hidden',
+            value: value,
+            name: 'sort'
+        }).appendTo('#form-search');
+        $('#form-search').submit();
+    });
+
+    $('#select-limit').change(function () {
+        $('#limit').val($('#select-limit').val());
+        $('#form-search').submit();
+    });
+
+</script>
+</body>
+</html>

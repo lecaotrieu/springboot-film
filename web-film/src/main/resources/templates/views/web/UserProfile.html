@@ -5,11 +5,6 @@
       th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
 <head>
     <title th:text="#{label.user.profile}"></title>
-    <style>
-        .ho-so a{
-            color: #dcf836 !important;
-        }
-    </style>
 </head>
 <body>
 <div class="hero user-hero">
@@ -32,7 +27,27 @@
     <div class="container">
         <div class="row ipad-width">
             <div class="col-md-3 col-sm-12 col-xs-12">
-                <div th:replace="fragments/web/user-menu::user-menu"></div>
+                <div class="user-information">
+                    <div class="user-img">
+                        <div class="user-img-img"><img th:src="@{${user.photoUrl}}" alt=""><br></div>
+                        <a href="#" class="redbtn">Thay đổi ảnh đại diện</a>
+                    </div>
+                    <div class="user-fav">
+                        <p>Chi tiết tài khoản</p>
+                        <ul>
+                            <li  class="active"><a th:href="@{/trang-ca-nhan}">Hồ sơ</a></li>
+                            <li><a th:href="@{/trang-ca-nhan/phim-yeu-thich}">Phim yêu thích</a></li>
+                            <li><a th:href="@{/trang-ca-nhan/phim-theo-doi}">Phim theo dõi</a></li>
+                        </ul>
+                    </div>
+                    <div class="user-fav">
+                        <p>Khác</p>
+                        <ul>
+                            <li><a th:href="@{/trang-ca-nhan}">Đổi mật khẩu</a></li>
+                            <li><a th:href="@{/trang-chu}">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <th:block th:if="${param.message!=null}">
@@ -102,19 +117,19 @@
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Mật khẩu cũ</label>
-                                <input type="text" th:placeholder="#{label.password.old} " name="password">
+                                <input type="password" th:placeholder="#{label.password.old} " name="password">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Mật khẩu mới</label>
-                                <input type="text" th:placeholder="#{label.new.password}" name="newPassword">
+                                <input type="password" th:placeholder="#{label.new.password}" name="newPassword">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-it">
                                 <label>Xác nhận mật khẩu</label>
-                                <input type="text" th:placeholder="#{label.confirm.password} " name="confirmPassword">
+                                <input type="password" th:placeholder="#{label.confirm.password} " name="confirmPassword">
                             </div>
                         </div>
                         <div class="row">
@@ -129,6 +144,7 @@
         </div>
     </div>
 </div>
+<!-- footer section-->
 <script>
     function changPassword() {
         var url = $('#form-change-password').attr("action");

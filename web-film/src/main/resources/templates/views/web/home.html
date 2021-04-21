@@ -13,11 +13,11 @@
             <div class="slick-multiItemSlider">
                 <div class="movie-item" th:each="film : ${filmNews}">
                     <div class="mv-img">
-                        <a href="#"><img th:src="@{${film.image1Url}}" alt="" width="285" height="437"></a>
+                        <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"><img th:src="@{${film.image1Url}}" alt="" width="285" height="437"></a>
                     </div>
                     <div class="title-in">
                         <div class="cate">
-                            <span class="blue"><a href="#" th:text="${film.categories.get(0).name}"></a></span>
+                            <span class="blue"><a th:href="@{'/phim/the-loai/'+${film.categories.get(0).code}}" th:text="${film.categories.get(0).name}"></a></span>
                         </div>
                         <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
                         <p><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
@@ -32,7 +32,7 @@
         <div class="row ipad-width">
             <div class="col-md-8">
                 <div class="title-hd">
-                    <h2>Phim lẻ</h2>
+                    <h2 th:href="@{'/phim/phim-le'}" >Phim lẻ</h2>
                     <a th:href="@{'/phim/phim-le'}" class="viewall">Xem tất cả <i class="ion-ios-arrow-right"></i></a>
                 </div>
                 <div class="tabs">
@@ -128,7 +128,7 @@
                     </div>
                 </div>
                 <div class="title-hd">
-                    <h2>Phim Bộ</h2>
+                    <h2 th:href="@{'/phim/phim-le'}">Phim Bộ</h2>
                     <a th:href="@{'/phim/phim-bo'}" class="viewall">Xem tất cả <i  class="ion-ios-arrow-right"></i></a>
                 </div>
                 <div class="tabs">
@@ -234,13 +234,13 @@
                     <div class="celebrities">
                         <h4 class="sb-title"> Người diễn viên nổi bật</h4>
                         <div class="celeb-item" th:each="actor : ${actors}">
-                            <a href="#"><img th:src="@{${actor.avatarUrl}}" alt="" width="70" height="70"></a>
+                            <a th:href="@{/dien-vien}"><img th:src="@{${actor.avatarUrl}}" alt="" width="70" height="70"></a>
                             <div class="celeb-author">
                                 <h6><a href="#" th:text="${actor.name}"></a></h6>
                                 <span th:text="#{label.actor}"></span>
                             </div>
                         </div>
-                        <a href="#" class="btn">Xem tất cả những người nổi tiếng<i class="ion-ios-arrow-right"></i></a>
+                        <a th:href="@{/danh-sach-dien-vien}" class="btn">Xem tất cả những người nổi tiếng<i class="ion-ios-arrow-right"></i></a>
                     </div>
                 </div>
             </div>

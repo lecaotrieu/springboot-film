@@ -4,6 +4,7 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.*;
 import com.movie.core.service.*;
+import com.movie.core.utils.WebCommonUtil;
 import com.movie.web.command.FilmCommand;
 import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,4 +141,6 @@ public class FilmController {
         model.addAttribute("film", filmDTO);
         return "views/web/MovieInformation";
     }
+
+
 }
