@@ -42,6 +42,16 @@ public class UserController {
     @Autowired
     private IEvaluateService evaluateService;
 
+    @RequestMapping(value = "/trang-ca-nhan/anh-dai-dien", method = RequestMethod.GET)
+    public String userAvatar(Model model, @RequestParam(value = "message", required = false) String message) throws Exception {
+        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
+        if (message != null) {
+            WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
+        }
+        model.addAttribute("user", userDTO);
+        return "views/web/userAvatar";
+    }
+
     @RequestMapping(value = "/trang-ca-nhan", method = RequestMethod.GET)
     public String userInfo(Model model, @RequestParam(value = "message", required = false) String message) throws Exception {
         UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
