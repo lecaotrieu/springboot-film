@@ -25,27 +25,7 @@
     <div class="container">
         <div class="row ipad-width2">
             <div class="col-md-3 col-sm-12 col-xs-12">
-                <div class="user-information">
-                    <div class="user-img">
-                        <a href="#"><img th:src="@{${item.photoUrl}}" alt=""><br></a>
-                        <a href="#" class="redbtn">đổi ảnh địa diện</a>
-                    </div>
-                    <div class="user-fav">
-                        <p>Chi tiết tài khoản</p>
-                        <ul>
-                            <li><a th:href="@{/trang-ca-nhan}">Hồ Sơ</a></li>
-                            <li class="active"><a th:href="@{'/trang-ca-nhan/phim-yeu-thich'}">Phim yêu thích</a></li>
-                            <li><a th:href="@{'/trang-ca-nhan/phim-theo-doi'}">Phim theo dõi</a></li>
-                        </ul>
-                    </div>
-                    <div class="user-fav">
-                        <p>Khác</p>
-                        <ul>
-                            <li><a href="#">Đổi mật khẩu</a></li>
-                            <li><a href="#">Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <div th:replace="fragments/web/user-menu::user-menu"></div>
             </div>
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <div class="topbar-filter user">
@@ -53,7 +33,7 @@
                     <a href="" class="grid"><i class="ion-grid active"></i></a>
                 </div>
                 <div class="flex-wrap-movielist user-fav-list" >
-                    <div class="movie-item-style-2" th:each="evaluate: ${item.evaluates}" >
+                    <div class="movie-item-style-2" th:each="evaluate: ${user.evaluates}" >
                         <div th:if="${evaluate.liked == 1}"></div>
                         <img  th:src="@{${evaluate.film.image1Url}}" alt="">
                         <div class="mv-item-infor">

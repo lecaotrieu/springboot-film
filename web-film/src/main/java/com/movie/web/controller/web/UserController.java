@@ -65,7 +65,7 @@ public class UserController {
 
     @RequestMapping(value = "/trang-ca-nhan/phim-yeu-thich", method = RequestMethod.GET)
     public String favoriteFilm(Model model,
-                               @RequestParam(value = "message", required = false) String message,
+                               @RequestParam(value = "message", defaultValue = "",required = false) String message,
                                @RequestParam(value = "page", required = false) Integer page,
                                @RequestParam(value = "limit", required = false) Integer limit,
                                @RequestParam(value = "sort", required = false) String sort,
@@ -73,7 +73,7 @@ public class UserController {
                                @RequestParam(value = "search", required = false) String search
     ) throws Exception {
         UserCommand command = new UserCommand();
-        List<UserDTO> userDTOS = userService.findByProperties(command.getSearch(), command.getPage(), command.getLimit(), command.getSortExpression(), command.getSortDirection());
+        List<UserDTO> userDTOS = userService.findByProperties(search, page, limit, sort, sortDsc);
         command.setListResult(userDTOS);
         command.setTotalItems(userService.getTotalItem(command.getSearch()));
         command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
@@ -84,7 +84,7 @@ public class UserController {
         }
         model.addAttribute(WebConstant.LIST_ITEM, command);
 
-        model.addAttribute(WebConstant.FORM_ITEM, userDTO);
+        model.addAttribute("user", userDTO);
         return "views/web/favoriteFilm";
     }
 

@@ -7,4 +7,5 @@ public class UserCommand extends AbstractCommand<UserDTO> {
     public UserCommand() {
         this.pojo = new UserDTO();
     }
+
 }
