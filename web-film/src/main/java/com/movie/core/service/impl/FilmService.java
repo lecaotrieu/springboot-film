@@ -92,6 +92,17 @@ public class FilmService implements IFilmService {
         }
         return filmDTOS;
     }
+    public List<FilmDTO> findByProperties(Long userId,int like,int page, int limit, String sortExpression, String sortDirection) {
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
+        List<FilmEntity> filmEntities;
+        filmEntities = filmRepository.findFilmFavoriteByUserId(userId,like, pageable);
+        List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
+        for (FilmEntity entity : filmEntities) {
+            FilmDTO filmDTO = filmConvert.toDTO(entity);
+            filmDTOS.add(filmDTO);
+        }
+        return filmDTOS;
+    }
 
     public List<FilmDTO> findByProperties(String filmTypeCode, int page, int limit, String sortExpression, String sortDirection) {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
@@ -144,6 +155,12 @@ public class FilmService implements IFilmService {
     public int getTotalItem(String search, String filmType, String category, String country, String year) {
         Integer status = 1;
         return (int) filmRepository.countAllByProperties(search, filmType, category, country, year, status);
+    }
+
+    @Override
+    public int getTotalFilmFavorite(Long userID) {
+        int like=1;
+        return (int) filmRepository.findFilmFavoriteByUserId(userID,like);
     }
 
     @Override

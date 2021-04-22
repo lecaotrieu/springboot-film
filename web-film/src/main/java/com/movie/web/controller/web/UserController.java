@@ -11,6 +11,7 @@ import com.movie.core.service.IFilmService;
 import com.movie.core.service.IUserService;
 import com.movie.core.utils.WebCommonUtil;
 import com.movie.web.command.ActorCommand;
+import com.movie.web.command.FilmCommand;
 import com.movie.web.command.UserCommand;
 import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,20 +66,22 @@ public class UserController {
 
     @RequestMapping(value = "/trang-ca-nhan/phim-yeu-thich", method = RequestMethod.GET)
     public String favoriteFilm(Model model,
-                               @RequestParam(value = "message", defaultValue = "",required = false) String message,
+                               @RequestParam(value = "message", required = false) String message,
                                @RequestParam(value = "page", required = false) Integer page,
                                @RequestParam(value = "limit", required = false) Integer limit,
                                @RequestParam(value = "sort", required = false) String sort,
-                               @RequestParam(value = "sortDsc", required = false) String sortDsc,
-                               @RequestParam(value = "search", required = false) String search
+                               @RequestParam(value = "sortDsc", required = false) String sortDsc
     ) throws Exception {
-        UserCommand command = new UserCommand();
-        List<UserDTO> userDTOS = userService.findByProperties(search, page, limit, sort, sortDsc);
-        command.setListResult(userDTOS);
-        command.setTotalItems(userService.getTotalItem(command.getSearch()));
+        FilmCommand command = new FilmCommand();
+        command = setValueForCommand(command, page, sort, sortDsc, limit);
+        List<FilmDTO> filmDTOS = filmService.findByProperties(SecurityUtils.getUserPrincipal().getId(),1, command.getPage(), command.getLimit(), command.getSortExpression(), command.getSortDirection());
+
+        command.setListResult(filmDTOS);
+        command.setTotalItems(filmService.getTotalFilmFavorite(SecurityUtils.getUserPrincipal().getId()));
         command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
+
+
         UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
-        userDTO.setEvaluates(evaluateService.findAllByUserId(SecurityUtils.getUserPrincipal().getId(), CoreConstant.ACTIVE_STATUS));
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
@@ -146,7 +149,7 @@ public class UserController {
         }
     }
 
-    private ActorCommand setValueForCommand(ActorCommand command, String search, Integer page, String sort, String sortDsc, Integer limit) {
+    private FilmCommand setValueForCommand(FilmCommand command, Integer page, String sort, String sortDsc, Integer limit) {
         if (page != null) {
             command.setPage(page);
         }
@@ -156,9 +159,7 @@ public class UserController {
         if (sortDsc != null) {
             command.setSortDirection(sortDsc);
         }
-        if (search != null) {
-            command.setSearch(search);
-        }
+
         if (limit != null) {
             command.setLimit(limit);
         }

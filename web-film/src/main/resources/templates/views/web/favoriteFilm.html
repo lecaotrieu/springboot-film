@@ -33,13 +33,12 @@
                     <a href="" class="grid"><i class="ion-grid active"></i></a>
                 </div>
                 <div class="flex-wrap-movielist user-fav-list" >
-                    <div class="movie-item-style-2" th:each="evaluate: ${user.evaluates}" >
-                        <div th:if="${evaluate.liked == 1}"></div>
-                        <img  th:src="@{${evaluate.film.image1Url}}" alt="">
+                    <div class="movie-item-style-2" th:each="film: ${items.listResult}" >
+                        <img  th:src="@{${film.image1Url}}" alt="">
                         <div class="mv-item-infor">
-                            <h6><a th:href="@{'/film/'+${evaluate.film.code}+'-'+${evaluate.film.id}}" th:text="${evaluate.film.name}"></a></h6>
-                            <p class="rate"><i class="ion-android-star"></i><span th:text="${evaluate.film.scores}"></span> /10</p>
-                            <p class="describe" th:utext="${evaluate.film.description}"></p>
+                            <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
+                            <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                            <p class="describe" th:utext="${film.description}"></p>
 
                         </div>
                     </div>
@@ -56,14 +55,13 @@
 
                     <div class="pagination2">
                         <span style="float: left;"
-                              th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">Trang 1 trên 2:
+                              th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">
                         </span>
                         <ul class="pagination" id="pagination" style="margin: 0;"></ul>
                     </div>
                     <form th:action="@{/trang-ca-nhan/phim-yeu-thich}" method="get" id="form-search">
                         <input type="hidden" name="limit" id="limit" th:value="${items.limit}">
                         <input type="hidden" name="page" id="page" th:value="${items.page}">
-                        <input type="hidden" name="search" th:value="${items.search}">
                     </form>
                 </div>
 
