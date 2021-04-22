@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<!--preloading-->
 <div class="user-information" th:fragment="user-menu">
     <div class="user-img">
         <div class="user-img-img"><img th:src="@{${user.photoUrl}}" alt=""><br></div>
@@ -15,8 +14,8 @@
         <p>Chi tiết tài khoản</p>
         <ul>
             <li class="ho-so"><a th:href="@{/trang-ca-nhan}">Hồ sơ</a></li>
-            <li><a href="userfavoritelist.html">Phim yêu thích</a></li>
-            <li><a href="userrate.html">Phim đã sắp xếp</a></li>
+            <li><a th:href="@{/trang-ca-nhan/phim-yeu-thich}">Phim yêu thích</a></li>
+            <li><a th:href="@{/trang-ca-nhan/phim-theo-doi}">Phim theo dõi</a></li>
         </ul>
     </div>
     <div class="user-fav">
@@ -27,7 +26,6 @@
         </ul>
     </div>
 </div>
-<!--end of preloading-->
 
 </body>
 </html>
