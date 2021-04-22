@@ -52,6 +52,7 @@ public class UserController {
         model.addAttribute("user", userDTO);
         return "views/web/UserProfile";
     }
+
     @RequestMapping(value = "/trang-ca-nhan/phim-yeu-thich", method = RequestMethod.GET)
     public String favoriteFilm(Model model,
                                @RequestParam(value = "message", required = false) String message,
@@ -60,15 +61,14 @@ public class UserController {
                                @RequestParam(value = "sort", required = false) String sort,
                                @RequestParam(value = "sortDsc", required = false) String sortDsc,
                                @RequestParam(value = "search", required = false) String search
-                        ) throws Exception {
-        UserCommand command=new UserCommand();
+    ) throws Exception {
+        UserCommand command = new UserCommand();
         List<UserDTO> userDTOS = userService.findByProperties(command.getSearch(), command.getPage(), command.getLimit(), command.getSortExpression(), command.getSortDirection());
         command.setListResult(userDTOS);
         command.setTotalItems(userService.getTotalItem(command.getSearch()));
         command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
         UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
         userDTO.setEvaluates(evaluateService.findAllByUserId(SecurityUtils.getUserPrincipal().getId(), CoreConstant.ACTIVE_STATUS));
-
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
@@ -77,7 +77,6 @@ public class UserController {
         model.addAttribute(WebConstant.FORM_ITEM, userDTO);
         return "views/web/favoriteFilm";
     }
-
 
 
     private Map<String, String> getMapMessage() {
@@ -136,6 +135,7 @@ public class UserController {
             return "redirect:/ajax-register-failure";
         }
     }
+
     private ActorCommand setValueForCommand(ActorCommand command, String search, Integer page, String sort, String sortDsc, Integer limit) {
         if (page != null) {
             command.setPage(page);
@@ -154,6 +154,6 @@ public class UserController {
         }
 
 
-        return  command;
+        return command;
     }
 }

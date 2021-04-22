@@ -13,10 +13,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="hero-ct">
-                    <h1 ></h1>
+                    <h1></h1>
                     <ul class="breadcumb">
                         <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
-                        <li> <span class="ion-ios-arrow-right"></span>Đổi ảnh đại diện</li>
+                        <li class="active"><span class="ion-ios-arrow-right"></span><a th:href="@{/trang-ca-nhan}">Hồ sơ</a></li>
+                        <li><span class="ion-ios-arrow-right"></span>Đổi ảnh đại diện
                     </ul>
                 </div>
             </div>
@@ -30,22 +31,25 @@
             <div class="col-md-3 col-sm-12 col-xs-12">
                 <div th:replace="fragments/web/user-menu::user-menu"></div>
             </div>
-            <div class="col-md-9 col-sm-12 col-xs-12">
+            <div class="col-md-9 col-sm-12 col-xs-12"
+                 style="padding: 40px; background-color: #0b1a2a; border: 3px solid #0f2133; margin-top: -38px;">
                 <div id="message-avatar"></div>
                 <form class="avatar-wrapper" th:action="@{/api/user/photo}" method="post" id="form-avatar">
-                    <img class="profile-pic" th:src="@{${user.photoUrl}}" />
-                    <div class="upload-button">
+                    <img class="profile-pic" th:src="@{${user.photoUrl}}"/>
+                    <div class="upload-button">s
                         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                     </div>
                     <input class="file-upload" type="file" name="img" accept="image/*" id="ip-user-avatar"/>
                 </form>
-                <div style="text-align: center; font-size: 2rem; color: RGB(221, 0, 63); padding: 2px; border: red; border: 2px;">Thay đổi ảnh đại diện</div>
+                <div style="text-align: center; font-size: 2rem; color: RGB(221, 0, 63); padding: 2px; border: red; border: 2px;">
+                    Thay đổi ảnh đại diện
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-    $('#ip-user-avatar').change(function (){
+    $('#ip-user-avatar').change(function () {
         $('#form-avatar').submit();
     })
     $('#form-avatar').ajaxForm({
@@ -56,18 +60,18 @@
                     "   <button type='button' class='close' data-dismiss='alert'>" +
                     "       <i class='ace-icon fa fa-times'></i>" +
                     "   </button>" +
-                    "  Đổi ảnh đại diện thành công" +
+                    "  Đổi ảnh đại diện thành công !" +
                     "</div>")
                 var d = new Date();
-                var imageUrl =  $('.user-img-img img').attr("src");
-                $('.user-img-img img').attr("src", imageUrl+"?"+d.getTime());
+                var imageUrl = $('.user-img-img img').attr("src");
+                $('.user-img-img img').attr("src", imageUrl + "?" + d.getTime());
             } else if (response == "over_size" || response == null) {
                 $('#message-avatar').html("" +
-                    "<div class='alert alert-block alert-danger'>" +
+                    "<div class='alert alert-block alert-warning'>" +
                     "   <button type='button' class='close' data-dismiss='alert'>" +
                     "       <i class='ace-icon fa fa-times'></i>" +
                     "   </button>" +
-                    "   Ảnh quá lớn" +
+                    "   Ảnh quá lớn !" +
                     "</div>")
             }
         },
