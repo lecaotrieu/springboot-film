@@ -77,7 +77,7 @@ public class UserController {
         List<FilmDTO> filmDTOS = filmService.findByProperties(SecurityUtils.getUserPrincipal().getId(),1, command.getPage(), command.getLimit(), command.getSortExpression(), command.getSortDirection());
 
         command.setListResult(filmDTOS);
-        command.setTotalItems(filmService.getTotalFilmFavorite(SecurityUtils.getUserPrincipal().getId()));
+        command.setTotalItems(filmService.getTotalFilmFavorite(SecurityUtils.getUserPrincipal().getId(),1));
         command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
 
 
@@ -89,6 +89,32 @@ public class UserController {
 
         model.addAttribute("user", userDTO);
         return "views/web/favoriteFilm";
+    }
+    @RequestMapping(value = "/trang-ca-nhan/phim-theo-doi", method = RequestMethod.GET)
+    public String followFilm(Model model,
+                               @RequestParam(value = "message", required = false) String message,
+                               @RequestParam(value = "page", required = false) Integer page,
+                               @RequestParam(value = "limit", required = false) Integer limit,
+                               @RequestParam(value = "sort", required = false) String sort,
+                               @RequestParam(value = "sortDsc", required = false) String sortDsc
+    ) throws Exception {
+        FilmCommand command = new FilmCommand();
+        command = setValueForCommand(command, page, sort, sortDsc, limit);
+        List<FilmDTO> filmDTOS= filmService.findByUserId(SecurityUtils.getUserPrincipal().getId(),1, command.getPage(), command.getLimit(), command.getSortExpression(), command.getSortDirection());
+
+        command.setListResult(filmDTOS);
+        command.setTotalItems(filmService.getTotalFilmFavorite(SecurityUtils.getUserPrincipal().getId(),1));
+        command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
+
+
+        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
+        if (message != null) {
+            WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
+        }
+        model.addAttribute(WebConstant.LIST_ITEM, command);
+
+        model.addAttribute("user", userDTO);
+        return "views/web/followFilm";
     }
 
 

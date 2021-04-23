@@ -21,11 +21,17 @@ public interface IFilmService {
     List<FilmDTO> findByProperties(String filmTypeCode, boolean trailer, int page, int limit, String sortExpression, String sortDirection);
 
     List<FilmDTO> findByProperties(Long userId, int page, int limit);
+
     List<FilmDTO> findByProperties(Long userId,int like,int page, int limit, String sortExpression, String sortDirection);
+
+    List<FilmDTO> findByUserId(Long userId,int follow,int page, int limit, String sortExpression, String sortDirection);
+
+    List<FilmDTO> findByProperties(Long actorId);
+
 
     int getTotalItem(String search, String filmType, String category, String country, String year);
 
-    int getTotalFilmFavorite(Long userID);
+    int getTotalFilmFavorite(Long userID,int likeORfollow);
 
     int getTotalItemByCategory(String categoryCode, Integer status);
 

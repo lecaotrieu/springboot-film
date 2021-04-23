@@ -4,71 +4,68 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
 <head>
-    <title th:text="#{label.actor.list}"></title>
+    <title >Phim theo dõi</title>
 </head>
-<body style="overflow: visible;">
-
-<div class="hero common-hero">
+<body>
+<div class="hero user-hero">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="hero-ct">
-                    <h1>celebrity list</h1>
                     <ul class="breadcumb">
                         <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
-                        <li> <span class="ion-ios-arrow-right"></span> Danh sách diễn viên</li>
+                        <li> <span class="ion-ios-arrow-right"></span>Phim theo dõi</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- celebrity grid v1 section-->
-<div class="page-single">
+<div class="page-single userfav_list">
     <div class="container">
         <div class="row ipad-width2">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="topbar-filter">
-                    <p>Tìm thấy <span><div th:text="${items.totalItems}" th:remove="tag"></div> diễn viên</span></p>
-                    <a href="" class="grid"><i class="ion-grid active"></i></a>
-                </div>
-                <div class="celebrity-items">
-                    <div class="ceb-item" th:each="actor: ${items.listResult}">
-                        <a href="#"><img th:src="@{${actor.avatarUrl}}" style="height: 300px;width: 270px"></a>
-                        <div class="ceb-infor">
-                            <h2><a th:href="@{'/thong-tin-dien-vien/'+${actor.id}}" th:text="${actor.name}"></a></h2>
-                            <span>actor</span>
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div th:replace="fragments/web/user-menu::user-menu"></div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+
+                <div class="flex-wrap-movielist user-fav-list" >
+                    <div class="movie-item-style-2" th:each="film: ${items.listResult}" >
+                        <img  th:src="@{${film.image1Url}}" alt="">
+                        <div class="mv-item-infor">
+                            <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
+                            <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                            <p class="describe" th:utext="${film.description}"></p>
+
                         </div>
                     </div>
 
                 </div>
                 <div class="topbar-filter">
-                    <label> Diễn viên trên mỗi trang:</label>
+                    <label> Phim theo dõi trên mỗi trang:</label>
                     <select id="select-limit" th:field="${items.limit}">
-                        <option value="5">5 diễn viên</option>
-                        <option value="10">10 diễn viên</option>
-                        <option value="15">15 diễn viên</option>
-                        <option value="20">20 diễn viên</option>
+                        <option value="5">5 Phim theo dõi</option>
+                        <option value="10">10 Phim theo dõi</option>
+                        <option value="15">15 Phim theo dõi</option>
+                        <option value="20">20 Phim theo dõi</option>
                     </select>
 
                     <div class="pagination2">
                         <span style="float: left;"
-                              th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">Trang 1 trên 2:</span>
+                              th:text="'Trang ' + ${items.page} + ' trên ' + ${items.totalPage} + ' :'">
+                        </span>
                         <ul class="pagination" id="pagination" style="margin: 0;"></ul>
                     </div>
-                    <form th:action="@{/danh-sach-dien-vien}" method="get" id="form-search">
+                    <form th:action="@{/trang-ca-nhan/phim-theo-doi}" method="get" id="form-search">
                         <input type="hidden" name="limit" id="limit" th:value="${items.limit}">
                         <input type="hidden" name="page" id="page" th:value="${items.page}">
-                        <input type="hidden" name="search" th:value="${items.search}">
                     </form>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 </div>
-<!--end of celebrity grid v1 section-->
-<!-- footer section-->
 <script th:inline="javascript">
     $(document).ready(function () {
         pagingActor();
@@ -113,8 +110,4 @@
 
 </script>
 </body>
-
-
-<!-- celebritygrid0111:44-->
-<iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" title="Twitter analytics iframe"></iframe></body>
 </html>

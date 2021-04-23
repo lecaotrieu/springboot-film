@@ -59,6 +59,14 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
     @Query("select distinct f from FilmEntity f join f.evaluates e where e.user.id = ?1 and e.liked=?2" )
     List<FilmEntity> findFilmFavoriteByUserId(Long userId, int like, Pageable pageable);
 
+    @Query("select distinct f from FilmEntity f join f.evaluates e where e.user.id = ?1 and e.follow=?2" )
+    List<FilmEntity> findFilmFollowByUserId(Long userId, int follow, Pageable pageable);
+
     @Query("select count(distinct f.id) from FilmEntity f join f.evaluates e where  e.user.id= ?1 and e.liked= ?2")
     long findFilmFavoriteByUserId(Long userId, int like);
+
+    @Query("select distinct f from FilmEntity f join f.actors e where e.id = ?1" )
+    List<FilmEntity> findAllByActorID(Long actorId);
+
+
 }

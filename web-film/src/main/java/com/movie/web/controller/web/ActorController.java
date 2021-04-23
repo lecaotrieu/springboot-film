@@ -1,13 +1,16 @@
 package com.movie.web.controller.web;
 
+import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
-import com.movie.core.dto.ActorDTO;
-import com.movie.core.dto.FilmDTO;
+import com.movie.core.dto.*;
 import com.movie.core.service.IActorService;
+import com.movie.core.service.IFilmService;
 import com.movie.web.command.ActorCommand;
+import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +19,9 @@ import java.util.List;
 
 @Controller(value = "ActorController")
 public class ActorController {
+
+    @Autowired
+    private IFilmService filmService;
     @Autowired
     private IActorService actorService;
 
@@ -56,10 +62,12 @@ public class ActorController {
         return  command;
     }
 
-    @RequestMapping(value = "/dien-vien", method = RequestMethod.GET)
-    public String celebrityInfo(Model model) {
-        List<ActorDTO> actorDTOS = actorService.findByProperties("", 1, 8, null, null);
-        model.addAttribute("actors", actorDTOS);
+
+    @RequestMapping(value = "/thong-tin-dien-vien/{actorCode}-{actorId}", method = RequestMethod.GET)
+    public String showActorDetail(@PathVariable("actorId") Long actorId, Model model) {
+        ActorDTO actorDTO=actorService.findOneById(actorId);
+                actorDTO.setFilms(filmService.findByProperties(actorId));
+        model.addAttribute("actor", actorDTO);
         return "views/web/celebrityInfo";
     }
 }

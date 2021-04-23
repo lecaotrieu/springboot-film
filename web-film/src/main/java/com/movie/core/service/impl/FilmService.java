@@ -104,6 +104,31 @@ public class FilmService implements IFilmService {
         return filmDTOS;
     }
 
+    @Override
+    public List<FilmDTO> findByUserId(Long userId, int follow, int page, int limit, String sortExpression, String sortDirection) {
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
+        List<FilmEntity> filmEntities;
+        filmEntities = filmRepository.findFilmFollowByUserId(userId,follow,pageable);
+        List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
+        for (FilmEntity entity : filmEntities) {
+            FilmDTO filmDTO = filmConvert.toDTO(entity);
+            filmDTOS.add(filmDTO);
+        }
+        return filmDTOS;
+    }
+
+    @Override
+    public List<FilmDTO> findByProperties(Long actorId) {
+        List<FilmEntity> filmEntities;
+        filmEntities = filmRepository.findAllByActorID(actorId);
+        List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
+        for (FilmEntity entity : filmEntities) {
+            FilmDTO filmDTO = filmConvert.toDTO(entity);
+            filmDTOS.add(filmDTO);
+        }
+        return filmDTOS;
+    }
+
     public List<FilmDTO> findByProperties(String filmTypeCode, int page, int limit, String sortExpression, String sortDirection) {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
@@ -158,9 +183,8 @@ public class FilmService implements IFilmService {
     }
 
     @Override
-    public int getTotalFilmFavorite(Long userID) {
-        int like=1;
-        return (int) filmRepository.findFilmFavoriteByUserId(userID,like);
+    public int getTotalFilmFavorite(Long userID,int likeORfollow) {
+        return (int) filmRepository.findFilmFavoriteByUserId(userID,likeORfollow);
     }
 
     @Override

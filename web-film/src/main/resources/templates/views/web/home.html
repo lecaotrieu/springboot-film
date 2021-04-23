@@ -234,9 +234,9 @@
                     <div class="celebrities">
                         <h4 class="sb-title"> Người diễn viên nổi bật</h4>
                         <div class="celeb-item" th:each="actor : ${actors}">
-                            <a th:href="@{/dien-vien}"><img th:src="@{${actor.avatarUrl}}" alt="" width="70" height="70"></a>
+                            <a th:href="@{'/thong-tin-dien-vien/'+${actor.code}+'-'+${actor.id}}"><img th:src="@{${actor.avatarUrl}}" alt="" width="70" height="70"></a>
                             <div class="celeb-author">
-                                <h6><a href="#" th:text="${actor.name}"></a></h6>
+                                <h6><a th:href="@{'/thong-tin-dien-vien/'+${actor.code}+'-'+${actor.id}}" th:text="${actor.name}"></a></h6>
                                 <span th:text="#{label.actor}"></span>
                             </div>
                         </div>
