@@ -130,7 +130,8 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <input type="hidden" th:value="${episode.episodeCode}" th:if="${episode!=null}" id="episode-code">
+                                <input type="hidden" th:value="${episode.episodeCode}" th:if="${episode!=null}"
+                                       id="episode-code">
                             </div>
                         </div>
                     </div>
@@ -341,7 +342,9 @@
     $(document).ready(function () {
         var episode_code = $('#episode-code').val();
         $('#chapter_' + episode_code).addClass("active");
+        increaseView();
     });
+
     $('.episode_chapter').click(function () {
         var code = $(this).attr("data");
         if (code != $('#episode-code').val()) {
@@ -352,11 +355,47 @@
             if (url != "") {
                 $('#player').attr('src', url);
                 $('#player source').attr('src', url);
+                increaseView();
                 var urlc = "/film/" + $('#ip-filmCode').val() + "-" + $('#ip-filmId').val() + "/" + code;
                 window.history.pushState("", "", urlc);
             }
         }
     });
+
+    var timer;
+
+    function increaseView() {
+        var vid = document.getElementById("player");
+        var filmId = $('#ip-filmId').val();
+        clearInterval(timer);
+        vid.onloadedmetadata = function () {
+            var d = Number(this.duration);
+            var timeOut = d * 60 / 100;
+            var i = 0;
+            timer = setInterval(function () {
+                if (!vid.paused) {
+                    i++;
+                }
+                if (i >= timeOut) {
+                    var data = filmId;
+                    var url = "/api/film/view";
+                    $.ajax({
+                        url: url,
+                        type: "PUT",
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        success: function (result) {
+                        },
+                        error: function (error) {
+                        }
+                    });
+                    clearInterval(timer);
+                }
+            }, 1000);
+        };
+    }
+
 </script>
 </body>
 </html>

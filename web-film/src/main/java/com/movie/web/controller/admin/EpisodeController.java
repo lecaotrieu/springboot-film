@@ -32,7 +32,10 @@ public class EpisodeController {
     ResourceBundle bundle = ResourceBundle.getBundle("i18n/message_vn");
 
     @RequestMapping(value = {"/admin/film/{filmCode}-{filmId}"}, method = RequestMethod.GET)
-    public String showEpisodeEdit(@PathVariable("filmCode") String filmCode, @PathVariable("filmId") Long filmId, Model model) {
+    public String showEpisodeEdit(@PathVariable("filmCode") String filmCode, @PathVariable("filmId") Long filmId, @RequestParam(value = "message", required = false) String message, Model model) {
+        if (message != null) {
+            WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
+        }
         boolean check = buildCheck(filmId);
         if (check == true) {
             FilmDTO filmDTO = buildFilmToShow(filmId);
@@ -41,10 +44,10 @@ public class EpisodeController {
             model.addAttribute(WebConstant.FORM_ITEM, episodeDTO);
 //            buildFilmToShow(filmId);
             if (!filmCode.equals(filmDTO.getCode())) {
-               return "redirect:/admin/film/" + filmDTO.getCode() + "-" + filmId;
+                return "redirect:/admin/film/" + filmDTO.getCode() + "-" + filmId;
             }
         } else {
-           return "redirect:/admin/film/list";
+            return "redirect:/admin/film/list";
         }
         return "views/admin/episode/edit";
     }
@@ -64,13 +67,16 @@ public class EpisodeController {
 
 
     @RequestMapping(value = {"/admin/film/{filmCode}-{filmId}/tap-{episodeCode}-{id}"}, method = RequestMethod.GET)
-    public ModelAndView showEpisodeEdit(@PathVariable("filmCode") String filmCode, @PathVariable("filmId") Long filmId, @PathVariable("episodeCode") Integer episodeCode, @PathVariable("id") Long id) {
+    public String showEpisodeEdit(@PathVariable("filmCode") String filmCode, @PathVariable("filmId") Long filmId,
+                                  @PathVariable("episodeCode") Integer episodeCode, Model model,
+                                  @PathVariable("id") Long id, @RequestParam(value = "message", required = false) String message) {
         boolean check = buildCheck(filmId);
-        ModelAndView mav;
+        if (message != null) {
+            WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
+        }
         if (check == true) {
             FilmDTO filmDTO = buildFilmToShow(filmId);
-            mav = new ModelAndView("views/admin/episode/edit");
-            mav.addObject("film", filmDTO);
+            model.addAttribute("film", filmDTO);
             EpisodeDTO episodeDTO;
             if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)) {
                 episodeDTO = episodeService.findOneById(id);
@@ -78,17 +84,17 @@ public class EpisodeController {
                 episodeDTO = episodeService.findOneById(id, CoreConstant.ACTIVE_STATUS);
             }
             if (episodeDTO != null) {
-                mav.addObject(WebConstant.FORM_ITEM, episodeDTO);
+                model.addAttribute(WebConstant.FORM_ITEM, episodeDTO);
                 if (!filmCode.equals(filmDTO.getCode()) || !episodeCode.equals(episodeDTO.getEpisodeCode())) {
-                    mav = new ModelAndView("redirect:/admin/film/" + filmDTO.getCode() + "-" + filmId + "/tap-" + episodeDTO.getEpisodeCode() + "-" + id);
+                    return "redirect:/admin/film/" + filmDTO.getCode() + "-" + filmId + "/tap-" + episodeDTO.getEpisodeCode() + "-" + id;
                 }
             } else {
-                mav = new ModelAndView("redirect:/admin/film/list");
+                return "redirect:/admin/film/list";
             }
         } else {
-            mav = new ModelAndView("redirect:/admin/film/list");
+            return "redirect:/admin/film/list";
         }
-        return mav;
+        return "views/admin/episode/edit";
     }
 
     @RequestMapping(value = {"/ajax/admin/film/list", "/admin/film/episode/list"}, method = RequestMethod.GET)

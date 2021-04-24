@@ -21,12 +21,12 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/account/logout-admin", method = RequestMethod.GET)
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return new ModelAndView("redirect:/account/login-admin");
+        return "redirect:/account/login-admin";
     }
 
     @RequestMapping(value = "/accessDenied-admin", method = RequestMethod.GET)
