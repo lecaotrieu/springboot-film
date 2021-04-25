@@ -1,5 +1,6 @@
 package com.movie.web.controller.admin;
 
+import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.FilmTypeDTO;
 import com.movie.core.service.*;
@@ -26,24 +27,37 @@ public class HomeController {
     private ICategoryService categoryService;
 
     @Autowired
-    private IFilmTypeService  filmTypeService;
+    private IFilmTypeService filmTypeService;
 
     @RequestMapping(value = {"/admin/home-page", "/admin/trang-chu"}, method = RequestMethod.GET)
     public String homePage(Model model) {
 //        String userInfo = SecurityUtils.getPrincipal().getUsername();
 //        model.addAttribute("userInfo", userInfo);
-        int totalUser = userService.getTotalItem("");
-        int totalEmployee = employeeService.getTotalItem();
-        int totalVideo = videoService.getTotalItem("", "");
-        int totalFilm = filmService.getTotalItem();
-        List<CategoryDTO> categoryDTOS = categoryService.findAll();
-        List<FilmTypeDTO> filmTypeDTOS = filmTypeService.findAll();
-        model.addAttribute("userTotal", totalUser);
-        model.addAttribute("employeeTotal", totalEmployee);
-        model.addAttribute("videoTotal", totalVideo);
+        String userName = "";
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)||SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)) {
+            userName = "ADMIN";
+        } else if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_POSTER)) {
+            userName = SecurityUtils.getPrincipal().getUsername();
+        }
+        int totalFilm = filmService.getTotalItem(userName, "", "", "", "","");
+        if (userName == "ADMIN") {
+            int totalEmployee = employeeService.getTotalItem();
+            model.addAttribute("employeeTotal", totalEmployee);
+        }
+
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN) || SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)){
+            int totalUser = userService.getTotalItem("");
+            model.addAttribute("userTotal", totalUser);
+            List<CategoryDTO> categoryDTOS = categoryService.findAll();
+            List<FilmTypeDTO> filmTypeDTOS = filmTypeService.findAll();
+            model.addAttribute("categories", categoryDTOS);
+            model.addAttribute("filmTypes", filmTypeDTOS);
+        }
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)||SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)){
+            int totalVideo = videoService.getTotalItem("", "");
+            model.addAttribute("videoTotal", totalVideo);
+        }
         model.addAttribute("filmTotal", totalFilm);
-        model.addAttribute("categories", categoryDTOS);
-        model.addAttribute("filmTypes", filmTypeDTOS);
         return "views/admin/home";
     }
 }

@@ -51,11 +51,11 @@
                         <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
                             <div class="card__content">
                                 <div class="card__wrap">
-                                    <span class="card__rate"><i class="icon ion-ios-star"></i><div
+                                    <span class="card__rate"><i class="fas fa-star"></i><div
                                             th:text="${film.scores}" th:remove="tag"></div></span>
                                     <ul class="card__list">
                                         <li th:text="${film.quality}"></li>
-                                        <li>16+</li>
+                                        <li th:text="${film.filmType.name}"></li>
                                     </ul>
                                 </div>
 
@@ -71,6 +71,9 @@
                                     <li><span>Thời gian:</span>
                                         <div th:text="${film.time}" th:remove="tag"></div>
                                         phút
+                                    </li>
+                                    <li><span>Lượt xem:</span>
+                                        <div th:text="${film.view}" th:remove="tag"></div>
                                     </li>
                                     <li><span>Quốc gia:</span> <a th:href="@{'/phim/quoc-gia/'+${film.country.code}}"
                                                                   th:text="${film.country.name}"></a></li>

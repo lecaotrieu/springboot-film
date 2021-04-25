@@ -20,7 +20,11 @@
                             <span class="blue"><a th:href="@{'/phim/the-loai/'+${film.categories.get(0).code}}" th:text="${film.categories.get(0).name}"></a></span>
                         </div>
                         <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
-                        <p><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                        <div style="width: 100%;">
+                            <p style="float: left"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                            <p style="float: right"><span th:text="${film.view}"></span> lượt xem</p>
+                        </div>
+
                     </div>
                 </div>
             </div>

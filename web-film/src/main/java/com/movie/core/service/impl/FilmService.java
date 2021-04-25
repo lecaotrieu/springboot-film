@@ -92,10 +92,11 @@ public class FilmService implements IFilmService {
         }
         return filmDTOS;
     }
-    public List<FilmDTO> findByProperties(Long userId,int like,int page, int limit, String sortExpression, String sortDirection) {
+
+    public List<FilmDTO> findByProperties(Long userId, int like, int page, int limit, String sortExpression, String sortDirection) {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
-        filmEntities = filmRepository.findFilmFavoriteByUserId(userId,like, pageable);
+        filmEntities = filmRepository.findFilmFavoriteByUserId(userId, like, pageable);
         List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
         for (FilmEntity entity : filmEntities) {
             FilmDTO filmDTO = filmConvert.toDTO(entity);
@@ -108,7 +109,7 @@ public class FilmService implements IFilmService {
     public List<FilmDTO> findByUserId(Long userId, int follow, int page, int limit, String sortExpression, String sortDirection) {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<FilmEntity> filmEntities;
-        filmEntities = filmRepository.findFilmFollowByUserId(userId,follow,pageable);
+        filmEntities = filmRepository.findFilmFollowByUserId(userId, follow, pageable);
         List<FilmDTO> filmDTOS = new ArrayList<FilmDTO>();
         for (FilmEntity entity : filmEntities) {
             FilmDTO filmDTO = filmConvert.toDTO(entity);
@@ -183,8 +184,8 @@ public class FilmService implements IFilmService {
     }
 
     @Override
-    public int getTotalFilmFavorite(Long userID,int likeORfollow) {
-        return (int) filmRepository.findFilmFavoriteByUserId(userID,likeORfollow);
+    public int getTotalFilmFavorite(Long userID, int likeORfollow) {
+        return (int) filmRepository.findFilmFavoriteByUserId(userID, likeORfollow);
     }
 
     @Override
@@ -292,9 +293,11 @@ public class FilmService implements IFilmService {
             entity = filmRepository.getOne(filmDTO.getId());
             entity = filmConvert.toEntity(filmDTO, entity, "image", "image2", "trailerYoutube", "trailer");
             if (entity.getScores() == null) entity.setScores(0.0);
+            if (entity.getView() == null) entity.setView(0);
         } else {
             entity = filmConvert.toEntity(filmDTO);
             entity.setScores(0.0);
+            entity.setView(0);
         }
         entity.setCode(code);
         List<CategoryEntity> categoryEntities = new ArrayList<CategoryEntity>();

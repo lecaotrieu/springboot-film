@@ -223,6 +223,7 @@
                     <input name="id" th:value="*{id}" type="hidden" id="id" th:if="${!#strings.isEmpty(item.id)}"/>
                     <input name="employee.id" th:value="${#authentication.getPrincipal().getId()}" type="hidden"/>
                     <input type="hidden" th:field="*{scores}">
+                    <input type="hidden" th:field="*{view}">
                 </form>
                 <div class="col-4">
                     <label for="description" class="col-sm-12" th:text="#{label.content}"></label>

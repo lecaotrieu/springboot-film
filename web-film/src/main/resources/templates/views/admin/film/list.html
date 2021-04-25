@@ -132,12 +132,14 @@
                         <th class="th-sm table-sort" sortBy="language" th:text="#{label.language}"></th>
                         <th class="th-sm table-sort" sortBy="scores" th:text="#{label.scores}"></th>
                         <th class="th-sm table-sort" sortBy="quality" th:text="#{label.quality}"></th>
+                        <th class="th-sm table-sort" sortBy="quality" th:text="#{label.view}"></th>
                         <th class="th-sm" th:text="#{label.total.episode}"></th>
                         <th class="th-sm table-sort" sortBy="createdBy" th:text="#{label.people.create}"></th>
                         <th class="th-sm table-sort" sortBy="createdDate" th:text="#{label.create.date}"></th>
                         <th class="th-sm table-sort" sortBy="modifiedBy" th:text="#{label.people.modified}"></th>
                         <th class="th-sm table-sort" sortBy="modifiedDate" th:text="#{label.modified.date}"></th>
-                        <th class="th-sm table-sort" sortBy="status" th:text="#{label.status}"></th>
+                        <th class="th-sm table-sort" sortBy="status" th:text="#{label.status}"
+                            sec:authorize="hasAnyRole('ADMIN')"></th>
                         <th class="th-sm" th:text="#{label.action}"></th>
                     </tr>
                     </thead>
@@ -151,19 +153,21 @@
                             <td th:text="${film.language}"></td>
                             <td th:text="${film.scores}"></td>
                             <td th:text="${film.quality}"></td>
-                            <td><a th:href="@{/admin/film/episode/list(filmId=${film.id})}" th:text="${film.episodesCount}"
+                            <td th:text="${film.view}"></td>
+                            <td><a th:href="@{/admin/film/episode/list(filmId=${film.id})}"
+                                   th:text="${film.episodesCount}"
                                    style="color: #0b51c5; font-weight: bold"></a></td>
                             <td th:text="${film.createdBy}"></td>
                             <td th:text="${film.createdDate}"></td>
                             <td th:text="${film.modifiedBy}"></td>
                             <td th:text="${film.modifiedDate}"></td>
-                            <td>
+                            <td sec:authorize="hasAnyRole('ADMIN')">
                                 <div class="custom-control custom-switch"
                                      style="width: fit-content; margin: auto;">
                                     <div th:if="${film.status == 1}" th:remove="tag">
                                         <input type="checkbox" class="custom-control-input"
                                                th:id="status_+ ${film.id}" checked
-                                               th:onchange="updateStatusOfFilm([[${film.id}]])">
+                                               th:onchange="updateStatusOfFilm([[${film.id}]],undifield)">
                                     </div>
                                     <div th:if="${film.status == 0}" th:remove="tag">
                                         <input type="checkbox" class="custom-control-input"
@@ -178,7 +182,12 @@
                                    class="btn btn-sm btn-primary btn-update">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <a class="btn btn-sm btn-warning" th:onclick="warningBeforeDelete([[${film.id}]])">
+                                <a class="btn btn-sm btn-warning" th:onclick="warningBeforeDelete([[${film.id}]],true)"
+                                   sec:authorize="hasRole('ADMIN')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                                <a class="btn btn-sm btn-warning" th:onclick="warningBeforeDelete([[${film.id}]],false)"
+                                   sec:authorize="hasRole('POSTER')">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </td>
@@ -193,12 +202,13 @@
                         <th class="th-sm" th:text="#{label.language}"></th>
                         <th class="th-sm" th:text="#{label.scores}"></th>
                         <th class="th-sm" th:text="#{label.quality}"></th>
+                        <th class="th-sm" th:text="#{label.view}"></th>
                         <th class="th-sm#{label.total.episode}"></th>
                         <th class="th-sm" th:text="#{label.people.create}"></th>
                         <th class="th-sm" th:text="#{label.create.date}"></th>
                         <th class="th-sm" th:text="#{label.people.modified}"></th>
                         <th class="th-sm" th:text="#{label.modified.date}"></th>
-                        <th class="th-sm" th:text="#{label.status}"></th>
+                        <th class="th-sm" th:text="#{label.status}" sec:authorize="hasAnyRole('ADMIN')"></th>
                         <th class="th-sm" th:text="#{label.action}"></th>
                     </tr>
                     </tfoot>
@@ -270,17 +280,23 @@
         });
     });
 
-    function warningBeforeDelete(x) {
+    function warningBeforeDelete(x, role) {
         if (x != null) {
             showAlertBeforeDelete(function () {
-                deleteFilm([x]);
+                if (role)
+                    deleteFilm([x]);
+                else {
+                    updateStatusOfFilm(x, function (){
+                        window.location.href = filmListURL + '?message=redirect_delete';
+                    });
+                }
             });
         } else {
             showAlertBeforeDelete(function () {
-                var ids = $('tbody input[type=checkbox]:checked').map(function () {
-                    return $(this).val()
-                }).get();
-                deleteFilm(ids);
+                /* var ids = $('tbody input[type=checkbox]:checked').map(function () {
+                     return $(this).val()
+                 }).get();
+                 deleteFilm(ids);*/
             });
         }
     }
@@ -307,7 +323,7 @@
 
     var apiStatusUrl = "/api/admin/film/status";
 
-    function updateStatusOfFilm(id) {
+    function updateStatusOfFilm(id, action) {
         var status = "status_" + id;
         if ($('#' + status).is(':checked')) {
             status = 1;
@@ -322,6 +338,7 @@
             data: JSON.stringify(data),
             dataType: 'json',
             success: function () {
+                action();
             },
             error: function () {
                 console.log("loi");
