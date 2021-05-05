@@ -4,6 +4,7 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.UserDTO;
 import com.movie.core.service.IUserService;
+import com.movie.core.service.IVideoService;
 import com.movie.core.utils.UploadUtil;
 import com.movie.web.utils.SecurityUtils;
 import org.apache.commons.fileupload.FileItem;
@@ -110,6 +111,29 @@ public class UserAPI {
                 String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.USER_PHOTOS + File.separator + id;
                 UploadUtil.saveFile(uploadDir, fileName, file);
                 userService.updatePhoto(id, fileName);
+            }
+            return "success";
+        }
+    }
+
+
+    @Autowired
+    private IVideoService videoService;
+    @PostMapping("/api/user/video")
+    public String uploadVideoOfUser(@RequestParam("img") MultipartFile image, @RequestParam("video") MultipartFile video, @RequestParam("title") String title) throws Exception {
+        if (!image.isEmpty() && image.getSize() > CoreConstant.IMAGE_UPLOAD_MAX) {
+            return "over_size";
+        } else {
+            if (!video.isEmpty()) {
+                if (!image.isEmpty() && image.getSize() > CoreConstant.VIDEO_UPLOAD_MAX) {
+                    return "over_size";
+                }
+                Long id = SecurityUtils.getUserPrincipal().getId();
+                String fileName = org.springframework.util.StringUtils.cleanPath(image.getOriginalFilename());
+                fileName = "film_img_" + id + getFieldName(fileName);
+                String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.USER_PHOTOS + File.separator + id;
+                UploadUtil.saveFile(uploadDir, fileName, image);
+                videoService.save(id, fileName);
             }
             return "success";
         }

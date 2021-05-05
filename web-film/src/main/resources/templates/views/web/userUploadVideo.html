@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <link rel="stylesheet" th:href="@{/template/web/css/userUploadVideo.css}">
+    <title th:text="#{label.user.upload.video}"></title>
+</head>
+<body>
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1></h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
+                        <li class="active"><span class="ion-ios-arrow-right"></span><a th:href="@{/trang-ca-nhan}">Hồ sơ</a></li>
+                        <li><span class="ion-ios-arrow-right"></span>Đăng video
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div th:replace="fragments/web/user-menu::user-menu"></div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12"
+                 style="padding: 40px; background-color: #0b1a2a; border: 3px solid #0f2133; margin-top: -38px;">
+                <div id="message-avatar"></div>
+                <form class="form-horizontal" th:action="@{/api/user/photo}" method="post" id="form-video">
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <label for="titleVideo" class=" form-control-label">Tiêu đề video</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="input-group" value="" id="titleVideo"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <label class=" form-control-label">Ảnh video</label>
+                        </div>
+                        <div class="col-md-9">
+                            <img class="d-block film-img-1" th:src="@{/template/image/no-image.jpg}" alt="Card image cap" id="imageVideo">
+                            <input type="file" name="img" id="img" accept="image/*"
+                                   onchange="readURL(this,'imageVideo')">
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <label class=" form-control-label">Ảnh video</label>
+                        </div>
+                        <div class="col-md-9">
+                            <video class="video" controls id="video">
+                                <source src="${videoUrl}" type="video/mp4">
+                            </video>
+                            <input type="file" name="video" id="ip-video" accept="video/*"
+                                   onchange="readVideo(this,'video')">
+                        </div>
+                    </div>
+                    <button class="btn btn-success" >Đăng </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+</script>
+</body>
+</html>

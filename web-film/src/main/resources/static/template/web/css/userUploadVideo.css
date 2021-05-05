@@ -1,0 +1,29 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+#form-video .btn.btn-success {
+    background: #0aff33;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    border: none;
+    float: right;
+}
+
+#form-video .btn.btn-success:hover {
+    background: #06d628;
+}
+
+#form-video video#video {
+    width: 100%;
+}
+
+#form-video img#imageVideo {
+    width: 100%;
+}
+
+form#form-video {
+    color: #fff;
+}
