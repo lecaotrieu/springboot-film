@@ -108,7 +108,7 @@
                                                     <div class="cast-left">
                                                         <img th:src="@{${actor.avatarUrl}}" alt=""
                                                              style="width:40px;height: 40px;">
-                                                        <a href="#" th:text="${actor.name}"></a>
+                                                        <a th:href="@{'/thong-tin-dien-vien/'+${actor.code}+'-'+${actor.id}}" th:text="${actor.name}"></a>
                                                     </div>
                                                 </div>
                                             </div>
