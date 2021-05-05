@@ -73,17 +73,6 @@ public class HomeController {
     }
 
 
-   /* @RequestMapping(value = "/dang-nhap", method = RequestMethod.GET)
-    public ModelAndView homeLoginPage(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("web/login");
-        return mav;
-    }*/
-
-    /*  @RequestMapping(value = "/dang-ky", method = RequestMethod.GET)
-      public ModelAndView homeRegisterPage(HttpServletRequest request, HttpServletResponse response) {
-          ModelAndView mav = new ModelAndView("web/register");
-          return mav;
-      }*/
     @RequestMapping(value = "/dang-xuat", method = RequestMethod.GET)
     public String logoutOfUser(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

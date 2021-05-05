@@ -39,6 +39,7 @@ public class VideoController {
         return "views/admin/video/list";
     }
 
+
     @RequestMapping(value = {"/admin/video/show"}, method = RequestMethod.GET)
     public String showVideo(Model model, @RequestParam(value = "message", required = false) String message, @RequestParam("id") Long id) {
         if (message != null) {
