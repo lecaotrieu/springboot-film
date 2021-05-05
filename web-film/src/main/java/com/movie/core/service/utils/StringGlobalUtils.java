@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 @Component
 public class StringGlobalUtils {
     public String covertToString(String value) {
+        value = value.trim();
         try {
             String temp = Normalizer.normalize(value, Normalizer.Form.NFD);
             Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");

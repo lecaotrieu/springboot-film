@@ -16,7 +16,8 @@
                     <h1></h1>
                     <ul class="breadcumb">
                         <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
-                        <li class="active"><span class="ion-ios-arrow-right"></span><a th:href="@{/trang-ca-nhan}">Hồ sơ</a></li>
+                        <li class="active"><span class="ion-ios-arrow-right"></span><a th:href="@{/trang-ca-nhan}">Hồ
+                            sơ</a></li>
                         <li><span class="ion-ios-arrow-right"></span>Đăng video
                     </ul>
                 </div>
@@ -33,14 +34,24 @@
             </div>
             <div class="col-md-9 col-sm-12 col-xs-12"
                  style="padding: 40px; background-color: #0b1a2a; border: 3px solid #0f2133; margin-top: -38px;">
-                <div id="message-avatar"></div>
-                <form class="form-horizontal" th:action="@{/api/user/photo}" method="post" id="form-video">
+                <div id="message-video"></div>
+                <form class="form-horizontal" th:action="@{/api/user/video}" method="post" id="form-video"
+                      th:object="${video}">
+                    <div class="row form-group" th:if="*{!#strings.isEmpty(id)}">
+                        <div class="col-md-3">
+                            <label for="titleVideo" class=" form-control-label">Trạng thái</label>
+                        </div>
+                        <div class="col-md-9">
+                            <p style="color: red; font-weight: bold;" th:if="*{status == 0}">Chưa duyệt</p>
+                            <p style="color: forestgreen; font-weight: bold;" th:if="*{status == 1}">Đã duyệt</p>
+                        </div>
+                    </div>
                     <div class="row form-group">
                         <div class="col-md-3">
                             <label for="titleVideo" class=" form-control-label">Tiêu đề video</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="input-group" value="" id="titleVideo"/>
+                            <input type="text" class="input-group" name="title" th:value="*{name}" id="titleVideo"/>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -48,7 +59,8 @@
                             <label class=" form-control-label">Ảnh video</label>
                         </div>
                         <div class="col-md-9">
-                            <img class="d-block film-img-1" th:src="@{/template/image/no-image.jpg}" alt="Card image cap" id="imageVideo">
+                            <img class="d-block film-img-1" th:src="@{*{imageUrl}}" alt="Card image cap"
+                                 id="imageVideo">
                             <input type="file" name="img" id="img" accept="image/*"
                                    onchange="readURL(this,'imageVideo')">
                         </div>
@@ -60,19 +72,62 @@
                         </div>
                         <div class="col-md-9">
                             <video class="video" controls id="video">
-                                <source src="${videoUrl}" type="video/mp4">
+                                <source th:src="*{videoUrl}" type="video/mp4">
                             </video>
                             <input type="file" name="video" id="ip-video" accept="video/*"
+                                   th:if="*{#strings.isEmpty(id)}"
                                    onchange="readVideo(this,'video')">
                         </div>
                     </div>
-                    <button class="btn btn-success" >Đăng </button>
+                    <input type="hidden" th:value="*{id}" name="id" th:if="*{!#strings.isEmpty(id)}">
+                    <button class="btn btn-success">Đăng</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <script>
+    $('#form-video').ajaxForm({
+        success: function (response) {
+            if (response == "success") {
+                $('#message-video').html("" +
+                    "<div class='alert alert-block alert-success'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "  Đăng video thành công !" +
+                    "</div>")
+                var d = new Date();
+                var imageUrl = $('.user-img-img img').attr("src");
+                $('.user-img-img img').attr("src", imageUrl + "?" + d.getTime());
+            } else if (response == "image_over_size" || response == null) {
+                $('#message-video').html("" +
+                    "<div class='alert alert-block alert-warning'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Ảnh quá lớn !" +
+                    "</div>")
+            } else if (response == "video_over_size" || response == null) {
+                $('#message-video').html("" +
+                    "<div class='alert alert-block alert-warning'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Dung lượng video quá lớn !" +
+                    "</div>")
+            }
+        },
+        error: function (response) {
+            $('#message-video').html("" +
+                "<div class='alert alert-block alert-danger'>" +
+                "   <button type='button' class='close' data-dismiss='alert'>" +
+                "       <i class='ace-icon fa fa-times'></i>" +
+                "   </button>" +
+                "   Đăng thất bại !" +
+                "</div>")
+        }
+    });
 </script>
 </body>
 </html>

@@ -117,43 +117,6 @@ public class UserAPI {
     }
 
 
-    @Autowired
-    private IVideoService videoService;
-    @PostMapping("/api/user/video")
-    public String uploadVideoOfUser(@RequestParam("img") MultipartFile image, @RequestParam("video") MultipartFile video, @RequestParam("title") String title) throws Exception {
-        if (!image.isEmpty() && image.getSize() > CoreConstant.IMAGE_UPLOAD_MAX) {
-            return "over_size";
-        } else {
-            if (!video.isEmpty()) {
-                if (!image.isEmpty() && image.getSize() > CoreConstant.VIDEO_UPLOAD_MAX) {
-                    return "over_size";
-                }
-                Long id = SecurityUtils.getUserPrincipal().getId();
-                String fileName = org.springframework.util.StringUtils.cleanPath(image.getOriginalFilename());
-                fileName = "film_img_" + id + getFieldName(fileName);
-                String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.USER_PHOTOS + File.separator + id;
-                UploadUtil.saveFile(uploadDir, fileName, image);
-                videoService.save(id, fileName);
-            }
-            return "success";
-        }
-    }
-
-    private UserDTO returnValueOfDTO(UserDTO dto, Map<String, Object> mapValue) {
-        for (Map.Entry<String, Object> item : mapValue.entrySet()) {
-            if (item.getKey().equals("id") && StringUtils.isNotBlank((String) item.getValue())) {
-                dto.setId(Long.parseLong(item.getValue().toString()));
-            }
-        }
-        return dto;
-    }
-
-    private Set<String> buildTitleValue() {
-        Set<String> titleValue = new HashSet<String>();
-        titleValue.add("id");
-        return titleValue;
-    }
-
     @DeleteMapping("/api/admin/user")
     public void deleteUser(@RequestBody Long[] ids) {
         userService.deleteById(ids);

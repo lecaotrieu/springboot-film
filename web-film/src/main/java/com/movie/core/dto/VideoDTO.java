@@ -8,10 +8,12 @@ public class VideoDTO extends AbstractDTO<VideoDTO> {
     private String code;
     private String name;
     private String video;
+    private String image;
+    private String imageUrl;
     private String videoUrl;
     private Integer status;
     private Integer totalComment;
-    private UserEntity user;
+    private UserDTO user;
     private List<CommentVideoDTO> commentVideos;
     private List<EvaluateVideoDTO> evaluateVideos;
 
@@ -73,14 +75,6 @@ public class VideoDTO extends AbstractDTO<VideoDTO> {
         this.video = video;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
     public String getVideoUrl() {
         return videoUrl;
     }
@@ -95,5 +89,29 @@ public class VideoDTO extends AbstractDTO<VideoDTO> {
 
     public void setTotalComment(Integer totalComment) {
         this.totalComment = totalComment;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }

@@ -19,4 +19,6 @@ public interface VideoRepository extends JpaRepository<VideoEntity, Long> {
 
     @Query("select count(v.id) from VideoEntity v where (lower(v.code) like %?1% or lower(v.name) like %?1%) and v.user.userName like ?2%")
     long countAllByProperties(String search, String userName);
+
+    VideoEntity findByIdAndUser_Id(Long id, Long userId);
 }

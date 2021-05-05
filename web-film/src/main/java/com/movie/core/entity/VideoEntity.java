@@ -15,6 +15,9 @@ public class VideoEntity extends BaseEntity {
     private String video;
 
     @Column
+    private String image;
+
+    @Column
     private Integer status;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -81,5 +84,13 @@ public class VideoEntity extends BaseEntity {
 
     public void setEvaluateVideos(List<EvaluateVideoEntity> evaluateVideos) {
         this.evaluateVideos = evaluateVideos;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

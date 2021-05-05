@@ -65,7 +65,7 @@
                             <option th:each="i : ${#numbers.sequence(1,100,1)}" th:value="${i}" th:text="${i}"></option>
                         </select> entries</label></div>
             </div>
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-3">
                 <div class="dataTables_filter">
                     <label>Tên đăng nhập:
                         <input type="search" class="form-control form-control-sm" th:placeholder="#{label.username}"
@@ -73,13 +73,16 @@
                     </label>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-3">
                 <div id="dtBasicExample_filter" class="dataTables_filter">
                     <label>Search:
                         <input type="search" class="form-control form-control-sm" th:placeholder="#{label.search}"
                                aria-controls="dtBasicExample" th:value="${items.search}" name="search">
                     </label>
                 </div>
+            </div>
+            <div class="col-sm-12 col-md-2">
+                <button class="btn btn-primary btn-sm float-right" th:text="#{label.search}"></button>
             </div>
         </div>
         <div class="row">
@@ -151,6 +154,7 @@
                         <th class="th-sm" th:text="#{label.video.name}"></th>
                         <th class="th-sm" th:text="#{label.drive.id}"></th>
                         <th class="th-sm" th:text="#{label.people.create}"></th>
+                        <th class="th-sm" th:text="#{label.comment.total}"></th>
                         <th class="th-sm" th:text="#{label.create.date}"></th>
                         <th class="th-sm" th:text="#{label.people.modified}"></th>
                         <th class="th-sm" th:text="#{label.modified.date}"></th>

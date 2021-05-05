@@ -65,7 +65,6 @@ public interface IFilmService {
 
     void updateImg2(Long id, String photoName) throws IOException;
 
-
     void updateTrailer(Long id, MultipartFile trailer, String trailerYoutube) throws IOException;
 
     Double updateScores(Long id);

@@ -1,8 +1,12 @@
 package com.movie.core.convert;
 
+import com.movie.core.constant.CoreConstant;
 import com.movie.core.dto.VideoDTO;
+import com.movie.core.entity.UserEntity;
 import com.movie.core.entity.VideoEntity;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,8 +17,16 @@ public class VideoConvert {
         if (dto.getVideo() != null && !dto.getVideo().isEmpty()) {
             dto.setVideoUrl("https://drive.google.com/uc?id=" + dto.getVideo());
         }
-        if (entity.getCommentVideos()!=null){
+
+        if (dto.getImage() != null && !dto.getImage().isEmpty()) {
+            dto.setImageUrl("/fileUpload/" + CoreConstant.VIDEO_IMAGES + "/" + dto.getId() + "/" + dto.getImage());
+        }
+
+        if (entity.getCommentVideos() != null) {
             dto.setTotalComment(entity.getCommentVideos().size());
+        }
+        if (entity.getUser() != null) {
+            dto.setUser(userConvert.toDTO(entity.getUser()));
         }
         return dto;
     }
@@ -22,6 +34,29 @@ public class VideoConvert {
     public VideoEntity toEntity(VideoDTO dto) {
         VideoEntity entity = new VideoEntity();
         BeanUtils.copyProperties(dto, entity);
+        if (dto.getUser() != null) {
+            UserEntity userEntity =userConvert.toEntity(dto.getUser());
+            entity.setUser(userEntity);
+        }
         return entity;
+    }
+
+    @Autowired
+    private UserConvert userConvert;
+
+    public VideoEntity toEntity(VideoDTO dto, VideoEntity entityOld) {
+        if (dto.getVideo()!=null && StringUtils.isNotBlank(dto.getVideo())){
+            entityOld.setVideo(dto.getVideo());
+        }
+        if (dto.getImage()!=null && StringUtils.isNotBlank(dto.getImage())){
+            entityOld.setImage(dto.getImage());
+        }
+        entityOld.setStatus(dto.getStatus());
+        entityOld.setName(dto.getName());
+        if (dto.getUser() != null) {
+            UserEntity userEntity =userConvert.toEntity(dto.getUser());
+            entityOld.setUser(userEntity);
+        }
+        return entityOld;
     }
 }

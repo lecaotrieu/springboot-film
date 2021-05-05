@@ -2,18 +2,17 @@ package com.movie.web.controller.web;
 
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
-import com.movie.core.dto.ActorDTO;
-import com.movie.core.dto.EvaluateDTO;
-import com.movie.core.dto.FilmDTO;
-import com.movie.core.dto.UserDTO;
+import com.movie.core.dto.*;
 import com.movie.core.service.IEvaluateService;
 import com.movie.core.service.IFilmService;
 import com.movie.core.service.IUserService;
+import com.movie.core.service.IVideoService;
 import com.movie.core.utils.WebCommonUtil;
 import com.movie.web.command.ActorCommand;
 import com.movie.web.command.FilmCommand;
 import com.movie.web.command.UserCommand;
 import com.movie.web.utils.SecurityUtils;
+import com.restfb.types.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,6 +52,9 @@ public class UserController {
         return "views/web/userAvatar";
     }
 
+    @Autowired
+    private IVideoService videoService;
+
     @RequestMapping(value = "/trang-ca-nhan/dang-video", method = RequestMethod.GET)
     public String userUploadVideo(Model model, @RequestParam(value = "message", required = false) String message,
                                   @RequestParam(value = "videoId", required = false) Long videoId) throws Exception {
@@ -60,8 +62,12 @@ public class UserController {
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
+        VideoDTO videoDTO = new VideoDTO();
+        if (videoId != null){
+            videoDTO = videoService.findOneById(videoId, userDTO.getId());
+        }
+        model.addAttribute("video", videoDTO);
         model.addAttribute("user", userDTO);
-
         return "views/web/userUploadVideo";
     }
 
