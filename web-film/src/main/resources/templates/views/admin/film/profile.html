@@ -85,7 +85,7 @@
                                        th:text="#{label.film.trailer.edit}"></a>
                                 </div>
                                 <div class="col-6">
-                                    <a th:href="@{/admin/film/${item.code}-${item.id}}" style="margin-bottom: 20px;"
+                                    <a th:href="@{'/admin/film/'+${item.code}+'-'+${item.id}}" style="margin-bottom: 20px;"
                                        class="profile-edit-btn btn btn-success" th:text="#{label.film.episode.add}"></a>
                                     <a th:href="@{/admin/film/episode/list(filmId=${item.id})}"
                                        class="profile-edit-btn btn btn-light" th:text="#{label.episode.list}"></a>
