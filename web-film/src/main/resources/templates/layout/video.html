@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      th:fragment="main-fragment (head, mainContent)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/template/image/logo.png}">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!-- //for-mobile-apps -->
+    <link th:href="@{/template/video/css/bootstrap.css}"  rel="stylesheet" type="text/css" media="all"/>
+    <!-- pop-up -->
+    <link th:href="@{/template/video/css/popuo-box.css}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- //pop-up -->
+    <link th:href="@{/template/video/css/easy-responsive-tabs.css}" rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" type="text/css" th:href="@{/template/video/css/zoomslider.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/template/video/css/style.css}" />
+    <link th:href="@{/template/video/css/fot-awesome.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/template/video/js/modernizr-2.6.2.min.js}" ></script>
+    <!--/web-fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Tangerine:400,700' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!--//web-fonts-->
+    <div th:replace="${head}"></div>
+</head>
+<body>
+<div th:replace="fragments/video/header::header"></div>
+<div class="w3_content_agilleinfo_inner">
+    <div class="agile_featured_movies">
+        <div th:replace="${mainContent}"></div>
+        <div th:replace="fragments/video/footer::footer"></div>
+    </div>
+</div>
+<script src="js/jquery-1.11.1.min.js"></script>
+<!-- Dropdown-Menu-JavaScript -->
+<script>
+    $(document).ready(function () {
+        $(".dropdown").hover(
+            function () {
+                $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                $(this).toggleClass('open');
+            },
+            function () {
+                $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+<!-- //Dropdown-Menu-JavaScript -->
+
+<script type="text/javascript" th:src="@{/template/video/js/jquery.zoomslider.min.js}" ></script>
+<!-- search-jQuery -->
+<script th:src="@{/template/video/js/main.js}""></script>
+<script th:src="@{/template/video/js/simplePlayer.js}" ></script>
+<script th:src="@{/template/video/js/easy-responsive-tabs.js}" ></script>
+<script>
+    $(document).ready(function () {
+        $('#horizontalTab').easyResponsiveTabs({
+            type: 'default', //Types: default, vertical, accordion
+            width: 'auto', //auto or any width like 600px
+            fit: true,   // 100% fit in a container
+            closed: 'accordion', // Start closed if in accordion view
+            activate: function (event) { // Callback function if tab is switched
+                var $tab = $(this);
+                var $info = $('#tabInfo');
+                var $name = $('span', $info);
+                $name.text($tab.text());
+                $info.show();
+            }
+        });
+        $('#verticalTab').easyResponsiveTabs({
+            type: 'vertical',
+            width: 'auto',
+            fit: true
+        });
+    });
+</script>
+<link th:href="@{/template/video/css/owl.carousel.js}"  rel="stylesheet" type="text/css" media="all">
+<script th:src="@{/template/video/js/owl.carousel.js}" ></script>
+<script>
+    $(document).ready(function () {
+        $("#owl-demo").owlCarousel({
+
+            autoPlay: 3000, //Set AutoPlay to 3 seconds
+            autoPlay: true,
+            navigation: true,
+
+            items: 5,
+            itemsDesktop: [640, 4],
+            itemsDesktopSmall: [414, 3]
+
+        });
+
+    });
+</script>
+
+<!--/script-->
+<script type="text/javascript" th:src="@{/template/video/js/move-top.js}" ></script>
+<script type="text/javascript" th:src="@{/template/video/js/easing.js}" ></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".scroll").click(function (event) {
+            event.preventDefault();
+            $('html,body').animate({scrollTop: $(this.hash).offset().top}, 900);
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $().UItoTop({easingType: 'easeOutQuart'});
+
+    });
+</script>
+<!--end-smooth-scrolling-->
+<script th:src="@{/template/video/js/bootstrap.js}"></script>
+<script th:src="@{/template/admin/js/convert-json.js}"></script>
+<script>
+    function showAlertBeforeDelete(callback) {
+        swal({
+            title: "Xác nhận xóa",
+            text: "Bạn có chắc muốn xóa những dữ liệu đã chọn !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy bỏ",
+            confirmButtonClass: "btn btn-success",
+            cancelButtonClass: "btn btn-danger"
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                callback();
+            }
+        })
+    }
+
+    $('#login-user-form').ajaxForm({
+        success: function (response) {
+            if (response == "success") {
+                window.location.href = "/trang-chu";
+            } else if (response == "failure" || response == null) {
+                $('#message-login').html("" +
+                    "<div class='alert alert-block alert-danger'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Tài khoản hoặc mật khẩu không chính xác" +
+                    "</div>")
+            }
+        },
+        error: function (response) {
+            alert("authentication failure");
+        }
+    });
+
+    $('#register-form').ajaxForm({
+        success: function (response) {
+            if (response == "success") {
+                $('#message-register').html("" +
+                    "<div class='alert alert-block alert-success'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Đăng ký tài khoản thành công" +
+                    "</div>")
+            } else if (response == "failure" || response == null) {
+                $('#message-register').html("" +
+                    "<div class='alert alert-block alert-danger'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Đăng ký tài khoản thất bại" +
+                    "</div>")
+            }
+        },
+        error: function (response) {
+            alert("authentication failure");
+        }
+    });
+    function readURL(input, imageId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#' + imageId).attr('src', reader.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readVideo(input, videoId) {
+        if (input.files && input.files[0]) {
+            var $source = $('#' + videoId);
+            $source[0].src = URL.createObjectURL(input.files[0]);
+            $source.parent()[0].load();
+        }
+    }
+</script>
+</body>
+</html>
