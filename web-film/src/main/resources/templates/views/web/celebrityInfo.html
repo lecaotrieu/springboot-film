@@ -41,7 +41,6 @@
                         <div class="tabs">
                             <ul class="tab-links tabs-mv">
                                 <li class="active"><a href="#overviewceb">Tổng quát</a></li>
-                                <li class=""><a href="#biography"> Tiểu sử</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div id="overviewceb" class="tab active" style="">
@@ -59,7 +58,7 @@
                                                     <div class="cast-left cebleb-film" th:each="film:${actor.films}">
                                                         <img th:src="@{${film.image1Url}}" alt="">
                                                         <div>
-                                                            <a th:text="${film.name}"></a>
+                                                            <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a>
                                                         </div>
 
                                                     </div>
@@ -67,39 +66,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-xs-12 col-sm-12">
-                                            <div class="sb-it">
-                                                <h6>Fullname:  </h6>
-                                                <p><a th:text="${actor.name}"></a></p>
-                                            </div>
-                                            <div class="sb-it">
-                                                <h6>Date of Birth: </h6>
-                                                <p>June 24, 1982</p>
-                                            </div>
-                                            <div class="sb-it">
-                                                <h6>Country:  </h6>
-                                                <p>Australian</p>
-                                            </div>
-                                            <div class="sb-it">
-                                                <h6>Height:</h6>
-                                                <p>186 cm/p&gt;
-                                                </p></div>
 
-                                            <div class="ads">
-                                                <img src="images/uploads/ads1.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="filmography" class="tab" style="display: none;">
-                                    <div class="row">
-                                        <div class="rv-hd">
-                                            <div>
-                                                <h3>Tiểu sử của</h3>
-                                                <h2 th:text="${actor.name}"></h2>
-                                            </div>
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>
