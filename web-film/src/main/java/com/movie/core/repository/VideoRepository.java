@@ -1,5 +1,6 @@
 package com.movie.core.repository;
 
+import com.movie.core.entity.FilmEntity;
 import com.movie.core.entity.VideoEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,9 @@ public interface VideoRepository extends JpaRepository<VideoEntity, Long> {
     long countAllByProperties(String search, String userName);
 
     VideoEntity findByIdAndUser_Id(Long id, Long userId);
+
+    List<VideoEntity> findAllByStatus(Integer status);
+
+
+
 }

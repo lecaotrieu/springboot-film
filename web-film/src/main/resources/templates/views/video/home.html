@@ -4,7 +4,71 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       th:replace="~{layout/video :: main-fragment (~{::head}, ~{::body})}">
 <head>
-    <title th:text="#{label.actor.list}"></title>
+    <title th:text="#{label.video.list}"></title>
 </head>
-<body></body>
+<body>
+<div class="w3_content_agilleinfo_inner">
+    <div class="agile_featured_movies">
+        <!--/comedy-movies-->
+        <!---728x90--->
+
+        <h3 class="agile_w3_title hor-t">Top <span>Video</span></h3>
+        <div class="wthree_agile-requested-movies tv-movies">
+            <div class="col-md-3 requested-movies" >
+                <a href="single.html" class="hvr-sweep-to-bottom"><img th:src="" title="Movies Pro"
+                                                                       class="img-responsive" alt=" ">
+                    <div class="w3l-action-icon"><i class="fa fa-play-circle-o" aria-hidden="true"></i></div>
+                </a>
+                <div class="mid-1 agileits_w3layouts_mid_1_home">
+                    <div class="w3l-movie-text">
+
+
+                        <span><img class="anhthai" src="https://img.lovepik.com/element/40117/5186.png_860.png" alt="anh dai dien"> <h6 class="h6ne"><a href="single.html">Kevin Hart</a></h6> </span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="clearfix"></div>
+        </div>
+        <!--//comedy-movies-->
+        <h3 class="agile_w3_title">Danh Sách <span>Video</span></h3>
+        <!--/requested-movies-->
+        <div class="wthree_agile-requested-movies">
+            <div class="col-md-3 requested-movies"  th:each="video: ${video}">
+                <a href="#" class="hvr-sweep-to-bottom"><img th:src="@{${video.imageUrl}}" title="Movies Pro"
+                                                                       class="img-responsive" alt=" ">
+                    <div class="w3l-action-icon"><i class="fa fa-play-circle-o" aria-hidden="true"></i></div>
+                </a>
+                <div class="mid-1 agileits_w3layouts_mid_1_home">
+                    <div class="w3l-movie-text">
+                        <span><img class="anhthai" src="https://img.lovepik.com/element/40117/5186.png_860.png" alt="anh dai dien">
+                            <h6 class="h6ne"><a href="single.html" th:text="${video.name}"></a></h6>
+                        </span>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <!--//requested-movies-->
+        <div class="blog-pagenat-wthree">
+            <ul>
+                <li><a class="frist" href="#">Prev</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+
+                <li><a class="last" href="#">Next</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
 </html>

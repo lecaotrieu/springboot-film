@@ -3,6 +3,8 @@ package com.movie.core.service.impl;
 import com.google.api.services.drive.model.File;
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.convert.VideoConvert;
+import com.movie.core.dto.CategoryDTO;
+import com.movie.core.dto.FilmDTO;
 import com.movie.core.dto.VideoDTO;
 import com.movie.core.entity.FilmEntity;
 import com.movie.core.entity.VideoEntity;
@@ -11,7 +13,6 @@ import com.movie.core.service.IDriveService;
 import com.movie.core.service.IVideoService;
 import com.movie.core.service.utils.PagingUtils;
 import com.movie.core.service.utils.StringGlobalUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -90,6 +91,23 @@ public class VideoService implements IVideoService {
         }
         return videoDTOS;
     }
+
+
+
+
+    @Override
+    public List<VideoDTO> findAll() {
+        List<VideoEntity> videoEntities;
+        videoEntities = videoRepository.findAllByStatus(CoreConstant.ACTIVE_STATUS);
+        List<VideoDTO> videoDTOS = new ArrayList<>();
+        for (VideoEntity entity : videoEntities) {
+            VideoDTO videoDTO = videoConvert.toDTO(entity);
+            videoDTOS.add(videoDTO);
+        }
+        return videoDTOS;
+    }
+
+
 
     @Autowired
     private IDriveService driveService;
