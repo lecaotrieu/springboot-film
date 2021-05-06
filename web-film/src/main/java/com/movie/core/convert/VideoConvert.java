@@ -35,7 +35,7 @@ public class VideoConvert {
         VideoEntity entity = new VideoEntity();
         BeanUtils.copyProperties(dto, entity);
         if (dto.getUser() != null) {
-            UserEntity userEntity =userConvert.toEntity(dto.getUser());
+            UserEntity userEntity = userConvert.toEntity(dto.getUser());
             entity.setUser(userEntity);
         }
         return entity;
@@ -45,16 +45,17 @@ public class VideoConvert {
     private UserConvert userConvert;
 
     public VideoEntity toEntity(VideoDTO dto, VideoEntity entityOld) {
-        if (dto.getVideo()!=null && StringUtils.isNotBlank(dto.getVideo())){
+        if (dto.getVideo() != null && StringUtils.isNotBlank(dto.getVideo())) {
             entityOld.setVideo(dto.getVideo());
         }
-        if (dto.getImage()!=null && StringUtils.isNotBlank(dto.getImage())){
+        if (dto.getImage() != null && StringUtils.isNotBlank(dto.getImage())) {
             entityOld.setImage(dto.getImage());
         }
         entityOld.setStatus(dto.getStatus());
         entityOld.setName(dto.getName());
+        entityOld.setBrief(dto.getBrief());
         if (dto.getUser() != null) {
-            UserEntity userEntity =userConvert.toEntity(dto.getUser());
+            UserEntity userEntity = userConvert.toEntity(dto.getUser());
             entityOld.setUser(userEntity);
         }
         return entityOld;

@@ -1,6 +1,5 @@
 package com.movie.core.repository;
 
-import com.movie.core.entity.FilmEntity;
 import com.movie.core.entity.VideoEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +24,9 @@ public interface VideoRepository extends JpaRepository<VideoEntity, Long> {
 
     List<VideoEntity> findAllByStatus(Integer status);
 
+    @Query("select v from VideoEntity v where (lower(v.code) like %?1% or lower(v.name) like %?1%) and v.status = ?2")
+    List<VideoEntity> findAllBySearchAndStatus(String search, Integer status, Pageable pageable);
 
-
+    @Query("select count(v.id) from VideoEntity v where (lower(v.code) like %?1% or lower(v.name) like %?1%) and v.status=?2")
+    long countAllBySearchAndStatus(String search, Integer status);
 }

@@ -15,7 +15,7 @@ public interface IVideoService {
 
     void deleteById(Long[] ids) throws Exception;
 
-    List<VideoDTO> findByProperties(String search,String userName, Integer status, int page, int limit, String sortExpression, String sortDirection);
+    List<VideoDTO> findByProperties(String search, String userName, Integer status, int page, int limit, String sortExpression, String sortDirection);
 
     List<VideoDTO> findAll();
 
@@ -24,7 +24,12 @@ public interface IVideoService {
     int getTotalItem(String search, String userName);
 
     VideoDTO findOneById(Long id);
+
     VideoDTO findOneById(Long id, Long userId);
 
     boolean checkUser(Long userId, Long videoId);
+
+    List<VideoDTO> findByProperties(String search, Integer status, int page, int limit, String sortExpression, String sortDirection);
+
+    int getTotalItem(String search, Integer status);
 }

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/video :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <title th:text="#{label.search}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/template/video/css/table-style.css}"/>
+    <link rel="stylesheet" th:href="@{/template/video/css/list.css}" type="text/css" media="all"/>
+</head>
+<body>
+<div class="inner-agile-w3l-part-head">
+    <h3 class="w3l-inner-h-title">Danh sách video</h3>
+</div>
+<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+    <div class="agile-news-table">
+        <div class="w3ls-news-result">
+            <h4>Tìm thấy : <span th:text="${items.totalItems}"></span> Kết quả</h4>
+        </div>
+        <table id="table-breakpoint">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th></th>
+                <th>Tiêu đề</th>
+                <th>Tóm tắt</th>
+                <th>Lượt xem</th>
+                <th>Ngày đăng</th>
+                <th>Người đăng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="video,iter :${items.listResult}">
+                <td th:text="${iter.index+1}"></td>
+                <td class="w3-img">
+                    <a href="single.html"><img th:src="@{${video.imageUrl}}" alt=""/></a>
+                </td>
+                <td class="w3-list-title"><a href="#" style="color: #ea0404; font-weight: 700"
+                                             th:text="${video.name}"></a></td>
+                <td>
+                    <div class="video-brief" th:utext="${video.brief}"></div>
+                </td>
+                <td class="w3-list-info" th:text="${video.view}"></td>
+                <td class="w3-list-info" th:text="${video.createdDate}"></td>
+                <td><a href="#" th:text="${video.user.userName}"></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul id="pagination" class="pagination-sm"></ul>
+        <form action="/video/tim-kiem" method="get" id="formUrl">
+            <input type="hidden" th:value="${items.page}" name="page" id="page">
+            <input type="hidden" th:value="${items.limit}" name="limit" id="limit">
+            <input type="hidden" th:value="${items.search}" name="search" id="search">
+        </form>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var totalPages = /*[[${items.totalPage}]]*/ null;
+    var starPage = /*[[${items.page}]]*/ null;
+    /*]]>*/
+    var visiblePages = 5;
+
+    $(function () {
+        var obj = $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            startPage: starPage,
+            visiblePages: visiblePages,
+            onPageClick: function (event, page) {
+                if (page != starPage) {
+                    $("#page").val(page);
+                    $("#formUrl").submit();
+                }
+            }
+        });
+    });
+
+</script>
+<script>
+
+    $(document).ready(function () {
+        $('#btn-search').attr("a", "p-search");
+    });
+
+    $('#formUrl').submit(function (){
+        $('#search').val($('#ip-search').val());
+    });
+</script>
+</body>
+</html>

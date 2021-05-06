@@ -6,7 +6,6 @@ import com.movie.core.convert.VideoConvert;
 import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.FilmDTO;
 import com.movie.core.dto.VideoDTO;
-import com.movie.core.entity.FilmEntity;
 import com.movie.core.entity.VideoEntity;
 import com.movie.core.repository.VideoRepository;
 import com.movie.core.service.IDriveService;
@@ -151,5 +150,22 @@ public class VideoService implements IVideoService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<VideoDTO> findByProperties(String search, Integer status, int page, int limit, String sortExpression, String sortDirection) {
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
+        List<VideoEntity> videoEntities = videoRepository.findAllBySearchAndStatus(search,status, pageable);
+        List<VideoDTO> videoDTOS = new ArrayList<>();
+        for (VideoEntity entity : videoEntities) {
+            VideoDTO videoDTO = videoConvert.toDTO(entity);
+            videoDTOS.add(videoDTO);
+        }
+        return videoDTOS;
+    }
+
+    @Override
+    public int getTotalItem(String search, Integer status) {
+        return (int) videoRepository.countAllBySearchAndStatus(search, status);
     }
 }

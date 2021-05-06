@@ -2,6 +2,7 @@ package com.movie.core.dto;
 
 import com.movie.core.entity.UserEntity;
 
+import javax.persistence.Column;
 import java.util.List;
 
 public class VideoDTO extends AbstractDTO<VideoDTO> {
@@ -12,6 +13,8 @@ public class VideoDTO extends AbstractDTO<VideoDTO> {
     private String imageUrl;
     private String videoUrl;
     private Integer status;
+    private Integer view;
+    private String brief;
     private Integer totalComment;
     private UserDTO user;
     private List<CommentVideoDTO> commentVideos;
@@ -113,5 +116,21 @@ public class VideoDTO extends AbstractDTO<VideoDTO> {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public Integer getView() {
+        return view;
+    }
+
+    public void setView(Integer view) {
+        this.view = view;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
     }
 }

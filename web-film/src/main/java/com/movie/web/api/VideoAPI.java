@@ -39,7 +39,10 @@ public class VideoAPI {
     @PostMapping("/api/user/video")
     public String uploadVideoOfUser(@RequestParam(value = "img", required = false) MultipartFile image,
                                     @RequestParam(value = "video", required = false) MultipartFile video,
-                                    @RequestParam("title") String title, @RequestParam(value = "id", required = false) Long id) throws Exception {
+                                    @RequestParam(value = "brief") String brief,
+                                    @RequestParam("title") String title,
+                                    @RequestParam(value = "status") Integer status,
+                                    @RequestParam(value = "id", required = false) Long id) throws Exception {
         Long userId = SecurityUtils.getUserPrincipal().getId();
         if (id != null) {
             checkUser(userId, id);
@@ -55,7 +58,8 @@ public class VideoAPI {
         VideoDTO videoDTO = new VideoDTO();
         videoDTO.setUser(userDTO);
         videoDTO.setName(title);
-        videoDTO.setStatus(0);
+        videoDTO.setBrief(brief);
+        videoDTO.setStatus(status);
         if (id != null) {
             videoDTO.setId(id);
         } else {

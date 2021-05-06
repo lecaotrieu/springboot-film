@@ -10,13 +10,14 @@ public class VideoEntity extends BaseEntity {
     private String code;
     @Column
     private String name;
-
     @Column
     private String video;
-
+    @Column
+    private String brief;
     @Column
     private String image;
-
+    @Column
+    private Integer view;
     @Column
     private Integer status;
 
@@ -92,5 +93,21 @@ public class VideoEntity extends BaseEntity {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Integer getView() {
+        return view;
+    }
+
+    public void setView(Integer view) {
+        this.view = view;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
     }
 }

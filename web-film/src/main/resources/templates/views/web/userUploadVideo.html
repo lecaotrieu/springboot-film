@@ -60,7 +60,10 @@
                         </div>
                         <div class="col-md-9">
                             <img class="d-block film-img-1" th:src="@{*{imageUrl}}" alt="Card image cap"
-                                 id="imageVideo">
+                                 id="imageVideo" th:if="*{!#strings.isEmpty(id)}">
+                            <img class="d-block film-img-1" th:src="@{/template/image/no-image.jpg}"
+                                 alt="Card image cap"
+                                 id="imageVideo" th:if="*{#strings.isEmpty(id)}">
                             <input type="file" name="img" id="img" accept="image/*"
                                    onchange="readURL(this,'imageVideo')">
                         </div>
@@ -79,7 +82,18 @@
                                    onchange="readVideo(this,'video')">
                         </div>
                     </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="description" class="col-sm-12" th:text="#{label.description}"></label>
+                            <div class="col-sm-12">
+                                <textarea class="form-control" name="brief" id="description"
+                                          rows="20" th:text="*{brief}"></textarea>
+                            </div>
+                        </div>
+                    </div>
                     <input type="hidden" th:value="*{id}" name="id" th:if="*{!#strings.isEmpty(id)}">
+                    <input type="hidden" th:value="*{status}" name="status" th:if="*{!#strings.isEmpty(id)}">
+                    <input type="hidden" value="0" name="status" th:if="*{#strings.isEmpty(id)}">
                     <button class="btn btn-success">Đăng</button>
                 </form>
             </div>
@@ -87,6 +101,17 @@
     </div>
 </div>
 <script>
+    $(document).ready(function () {
+        var editor = CKEDITOR.replace('description', {
+            width: ['100%'], height: ['300px']
+        });
+    });
+
+    $('#form-video').submit(function (){
+        var desc = CKEDITOR.instances['description'].getData();
+        $('#description').val(desc);
+    });
+
     $('#form-video').ajaxForm({
         success: function (response) {
             if (response == "success") {
