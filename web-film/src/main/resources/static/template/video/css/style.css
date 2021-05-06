@@ -9,8 +9,72 @@ html,
 body {
 	font-size: 100%;
 	font-family: 'Lato', sans-serif;
-	background: #ffffff;
+	background: #f9f9f9;
 	margin: 0px!important;
+}
+
+.card-text {
+	display: flex;
+	justify-content: space-between;
+}
+
+.detail {
+	width: calc(100% - 60px);
+}
+
+.content {
+	width: calc(100% - 71px);
+}
+
+.poster-video {
+	height: 200px;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.poster-video {}
+
+.card-title {
+	font-weight: bold;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.card-title a {
+	color: #000;
+}
+
+.avatar img {
+	width: 100%;
+	height: auto;
+	border-radius: 50%;
+}
+
+.avatar {
+	width: 42px;
+	height: 42px;
+	display: flex;
+	justify-content: center;
+}
+
+.papa {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 0;
+}
+
+img.card-img-top {
+	border: 0;
+	height: auto;
+	width: 100%;
+	vertical-align: middle;
+}
+
+.wthree_agile-requested-movies .card {
+	margin-bottom: 20px;
+	height: 307px;
 }
 
 .requested-movies {

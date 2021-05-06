@@ -31,5 +31,7 @@ public interface IVideoService {
 
     List<VideoDTO> findByProperties(String search, Integer status, int page, int limit, String sortExpression, String sortDirection);
 
+    List<VideoDTO> findAllToViewInHomePage(Integer status, int page, int limit);
+
     int getTotalItem(String search, Integer status);
 }

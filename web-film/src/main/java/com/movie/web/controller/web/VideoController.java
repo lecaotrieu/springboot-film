@@ -23,11 +23,20 @@ public class VideoController {
 
     @RequestMapping(value = "/video/trang-chu", method = RequestMethod.GET)
     public String home(Model model) throws Exception {
-        List<VideoDTO> video = videoService.findAll();
-        model.addAttribute("video", video);
-
-
+        List<VideoDTO> topVideos = videoService.findByProperties("", CoreConstant.ACTIVE_STATUS, 1, 8, "view", "0");
+        List<VideoDTO> videos = videoService.findAllToViewInHomePage(CoreConstant.ACTIVE_STATUS, 1, 20);
+        model.addAttribute("videos", videos);
+        model.addAttribute("topVideos", topVideos);
         return "views/video/home";
+    }
+
+    @RequestMapping(value = "/ajax/video/get-list", method = RequestMethod.GET)
+    public String getListVideo(Model model, @RequestParam("page") Integer page, @RequestParam("limit") Integer limit) throws Exception {
+        List<VideoDTO> videos = videoService.findAllToViewInHomePage(CoreConstant.ACTIVE_STATUS, page, limit);
+        model.addAttribute("videos", videos);
+        model.addAttribute("page", page);
+        model.addAttribute("limit", limit);
+        return "views/video/ajaxhtml/loadListVideo";
     }
 
     @RequestMapping(value = "/video/tim-kiem", method = RequestMethod.GET)
@@ -38,9 +47,11 @@ public class VideoController {
                               @RequestParam(value = "search", required = false) String search) throws Exception {
         VideoCommand command = addValueToCommand(page, limit, sort, sortDsc, search);
         if (limit != null) command.setLimit(limit);
+        command.setSortExpression("view");
+        command.setSortDirection("0");
         List<VideoDTO> videoDTOS = videoService.findByProperties(command.getSearch(), CoreConstant.ACTIVE_STATUS, command.getPage(), command.getLimit(), command.getSortExpression(), command.getSortDirection());
         command.setListResult(videoDTOS);
-        command.setTotalItems(videoService.getTotalItem(command.getSearch(), CoreConstant.ACTIVE_STATUS ));
+        command.setTotalItems(videoService.getTotalItem(command.getSearch(), CoreConstant.ACTIVE_STATUS));
         command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
         model.addAttribute(WebConstant.LIST_ITEM, command);
         return "views/video/videoList";

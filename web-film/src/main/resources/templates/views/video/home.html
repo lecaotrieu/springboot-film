@@ -11,64 +11,97 @@
     <div class="agile_featured_movies">
         <!--/comedy-movies-->
         <!---728x90--->
-
         <h3 class="agile_w3_title hor-t">Top <span>Video</span></h3>
-        <div class="wthree_agile-requested-movies tv-movies">
-            <div class="col-md-3 requested-movies" >
-                <a href="single.html" class="hvr-sweep-to-bottom"><img th:src="" title="Movies Pro"
-                                                                       class="img-responsive" alt=" ">
-                    <div class="w3l-action-icon"><i class="fa fa-play-circle-o" aria-hidden="true"></i></div>
-                </a>
-                <div class="mid-1 agileits_w3layouts_mid_1_home">
-                    <div class="w3l-movie-text">
-
-
-                        <span><img class="anhthai" src="https://img.lovepik.com/element/40117/5186.png_860.png" alt="anh dai dien"> <h6 class="h6ne"><a href="single.html">Kevin Hart</a></h6> </span>
+        <div class="wthree_agile-requested-movies">
+            <div class="col-md-3 col-12" th:each="video: ${topVideos}">
+                <div class="card">
+                    <div class="poster-video">
+                        <img class="card-img-top" th:src="@{${video.imageUrl}}" alt="Card image cap">
                     </div>
+                    <div class="card-body">
+                        <div class="papa">
+                            <div class="avatar">
+                                <img th:src="@{${video.user.photoUrl}}" alt="avatar">
+                            </div>
+                            <div class="detail">
+                                <div class="card-title">
+                                    <a href="#" th:text="${video.name}"></a>
+                                </div>
+                                <div class="card-text">
+                                    <p>
+                                    <div th:text="${video.view}" th:remove="tag"></div>
+                                    lượt xem</p>
+                                    <p th:text="${#dates.format(video.createdDate, 'hh:mm dd-MMM-yyyy')}"></p>
+                                </div>
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
             </div>
-
-
-            <div class="clearfix"></div>
         </div>
         <!--//comedy-movies-->
         <h3 class="agile_w3_title">Danh Sách <span>Video</span></h3>
         <!--/requested-movies-->
         <div class="wthree_agile-requested-movies">
-            <div class="col-md-3 requested-movies"  th:each="video: ${video}">
-                <a href="#" class="hvr-sweep-to-bottom"><img th:src="@{${video.imageUrl}}" title="Movies Pro"
-                                                                       class="img-responsive" alt=" ">
-                    <div class="w3l-action-icon"><i class="fa fa-play-circle-o" aria-hidden="true"></i></div>
-                </a>
-                <div class="mid-1 agileits_w3layouts_mid_1_home">
-                    <div class="w3l-movie-text">
-                        <span><img class="anhthai" src="https://img.lovepik.com/element/40117/5186.png_860.png" alt="anh dai dien">
-                            <h6 class="h6ne"><a href="single.html" th:text="${video.name}"></a></h6>
-                        </span>
+            <div class="col-md-3 col-12" th:each="video: ${videos}">
+                <div class="card">
+                    <div class="poster-video">
+                        <img class="card-img-top" th:src="@{${video.imageUrl}}" alt="Card image cap">
                     </div>
-                    <div class="clearfix"></div>
+                    <div class="card-body">
+                        <div class="papa">
+                            <div class="avatar">
+                                <img th:src="@{${video.user.photoUrl}}" alt="avatar">
+                            </div>
+                            <div class="detail">
+                                <div class="card-title">
+                                    <a href="#" th:text="${video.name}"></a>
 
+                                </div>
+                                <div class="card-text">
+                                    <p>
+                                    <div th:text="${video.view}" th:remove="tag"></div>
+                                    lượt xem</p>
+                                    <p th:text="${#dates.format(video.createdDate, 'hh:mm dd-MMM-yyyy')}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-
-            <div class="clearfix"></div>
+            <div class="lo" id="getValue">
+                <input type="hidden" id="page" value="1">
+                <input type="hidden" id="limit" value="20">
+            </div>
         </div>
-        <!--//requested-movies-->
-        <div class="blog-pagenat-wthree">
-            <ul>
-                <li><a class="frist" href="#">Prev</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-
-                <li><a class="last" href="#">Next</a></li>
-            </ul>
-        </div>
-
     </div>
+    <!--//requested-movies-->
+
 </div>
+<div class="blog-pagenat-wthree" style="clear: both;">
+    <ul>
+        <li><a href="#">Video cuối</a></li>
+    </ul>
+</div>
+<script>
+    function loadVideo(page, limit) {
+        $.get("/ajax/video/get-list?page=" + page + "&limit=" + limit, function (data) {
+            $("#getValue").replaceWith($(data).find(".lo"));
+        });
+    }
 
-
+    $(document).ready(function () {
+        $(window).scroll(function (event) {
+            if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+                console.log($(document).height() - $(window).height());
+                var page = $('#page').val();
+                var limit = $('#limit').val();
+                loadVideo(page, limit)
+            }
+        });
+    });
+</script>
 </body>
 </html>

@@ -13,7 +13,9 @@ import com.movie.core.service.IVideoService;
 import com.movie.core.service.utils.PagingUtils;
 import com.movie.core.service.utils.StringGlobalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +34,7 @@ public class VideoService implements IVideoService {
 
     @Transactional
     @Override
-    public VideoDTO save(VideoDTO videoDTO) throws Exception{
+    public VideoDTO save(VideoDTO videoDTO) throws Exception {
         VideoEntity videoEntity;
         String code = stringGlobalUtils.covertToString(videoDTO.getName());
         if (videoDTO.getId() != null) {
@@ -92,8 +94,6 @@ public class VideoService implements IVideoService {
     }
 
 
-
-
     @Override
     public List<VideoDTO> findAll() {
         List<VideoEntity> videoEntities;
@@ -105,7 +105,6 @@ public class VideoService implements IVideoService {
         }
         return videoDTOS;
     }
-
 
 
     @Autowired
@@ -146,7 +145,7 @@ public class VideoService implements IVideoService {
     @Override
     public boolean checkUser(Long userId, Long videoId) {
         VideoEntity videoEntity = videoRepository.getOne(videoId);
-        if (userId.equals(videoEntity.getUser().getId())){
+        if (userId.equals(videoEntity.getUser().getId())) {
             return true;
         }
         return false;
@@ -155,7 +154,20 @@ public class VideoService implements IVideoService {
     @Override
     public List<VideoDTO> findByProperties(String search, Integer status, int page, int limit, String sortExpression, String sortDirection) {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
-        List<VideoEntity> videoEntities = videoRepository.findAllBySearchAndStatus(search,status, pageable);
+        List<VideoEntity> videoEntities = videoRepository.findAllBySearchAndStatus(search, status, pageable);
+        List<VideoDTO> videoDTOS = new ArrayList<>();
+        for (VideoEntity entity : videoEntities) {
+            VideoDTO videoDTO = videoConvert.toDTO(entity);
+            videoDTOS.add(videoDTO);
+        }
+        return videoDTOS;
+    }
+
+    @Override
+    public List<VideoDTO> findAllToViewInHomePage(Integer status, int page, int limit) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate").descending().and(Sort.by("view").descending());
+        Pageable pageable = PageRequest.of(page - 1, limit, sort);
+        List<VideoEntity> videoEntities = videoRepository.findAllBySearchAndStatus("", status, pageable);
         List<VideoDTO> videoDTOS = new ArrayList<>();
         for (VideoEntity entity : videoEntities) {
             VideoDTO videoDTO = videoConvert.toDTO(entity);

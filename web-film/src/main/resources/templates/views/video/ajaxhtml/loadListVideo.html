@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="load">
+    <div class="col-md-3 col-12 lo" th:each="video: ${videos}">
+        <div class="card">
+            <div class="poster-video">
+                <img class="card-img-top" th:src="@{${video.imageUrl}}" alt="Card image cap">
+            </div>
+            <div class="card-body">
+                <div class="papa">
+                    <div class="avatar">
+                        <img th:src="@{${video.user.photoUrl}}" alt="avatar">
+                    </div>
+                    <div class="detail">
+                        <div class="card-title">
+                            <a href="#" th:text="${video.name}"></a>
+
+                        </div>
+                        <div class="card-text">
+                            <p>
+                            <div th:text="${video.view}" th:remove="tag"></div>
+                            lượt xem</p>
+                            <p th:text="${#dates.format(video.createdDate, 'hh:mm dd-MMM-yyyy')}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lo" id="getValue">
+        <input type="hidden" id="page" th:value="${page+1}">
+        <input type="hidden" id="limit" th:value="${limit}">
+    </div>
+</div>
+</body>
+</html>
