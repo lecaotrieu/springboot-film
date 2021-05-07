@@ -46,7 +46,9 @@
             </tr>
             </tbody>
         </table>
-        <ul id="pagination" class="pagination-sm"></ul>
+        <div class="phan-trang">
+            <ul id="pagination" class="pagination-sm"></ul>
+        </div>
         <form action="/video/tim-kiem" method="get" id="formUrl">
             <input type="hidden" th:value="${items.page}" name="page" id="page">
             <input type="hidden" th:value="${items.limit}" name="limit" id="limit">

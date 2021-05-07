@@ -13,6 +13,33 @@ body {
 	margin: 0px!important;
 }
 
+.phan-trang {
+	display: flex;
+	justify-content: center;
+}
+
+.phan-trang #pagination li a {
+	margin: 9px;
+	padding: 5px 15px;
+	font-size: 19px;
+	border: 1px solid #e70b0b;
+}
+
+.phan-trang #pagination li a:hover {
+	background: #0b6be3;
+	color: #fff;
+}
+
+.phan-trang #pagination li.disabled a:hover {
+	background: #fff;
+	color: #000;
+}
+
+.phan-trang #pagination li a.next,.phan-trang #pagination li a.last {}
+
+.phan-trang #pagination li {
+}
+
 .card-text {
 	display: flex;
 	justify-content: space-between;
@@ -256,7 +283,7 @@ h1 span {
 /*-- top-nav --*/
 
 ul.nav.navbar-nav {
-	margin-left: 11em;
+	margin-left: 5em;
 	margin-top: 1.3em;
 }
 

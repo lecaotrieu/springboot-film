@@ -20,14 +20,15 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <h1><a href="index.html"><span>M</span>y <span>T</span>V</a></h1>
+                            <h1><a th:href="@{/video/trang-chu}"><span>M</span>y <span>T</span>V</a></h1>
                         </div>
                         <!-- navbar-header -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav" style="width:74%">
-                                <li><a href="genre.html">Home</a></li>
-                                <li><a href="new.html">Thịnh Hành</a></li>
-                                <li><a href="list.html">Danh Sách</a></li>
+                                <li><a th:href="@{/video/trang-chu}">Trang chủ</a></li>
+                                <li><a th:href="@{/video/thinh-hanh}">Thịnh Hành</a></li>
+                                <li><a th:href="@{/trang-chu}">Xem phim</a></li>
+                                <li><a th:href="@{/admin/home-page}">Nhân viên</a></li>
                                 <li style="width: 40%;margin: 8px;">
                                     <input type="text" class="form-control ip-search" placeholder=""
                                            style="float: left;    width: 70%;    border-radius: 5px 0px 0px 5px;" id="ip-search" th:value="${param.search}"

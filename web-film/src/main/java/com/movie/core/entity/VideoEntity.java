@@ -25,7 +25,7 @@ public class VideoEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE, mappedBy = "video")
     private List<CommentVideoEntity> commentVideos;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")

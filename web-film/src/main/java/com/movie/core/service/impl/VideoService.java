@@ -3,11 +3,11 @@ package com.movie.core.service.impl;
 import com.google.api.services.drive.model.File;
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.convert.VideoConvert;
-import com.movie.core.dto.CategoryDTO;
-import com.movie.core.dto.FilmDTO;
 import com.movie.core.dto.VideoDTO;
+import com.movie.core.entity.CommentVideoEntity;
 import com.movie.core.entity.VideoEntity;
 import com.movie.core.repository.VideoRepository;
+import com.movie.core.service.ICommentVideoService;
 import com.movie.core.service.IDriveService;
 import com.movie.core.service.IVideoService;
 import com.movie.core.service.utils.PagingUtils;
@@ -56,6 +56,9 @@ public class VideoService implements IVideoService {
         videoRepository.save(videoEntity);
         return true;
     }
+
+    @Autowired
+    private ICommentVideoService commentVideoService;
 
     @Override
     public void deleteById(Long[] ids) throws Exception {
