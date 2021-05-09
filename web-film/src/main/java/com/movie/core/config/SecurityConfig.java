@@ -63,14 +63,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }*/
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-      http.antMatcher("/user**")
-              .authorizeRequests().anyRequest().hasRole("USER")
+      http.antMatcher("/trang-ca-nhan/**")
+              .authorizeRequests()
+              .antMatchers("/trang-ca-nhan/**").hasRole("USER")
               .and()
               .formLogin()
-              .loginPage("/dang-nhap")
+              .loginPage("/trang-chu")
               .usernameParameter("j_username_user")
               .passwordParameter("j_password_user")
-              .loginProcessingUrl("/user_login")
+              .loginProcessingUrl("/trang-ca-nhan/login")
               .defaultSuccessUrl("/ajax-login-success")
               .failureUrl("/ajax-login-failure")
               .and()

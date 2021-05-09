@@ -21,7 +21,7 @@
         <h3 th:text="#{label.login}"></h3>
         <div id="message-login">
         </div>
-        <form method="post" th:action="@{/user_login}" id="login-user-form">
+        <form method="post" th:action="@{/trang-ca-nhan/login}" id="login-user-form">
             <div class="row">
                 <label for="username">
                     Tài khoản:
@@ -191,7 +191,7 @@
                     <li sec:authorize="!hasRole('USER')">
                         <a th:href="@{/admin/home-page}" th:text="#{label.employee}"></a></li>
                     <li sec:authorize="hasRole('USER')">
-                        <a th:href="@{/trang-ca-nhan}">Hồ Sơ</a></li>
+                        <a th:href="@{/trang-ca-nhan/chinh-sua}">Hồ Sơ</a></li>
                     <li class="first user-name" sec:authorize="hasRole('USER')">
                         <a class="btn btn-default lv1">
                             <div th:text="'Xin Chào ' + ${#authentication.getPrincipal().username}"

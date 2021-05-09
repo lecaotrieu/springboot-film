@@ -1,16 +1,12 @@
 package com.movie.web.interceptor;
 
-import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.CountryDTO;
-import com.movie.core.dto.FilmDTO;
 import com.movie.core.dto.FilmTypeDTO;
 import com.movie.core.service.ICategoryService;
 import com.movie.core.service.ICountryService;
-import com.movie.core.service.IFilmService;
 import com.movie.core.service.IFilmTypeService;
-import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -29,9 +25,6 @@ public class WebHandelInterceptor implements HandlerInterceptor {
 
     @Autowired
     private ICountryService countryService;
-
-    @Autowired
-    private IFilmService filmService;
 
     @Autowired
     private IFilmTypeService filmTypeService;

@@ -8,6 +8,7 @@ import com.movie.core.entity.UserEntity;
 import com.movie.core.repository.UserRepository;
 import com.movie.core.service.IDriveService;
 import com.movie.core.service.IUserService;
+import com.movie.core.service.utils.PagingUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,12 @@ public class UserService implements IUserService {
     @Autowired
     private UserConvert userConvert;
 
+    @Autowired
+    private PagingUtils pagingUtils;
+
     public List<UserDTO> findByProperties(String search, int page, int limit, String sortExpression, String sortDirection) {
-        Sort sort = Sort.unsorted();
         search = search.toLowerCase();
-        if (sortExpression != null && sortDirection != null) {
-            sort = Sort.by(sortDirection.equals("1") ? Sort.Direction.ASC : Sort.Direction.DESC, sortExpression);
-        }
-        Pageable pageable = PageRequest.of(page - 1, limit, sort);
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<UserDTO> userDTOS = new ArrayList<UserDTO>();
         List<UserEntity> userEntities = userRepository.findAllByUserName(search, pageable);
         for (UserEntity entity : userEntities) {
@@ -54,7 +54,7 @@ public class UserService implements IUserService {
     }
 
     public UserDTO findOneById(Long id) throws Exception {
-        UserEntity userEntity = userRepository.getOne(id);
+        UserEntity userEntity = userRepository.findAllById(id);
         return userConvert.toDTO(userEntity);
     }
 

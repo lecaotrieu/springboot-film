@@ -25,8 +25,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(filmHandelInterceptor).addPathPatterns("/admin/film/**");
-        registry.addInterceptor(webHandelInterceptor).addPathPatterns("/**").excludePathPatterns("/admin/**","/account/**","/template/**","/fileUpload/**");
-        registry.addInterceptor(userProfileInterceptor).addPathPatterns("/trang-ca-nhan*");
+        registry.addInterceptor(webHandelInterceptor).addPathPatterns("/**").excludePathPatterns("/admin/**","/account/**","/template/**","/fileUpload/**","/video/**");
+        registry.addInterceptor(userProfileInterceptor).addPathPatterns("/trang-ca-nhan/**");
     }
 
     @Override

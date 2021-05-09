@@ -67,11 +67,13 @@ public class UserController {
         return "views/web/userUploadVideo";
     }
 
-    @RequestMapping(value = "/trang-ca-nhan", method = RequestMethod.GET)
+    @RequestMapping(value = "/trang-ca-nhan/chinh-sua", method = RequestMethod.GET)
     public String userInfo(Model model, @RequestParam(value = "message", required = false) String message) throws Exception {
+        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
+        model.addAttribute("user", userDTO);
         return "views/web/UserProfile";
     }
 
@@ -141,9 +143,9 @@ public class UserController {
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             userDTO.setId(SecurityUtils.getUserPrincipal().getId());
             userService.updatePassword(userDTO);
-            return "redirect:/trang-ca-nhan?message=redirect_update";
+            return "redirect:/trang-ca-nhan/chinh-sua?message=redirect_update";
         }
-        return "redirect:/trang-ca-nhan?message=redirect_error";
+        return "redirect:/trang-ca-nhan/chinh-sua?message=redirect_error";
     }
 
     @RequestMapping(value = "/dang-ki", method = RequestMethod.POST)
