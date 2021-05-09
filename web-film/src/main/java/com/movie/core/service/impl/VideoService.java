@@ -154,6 +154,17 @@ public class VideoService implements IVideoService {
         return false;
     }
 
+    public List<VideoDTO> findByProperties(Long userId) {
+        List<VideoEntity> videoEntities;
+        videoEntities = videoRepository.findAllByUser_IdAndStatus(userId, CoreConstant.ACTIVE_STATUS);
+        List<VideoDTO> videoDTOS = new ArrayList<>();
+        for (VideoEntity entity : videoEntities) {
+            VideoDTO videoDTO = videoConvert.toDTO(entity);
+            videoDTOS.add(videoDTO);
+        }
+        return videoDTOS;
+    }
+
     @Override
     public List<VideoDTO> findByProperties(String search, Integer status, int page, int limit, String sortExpression, String sortDirection) {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);

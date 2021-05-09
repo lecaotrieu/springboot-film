@@ -4,6 +4,7 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.VideoDTO;
 import com.movie.core.service.IVideoService;
+import com.movie.web.utils.SecurityUtils;
 import com.movie.web.command.VideoCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,13 @@ public class VideoController {
         model.addAttribute("topVideos", topVideos);
         return "views/video/home";
     }
+    @RequestMapping(value = "/trang-ca-nhan/quan-ly-video", method = RequestMethod.GET)
+    public String profile(Model model) throws Exception {
+        List<VideoDTO> videoDTOS = videoService.findByProperties(SecurityUtils.getUserPrincipal().getId());
+        model.addAttribute("videos", videoDTOS);
+        return "views/video/MyVideo";
+    }
+
 
     @RequestMapping(value = "/ajax/video/get-list", method = RequestMethod.GET)
     public String getListVideo(Model model, @RequestParam("page") Integer page, @RequestParam("limit") Integer limit) throws Exception {

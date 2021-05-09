@@ -29,6 +29,8 @@ public interface IVideoService {
 
     boolean checkUser(Long userId, Long videoId);
 
+    List<VideoDTO> findByProperties(Long userId);
+
     List<VideoDTO> findByProperties(String search, Integer status, int page, int limit, String sortExpression, String sortDirection);
 
     List<VideoDTO> findAllToViewInHomePage(Integer status, int page, int limit);
