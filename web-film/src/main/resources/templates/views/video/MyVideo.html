@@ -44,38 +44,17 @@
     <div class="container">
         <div class="row ipad-width">
             <div class="col-md-3 col-sm-12 col-xs-12">
-                <div class="user-information">
-                    <div class="user-img">
-                        <a href="#"><img src="images/uploads/user-img.png" alt=""><br></a>
-                        <a href="#" class="redbtn">Theo dõi</a>
-                    </div>
-                    <div class="user-fav">
-                        <p>Chi tiết tài khoản</p>
-                        <ul>
-                            <li class="active"><a href="userprofile.html">Hồ sơ</a></li>
-
-                            <li><a href="userfavoritelist.html">Phim yêu thích</a></li>
-                            <li><a href="userrate.html">Phim đã sắp xếp</a></li>
-                        </ul>
-                    </div>
-                    <div class="user-fav">
-                        <p>Khác</p>
-                        <ul>
-                            <li><a href="#">Có 100 người theo dõi</a></li>
-                            <li><a href="#">Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <div th:replace="fragments/web/user-menu::user-menu"></div>
             </div>
 
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <h3 style="margin: 20px 0;">Danh sách video</h3>
                 <div class="form-style-1 user-pro" action="#">
                     <div class="row">
-                        <div class="col-md-4 col-12" th:each="video: ${videos}">
+                        <div class="col-md-4 col-12" th:each="item: ${videos}">
                             <div class="card">
                                 <img class="card-img-top"
-                                     th:src="${video.imageUrl}"
+                                     th:src="${item.imageUrl}"
                                      alt="Card image cap">
                                 <div class="card-body">
                                     <div class="papa">
@@ -84,11 +63,11 @@
                                                 src="https://yt3.ggpht.com/ytc/AAUvwnhxufS-hC81FZWsAys8tKn8Cb4ErxewwdafVM_Kvg=s176-c-k-c0x00ffffff-no-rj"
                                                 alt="avatar">
                                         </div> -->
-                                        <div class="card-title" th:text="${video.name}">
+                                        <div class="card-title" th:text="${item.name}">
                                         </div>
                                     </div>
                                     <p class="card-text">
-                                        <div th:text="${video.view}" th:remove="tag"></div> lượt xem    <div th:text="${#dates.format(video.createdDate, 'dd-MMM-yyyy')}" th:remove="tag"></div>
+                                        <div th:text="${item.view}" th:remove="tag"></div> lượt xem    <div th:text="${#dates.format(item.createdDate, 'dd-MMM-yyyy')}" th:remove="tag"></div>
                                     </p>
                                     <a href="#" class="btn btn-primary">Go somewhere</a>
                                 </div>

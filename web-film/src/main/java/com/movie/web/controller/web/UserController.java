@@ -44,11 +44,9 @@ public class UserController {
 
     @RequestMapping(value = "/trang-ca-nhan/anh-dai-dien", method = RequestMethod.GET)
     public String userAvatar(Model model, @RequestParam(value = "message", required = false) String message) throws Exception {
-        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
-        model.addAttribute("user", userDTO);
         return "views/web/userAvatar";
     }
 
@@ -58,27 +56,22 @@ public class UserController {
     @RequestMapping(value = "/trang-ca-nhan/dang-video", method = RequestMethod.GET)
     public String userUploadVideo(Model model, @RequestParam(value = "message", required = false) String message,
                                   @RequestParam(value = "videoId", required = false) Long videoId) throws Exception {
-        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
         VideoDTO videoDTO = new VideoDTO();
         if (videoId != null){
-            videoDTO = videoService.findOneById(videoId, userDTO.getId());
+            videoDTO = videoService.findOneById(videoId, SecurityUtils.getUserPrincipal().getId());
         }
         model.addAttribute("video", videoDTO);
-        model.addAttribute("user", userDTO);
         return "views/web/userUploadVideo";
     }
 
     @RequestMapping(value = "/trang-ca-nhan", method = RequestMethod.GET)
     public String userInfo(Model model, @RequestParam(value = "message", required = false) String message) throws Exception {
-        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
-        userDTO.setEvaluates(evaluateService.findAllByUserId(SecurityUtils.getUserPrincipal().getId(), CoreConstant.ACTIVE_STATUS));
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
-        model.addAttribute("user", userDTO);
         return "views/web/UserProfile";
     }
 
@@ -124,15 +117,11 @@ public class UserController {
         command.setListResult(filmDTOS);
         command.setTotalItems(filmService.getTotalFilmFavorite(SecurityUtils.getUserPrincipal().getId(), 1));
         command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
-
-
-        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
         if (message != null) {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
         model.addAttribute(WebConstant.LIST_ITEM, command);
 
-        model.addAttribute("user", userDTO);
         return "views/web/followFilm";
     }
 
@@ -182,8 +171,6 @@ public class UserController {
         if (limit != null) {
             command.setLimit(limit);
         }
-
-
         return command;
     }
 }
