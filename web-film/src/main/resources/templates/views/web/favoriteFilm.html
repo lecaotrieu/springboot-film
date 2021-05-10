@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
 <head>
-    <title >Phim yêu thích</title>
+    <title>Phim yêu thích</title>
 </head>
 <body>
 <div class="hero user-hero">
@@ -14,7 +14,7 @@
                 <div class="hero-ct">
                     <ul class="breadcumb">
                         <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
-                        <li> <span class="ion-ios-arrow-right"></span>Phim yêu thích</li>
+                        <li><span class="ion-ios-arrow-right"></span>Phim yêu thích</li>
                     </ul>
                 </div>
             </div>
@@ -29,18 +29,19 @@
             </div>
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <div class="topbar-filter user">
-                    <p>Tìm thấy <span><div  th:remove="tag"></div> phim yêu thích</span></p>
+                    <p>Tìm thấy <span>phim yêu thích</span></p>
                     <a href="" class="grid"><i class="ion-grid active"></i></a>
                 </div>
-                <div class="flex-wrap-movielist user-fav-list" >
-                    <div class="movie-item-style-2" th:each="film: ${items.listResult}" >
-                        <img  th:src="@{${film.image1Url}}" alt="">
+                <div class="flex-wrap-movielist user-fav-list">
+                    <div class="movie-item-style-2" th:each="film: ${items.listResult}" th:id="film_+${film.id}">
+                        <img th:src="@{${film.image1Url}}" alt="">
                         <div class="mv-item-infor">
                             <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
-                            <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                            <p class="rate"><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10
+                            </p>
                             <p class="describe" th:utext="${film.description}"></p>
-
                         </div>
+                        <button class="btn btn-danger" th:onclick="unlike([[${film.id}]])">Bỏ thích</button>
                     </div>
 
                 </div>
@@ -110,6 +111,25 @@
         $('#limit').val($('#select-limit').val());
         $('#form-search').submit();
     });
+
+    function unlike(id) {
+        var url = "/api/evaluate/like/" + id;
+        var like = 0;
+        var data = like;
+        $.ajax({
+            url: url,
+            type: "put",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (rs) {
+                $('#film_' + id).remove();
+            },
+            error: function (error) {
+            }
+        });
+    }
+
 
 </script>
 </body>

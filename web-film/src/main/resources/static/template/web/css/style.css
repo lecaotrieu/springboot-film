@@ -3741,6 +3741,20 @@ textarea {
     font-family: 'OpenSans', sans-serif;
     line-height: 1.5;
 }
+
+.movie-item-style-2 button.btn.btn-danger {
+    color: #fff;
+    background: #ee2424;
+    border: none;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.movie-item-style-2 button.btn.btn-danger:hover {
+    background: red;
+}
 h1,
 h2,
 h3,
@@ -4303,6 +4317,7 @@ ul {
     justify-content: flex-start;
     overflow: hidden;
     margin-bottom: 30px;
+    position: relative;
 }
 @media (max-width: 767px) {
     .movie-item-style-2 {

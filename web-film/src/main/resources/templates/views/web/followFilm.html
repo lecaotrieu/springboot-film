@@ -30,7 +30,7 @@
             <div class="col-md-9 col-sm-12 col-xs-12">
 
                 <div class="flex-wrap-movielist user-fav-list" >
-                    <div class="movie-item-style-2" th:each="film: ${items.listResult}" >
+                    <div class="movie-item-style-2" th:each="film: ${items.listResult}" th:id="film_+${film.id}">
                         <img  th:src="@{${film.image1Url}}" alt="">
                         <div class="mv-item-infor">
                             <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
@@ -38,6 +38,7 @@
                             <p class="describe" th:utext="${film.description}"></p>
 
                         </div>
+                        <button class="btn btn-danger" th:onclick="unfollow([[${film.id}]])">Bỏ theo dõi</button>
                     </div>
 
                 </div>
@@ -107,7 +108,23 @@
         $('#limit').val($('#select-limit').val());
         $('#form-search').submit();
     });
-
+function unfollow(id){
+    var url = "/api/evaluate/follow/" + id;
+    var follow = 0;
+    var data = follow;
+    $.ajax({
+        url: url,
+        type: "put",
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: function (rs) {
+            $('#film_'+id).remove();
+        },
+        error: function (error) {
+        }
+    });
+}
 </script>
 </body>
 </html>
