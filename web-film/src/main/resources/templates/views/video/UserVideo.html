@@ -5,9 +5,44 @@
       th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
 <head>
     <title th:text="#{label.user.profile}"></title>
+    <style>
+
+        .follower-img img{
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .follower-name .name-real{
+            font-family: 'Dosis', sans-serif;
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .follower-name .name-fake{
+            font-size: 16px;
+            color: #d6c6c6;
+            font-weight: bold;
+        }
+        .user-hero .hero-ct h1 {
+            margin-left: 280px;
+            text-align: left;
+        }
+        .user{
+            display: flex;
+            align-items: center;
+        }
+        .user-icon{
+            font-size: 24px;
+            margin-right: 20px;
+            color: white;
+        }
+        .user-content p{
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
-
 <div class="hero user-hero">
     <div class="container">
         <div class="row">
@@ -35,32 +70,72 @@
         </div>
     </div>
 </div>
-<div class="page-single movie_list">
+<div class="page-single">
     <div class="container">
-        <div class="row ipad-width2">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="col-md-4 col-12" th:each="item: ${videos}">
-                        <div class="card-movies" >
-                            <div class="card-image">
-                                <img class="card-img-top" th:src="@{${item.imageUrl}}" alt="Card image cap">
-                                <div class="info-movies">
-                                    <h4 th:text="${item.name}"></h4>
-                                    <p class="from_the_blog_excerpt " th:text="${item.brief}"></p>
+        <div class="row ipad-width">
+            <div class="col-md-3 col-sm-12 col-xs-12" >
+                <div class="user-information">
+                    <div class="user-img">
+                        <a href="#"><img th:src="@{${user.photoUrl}}" alt=""><br></a>
+                        <a href="#" class="redbtn">Theo dõi</a>
+                    </div>
+                    <div class="user-fav">
+                        <p>Chi tiết tài khoản</p>
+                        <ul>
+                            <li class="active"><a href="userprofile.html">Hồ sơ</a></li>
+                            <!-- <li><a href="userfavoritelist.html">Phim yêu thích</a></li>
+                            <li><a href="userrate.html">Phim đã sắp xếp</a></li> -->
+                        </ul>
+                    </div>
+                    <!-- <div class="user-fav">
+                        <p>Khác</p>
+                        <ul>
+                            <li><a href="#">Có 100 người theo dõi</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <h3 style="margin: 20px 0;" th:text="'Danh sách video của'+${user.lastName}">  </h3>
+                <div class="form-style-1 user-pro" action="#">
+                    <div class="row">
+                        <div class="col-md-4 col-12" th:each="userVideo:${videos}">
+                            <div class="card">
+                                <img class="card-img-top"
+                                     th:src="@{${userVideo.imageUrl}}" onerror="imgVideoError(this);" style="width: 100%; min-height: 153px; margin: 10px 0;"
+                                     alt="Card image cap">
+                                <div class="card-body">
+                                    <div class="papa">
+                                        <!-- <div class="avatar">
+                                            <img
+                                                src="https://yt3.ggpht.com/ytc/AAUvwnhxufS-hC81FZWsAys8tKn8Cb4ErxewwdafVM_Kvg=s176-c-k-c0x00ffffff-no-rj"
+                                                alt="avatar">
+                                        </div> -->
+                                        <div class="card-title">
+                                            <a th:href="@{'/trang-ca-nhan/dang-video?videoId='+${userVideo.id}}" style="color: #fff;" th:text="${userVideo.name}"></a>
+
+                                        </div>
+                                    </div>
                                     <p class="card-text">
-                                    <div th:text="${item.view}" th:remove="tag"></div> lượt xem    <div th:text="${#dates.format(item.createdDate, 'dd-MMM-yyyy')}" th:remove="tag"></div>
+                                    <div th:text="${userVideo.view}" th:remove="tag"></div>
+                                    lượt xem
+                                    <div th:text="${#dates.format(userVideo.createdDate, 'dd-MMM-yyyy')}"
+                                         th:remove="tag"></div>
                                     </p>
                                 </div>
                             </div>
 
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 </body>
 </html>
