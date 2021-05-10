@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <title th:text="#{label.user.profile}"></title>
+</head>
+<body>
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <ul class="breadcumb">
+                        <li class="active"><a th:href="@{/trang-ca-nhan/chinh-sua}">Trang cá nhân</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span>Danh sách follower</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single userfav_list">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div th:replace="fragments/web/user-menu::user-menu"></div>
+            </div>
+            <div class="flex-wrap-movielist user-fav-list" >
+
+                <div class="movie-item-style-2" th:each="user:${followers}" >
+                    <img   th:src="@{${user.photoUrl}}" alt="">
+                    <div class="mv-item-infor">
+                        <h6><a th:href="@{'/trang-ca-nhan/quan-ly-video-'+${user.id}}" th:text="${user.firstName+' '+user.lastName}"></a></h6>
+                        <p class="describe" th:text="${user.email}"></p>
+                        <p class="describe" th:text="${user.address}"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

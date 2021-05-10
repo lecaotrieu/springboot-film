@@ -47,8 +47,8 @@
                 <div th:replace="fragments/web/user-menu::user-menu"></div>
             </div>
 
-            <div class="col-md-9 col-sm-12 col-xs-12">
-                <h3 style="margin: 20px 0;">Danh sách video của tôi</h3>
+            <div class="col-md-9 col-sm-12 col-xs-12" th:each="user:${user}">
+                <h3 style="margin: 20px 0;" th:text="${'Video của' + user.lastName}"></h3>
                 <div class="form-style-1 user-pro" action="#">
                     <div class="row">
                         <div class="col-md-4 col-12" th:each="item: ${videos}">
@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                     <p class="card-text">
-                                        <div th:text="${item.view}" th:remove="tag"></div> lượt xem    <div th:text="${#dates.format(item.createdDate, 'dd-MMM-yyyy')}" th:remove="tag"></div>
+                                    <div th:text="${item.view}" th:remove="tag"></div> lượt xem    <div th:text="${#dates.format(item.createdDate, 'dd-MMM-yyyy')}" th:remove="tag"></div>
                                     </p>
                                 </div>
                             </div>

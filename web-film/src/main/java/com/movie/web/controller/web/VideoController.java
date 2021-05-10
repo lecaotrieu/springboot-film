@@ -2,25 +2,30 @@ package com.movie.web.controller.web;
 
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
+import com.movie.core.dto.UserDTO;
 import com.movie.core.dto.VideoDTO;
+import com.movie.core.service.IUserService;
 import com.movie.core.service.IVideoService;
-import com.movie.web.utils.SecurityUtils;
 import com.movie.web.command.VideoCommand;
+import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import java.util.List;
 
 @Controller(value = "VideoControllerOfWeb")
 public class VideoController {
     @Autowired
     private IVideoService videoService;
+
+    @Autowired
+    private IUserService userService;
 
     @RequestMapping(value = "/video/trang-chu", method = RequestMethod.GET)
     public String home(Model model) throws Exception {
@@ -34,8 +39,19 @@ public class VideoController {
     public String profile(Model model) throws Exception {
         List<VideoDTO> videoDTOS = videoService.findByProperties(SecurityUtils.getUserPrincipal().getId());
         model.addAttribute("videos", videoDTOS);
+        UserDTO userDTO=userService.findOneById(SecurityUtils.getUserPrincipal().getId());
+        model.addAttribute("user", userDTO);
         return "views/video/MyVideo";
     }
+    @RequestMapping(value = "/trang-ca-nhan/quan-ly-video-{userId}", method = RequestMethod.GET)
+    public String userVideo(Model model,@PathVariable(value = "userId", required = false) Long userId) throws Exception {
+        List<VideoDTO> videoDTOS = videoService.findByProperties(userId);
+        model.addAttribute("videos", videoDTOS);
+        UserDTO userDTO=userService.findOneById(userId);
+        model.addAttribute("user", userDTO);
+        return "views/video/UserVideo";
+    }
+
 
 
     @RequestMapping(value = "/ajax/video/get-list", method = RequestMethod.GET)
@@ -64,6 +80,7 @@ public class VideoController {
         model.addAttribute(WebConstant.LIST_ITEM, command);
         return "views/video/videoList";
     }
+
 
     private VideoCommand addValueToCommand(Integer page, Integer limit, String sort, String sortDsc, String search) {
         VideoCommand command = new VideoCommand();

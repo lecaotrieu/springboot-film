@@ -1,5 +1,6 @@
 package com.movie.core.repository;
 
+import com.movie.core.dto.UserDTO;
 import com.movie.core.entity.UserEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByUserNameAndStatus(String userName, Integer status);
 
     UserEntity findAllById(Long id);
+
+
+    @Query("select distinct f from UserEntity f where f.id = ?1" )
+    List<UserEntity> findAllByIds(Long id);
+
+    @Query("select distinct u from UserEntity u join u.usersFollowed x where x.id = ?1")
+    List<UserEntity> findAllMyFollow(Long id);
+
+    @Query("select distinct u from UserEntity u join u.followers x where x.id = ?1")
+    List<UserEntity> findAllFollower(Long id);
 }

@@ -10,6 +10,8 @@ import java.util.List;
 public interface IUserService {
     List<UserDTO> findByProperties(String search, int page, int limit, String sortExpression, String sortDirection);
 
+    List<UserDTO> findByProperties(Long id);
+
     int getTotalItem(String search);
 
     UserDTO findOneById(Long id) throws Exception;
@@ -31,4 +33,7 @@ public interface IUserService {
     String getPhotoId(Long userId) throws Exception;
 
     void updatePhoto(Long id, String contentType, InputStream inputStream) throws Exception;
+
+    List<UserDTO> findFollower(Long id);
+    List<UserDTO> findMyFollow(Long id);
 }

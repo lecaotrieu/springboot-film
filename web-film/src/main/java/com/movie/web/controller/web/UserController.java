@@ -60,7 +60,7 @@ public class UserController {
             WebCommonUtil.addRedirectMessage(model, getMapMessage(), message);
         }
         VideoDTO videoDTO = new VideoDTO();
-        if (videoId != null){
+        if (videoId != null) {
             videoDTO = videoService.findOneById(videoId, SecurityUtils.getUserPrincipal().getId());
         }
         model.addAttribute("video", videoDTO);
@@ -102,6 +102,19 @@ public class UserController {
 
         model.addAttribute("user", userDTO);
         return "views/web/favoriteFilm";
+    }
+
+    @RequestMapping(value = "/trang-ca-nhan/follower", method = RequestMethod.GET)
+    public String follower(Model model) throws Exception {
+        List<UserDTO> userDTOS = userService.findFollower(SecurityUtils.getUserPrincipal().getId());
+        model.addAttribute("followers", userDTOS);
+        return "views/video/follower";
+    }
+    @RequestMapping(value = "/trang-ca-nhan/MyFollow", method = RequestMethod.GET)
+    public String MyFollow(Model model) throws Exception {
+        List<UserDTO> userDTOS = userService.findMyFollow(SecurityUtils.getUserPrincipal().getId());
+        model.addAttribute("Myfollow", userDTOS);
+        return "views/video/MyFollow";
     }
 
     @RequestMapping(value = "/trang-ca-nhan/phim-theo-doi", method = RequestMethod.GET)

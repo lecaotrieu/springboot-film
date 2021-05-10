@@ -49,6 +49,29 @@ public class UserService implements IUserService {
         return userDTOS;
     }
 
+    @Override
+    public List<UserDTO> findByProperties(Long id) {
+        List<UserDTO> userDTOS = new ArrayList<>();
+        List<UserEntity> userEntities = userRepository.findAllByIds(id);
+        for (UserEntity entity : userEntities) {
+            UserDTO userDTO = userConvert.toDTO(entity);
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
+    }
+
+//    @Override
+//    public List<UserDTO> findByProperties(Long id) {
+//        List<UserDTO> userDTOS = new ArrayList<>();
+//        List<UserEntity> userEntities = userRepository.findAllById(id);
+//        for (UserEntity entity : userEntities) {
+//            UserDTO userDTO = userConvert.toDTO(entity);
+//            userDTOS.add(userDTO);
+//        }
+//        return userDTOS;
+//    }
+
+
     public int getTotalItem(String search) {
         return (int) userRepository.countAllByUserName(search.toLowerCase());
     }
@@ -199,6 +222,27 @@ public class UserService implements IUserService {
         driveService.createPublicPermission(file.getId());
         userEntity.setPhoto(file.getId());
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public List<UserDTO> findFollower(Long id) {
+        List<UserDTO> userDTOS = new ArrayList<>();
+        List<UserEntity> userEntities = userRepository.findAllFollower(id);
+        for (UserEntity entity : userEntities) {
+            UserDTO userDTO = userConvert.toDTO(entity);
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
+    }
+    @Override
+    public List<UserDTO> findMyFollow(Long id) {
+        List<UserDTO> userDTOS = new ArrayList<>();
+        List<UserEntity> userEntities = userRepository.findAllMyFollow(id);
+        for (UserEntity entity : userEntities) {
+            UserDTO userDTO = userConvert.toDTO(entity);
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
     }
 
     private boolean checkUpdatePassword(String userEntityPassword, String password, String newPassword, String confirmPassword) {
