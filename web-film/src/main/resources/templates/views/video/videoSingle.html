@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/video :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <title th:text="#{label.video.show}"></title>
+    <link rel="stylesheet" th:href="@{/template/video/css/list.css}" type="text/css" media="all"/>
+    <style>
+        .w3_content_agilleinfo_inner {
+            padding: 0em 0;
+        }
+    </style>
+</head>
+<body>
+<div class="w3_breadcrumb">
+    <div class="breadcrumb-inner">
+        <ul>
+            <li><a th:href="@{/video/trang-chu}">Trang chủ</a><i>//</i></li>
+            <li>Xem Video</li>
+        </ul>
+    </div>
+</div>
+<!-- //breadcrumb -->
+<!--/content-inner-section-->
+<div class="w3_content_agilleinfo_inner">
+    <div class="agile_featured_movies">
+        <!---728x90--->
+        <div class="inner-agile-w3l-part-head">
+            <h3 class="w3l-inner-h-title">Xem Video</h3>
+        </div>
+        <div class="latest-news-agile-info">
+            <div class="col-md-8 latest-news-agile-left-content">
+                <div class="single video_agile_player">
+                    <div class="video-grid-single-page-agileits">
+                        <div data-video="f2Z65fobH2I" id="video">
+                            <img th:src="@{${video.imageUrl}}" onerror="imgVideoError(this)" alt=""/>
+                            <div id="play"></div>
+                            <video width="100%" autoplay controls class="hide">
+                                <source th:src="@{${video.videoUrl}}">
+                            </video>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!---728x90--->
+                <div class="response">
+                    <h4 class="desc" th:text="${video.name}"><p></p>
+                        <button>Like</button>
+                        <button>Theo dõi</button>
+
+                    </h4>
+
+                    <h3>Bình Luận</h3>
+                    <div class="media response-info">
+                        <div class="media-left response-text-left">
+                            <a href="#">
+                                <img class="media-object" src="images/admin.jpg" alt="">
+                            </a>
+                            <h5><a href="#">Admin</a></h5>
+                        </div>
+
+                        <div class="media-body response-text-right">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of
+                                passages of Lorem Ipsum available,
+                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.There are many
+                                variations of passages of Lorem Ipsum available.</p>
+                            <ul>
+                                <li>October 15, 2016</li>
+                                <li><a href="single.html"><i class="fa fa-reply" aria-hidden="true"></i> Reply</a></li>
+                            </ul>
+                            <div class="media response-info">
+                                <div class="media-left response-text-left">
+                                    <a href="#">
+                                        <img class="media-object" src="images/admin.jpg" alt="">
+                                    </a>
+                                    <h5><a href="#">Admin</a></h5>
+                                </div>
+                                <div class="media-body response-text-right">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many
+                                        variations of passages of Lorem Ipsum available,
+                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.There are many
+                                        variations of passages of Lorem Ipsum available.</p>
+                                    <ul>
+                                        <li>November 02, 2016</li>
+                                        <li><a href="single.html"><i class="fa fa-reply" aria-hidden="true"></i>
+                                            Reply</a></li>
+                                    </ul>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="media response-info">
+                        <div class="media-left response-text-left">
+                            <a href="#">
+                                <img class="media-object" src="images/admin.jpg" alt="">
+                            </a>
+                            <h5><a href="#">Admin</a></h5>
+                        </div>
+                        <div class="media-body response-text-right">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of
+                                passages of Lorem Ipsum available,
+                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.There are many
+                                variations of passages of Lorem Ipsum available.</p>
+                            <ul>
+                                <li>November 03, 2016</li>
+                                <li><a href="single.html"><i class="fa fa-reply" aria-hidden="true"></i> Reply</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <!---728x90--->
+
+                <div class="all-comments-info">
+                    <h5>Để lại bình luận</h5>
+                    <div class="agile-info-wthree-box">
+                        <form>
+                            <div class="col-md-6 form-info">
+                                <input type="text" name="name" placeholder="Tên" required="">
+                                <input type="email" name="email" placeholder="Email" required="">
+                                <input type="text" name="phone" placeholder="Số ĐT" required="">
+                            </div>
+                            <div class="col-md-6 form-info">
+
+                                <textarea placeholder="Nhập nội dung" required=""></textarea>
+                                <input type="submit" value="SEND">
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 latest-news-agile-right-content">
+                <h4 class="side-t-w3l-agile">Video <span>tiếp theo</span></h4>
+                <div class="item row" th:each="videoNominate: ${videoNominates}">
+                    <div class="col-md-6">
+                        <div class="trailer-img">
+                            <img th:src="@{${videoNominate.imageUrl}}" onerror="imgVideoError(this)" ;
+                                 alt="photo by Barn Images">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="trailer-infor">
+                            <h4 class="desc"><a th:href="@{'/video/xem-video/'+${videoNominate.id}}"
+                                                th:text="${videoNominate.name}"></a></h4>
+                            <p><a href="" th:text="${videoNominate.user.userName}"></a></p>
+                            <p th:text="${videoNominate.view}+' lượt xem'"></p>
+                            <p th:text="${#dates.format(videoNominate.createdDate, 'dd-MM-yyyy')}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="agile-info-recent">
+                    <div class="w3ls-recent-grids">
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+    </div>
+</div>
+<!--//content-inner-section-->
+<script>
+    $('#play').click(function () {
+        $('#video').children('img').hide();
+        $('#play').css('background-image', 'url(play-button.png), url(' + $('#video').children().attr('src') + ')').hide();
+        $("video").removeClass("hide");
+    });
+
+    $(document).ready(function () {
+        $("#owl-demo").owlCarousel({
+
+            autoPlay: 3000, //Set AutoPlay to 3 seconds
+            autoPlay: true,
+            navigation: true,
+
+            items: 5,
+            itemsDesktop: [640, 4],
+            itemsDesktopSmall: [414, 3]
+
+        });
+
+    });
+</script>
+</body>
+</html>

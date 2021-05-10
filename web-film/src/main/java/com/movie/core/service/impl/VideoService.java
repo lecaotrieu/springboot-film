@@ -43,6 +43,9 @@ public class VideoService implements IVideoService {
         } else {
             videoEntity = videoConvert.toEntity(videoDTO);
         }
+        if(videoEntity.getView() == null){
+            videoEntity.setView(0);
+        }
         videoEntity.setCode(code);
         videoEntity = videoRepository.save(videoEntity);
         return videoConvert.toDTO(videoEntity);
@@ -138,6 +141,12 @@ public class VideoService implements IVideoService {
     @Override
     public VideoDTO findOneById(Long id) {
         VideoEntity videoEntity = videoRepository.getOne(id);
+        return videoConvert.toDTO(videoEntity);
+    }
+
+    @Override
+    public VideoDTO findOneByIdAndStatus(Long id, Integer status) {
+        VideoEntity videoEntity = videoRepository.findByIdAndStatus(id, status);
         return videoConvert.toDTO(videoEntity);
     }
 

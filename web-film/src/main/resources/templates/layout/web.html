@@ -138,6 +138,11 @@
             $source.parent()[0].load();
         }
     }
+    function imgVideoError(image) {
+        image.onerror = "";
+        image.src = "/template/image/no-image.jpg";
+        return true;
+    }
 </script>
 </body>
 </html>

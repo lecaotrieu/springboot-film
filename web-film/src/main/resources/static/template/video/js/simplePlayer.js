@@ -38,10 +38,6 @@ window.onYouTubeIframeAPIReady = function() {
 
 		// onYouTubeIframeAPIReady
 
-		YTdeferred.done(function(YT) {
-			play.appendTo( video ).fadeIn('slow');
-		});
-
 		function onPlayerStateChange(event) {
 			if (event.data == YT.PlayerState.ENDED) {
 				play.fadeIn(500);
@@ -58,14 +54,6 @@ window.onYouTubeIframeAPIReady = function() {
 		play.bind('click', function () {
 
 			if ( !$('#player' ).length ) {
-
-				$('<iframe />', {
-					id: 'player',
-					src: 'https://www.youtube.com/embed/' + video.data('video') + '?' + $.param(defaults)
-				})
-				.attr({ width: video.width(), height: video.height(), seamless: 'seamless' })
-				.css('border', 'none')
-				.appendTo( video );
 
 				video.children('img').hide();
 

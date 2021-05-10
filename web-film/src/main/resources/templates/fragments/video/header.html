@@ -28,15 +28,38 @@
                                 <li><a th:href="@{/video/trang-chu}">Trang chủ</a></li>
                                 <li><a th:href="@{/video/thinh-hanh}">Thịnh Hành</a></li>
                                 <li><a th:href="@{/trang-chu}">Xem phim</a></li>
-                                <li><a th:href="@{/admin/home-page}">Nhân viên</a></li>
                                 <li style="width: 40%;margin: 8px;">
                                     <input type="text" class="form-control ip-search" placeholder=""
-                                           style="float: left;    width: 70%;    border-radius: 5px 0px 0px 5px;" id="ip-search" th:value="${param.search}"
+                                           style="float: left;    width: 70%;    border-radius: 5px 0px 0px 5px;"
+                                           id="ip-search" th:value="${param.search}"
                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                    <button class="btn btn-primary" type="button" style="border-radius: 0 5px 5px 0" id="btn-search" onclick="searchVideo()" a="s-search">Tìm kiếm</button>
+                                    <button class="btn btn-primary" type="button" style="border-radius: 0 5px 5px 0"
+                                            id="btn-search" onclick="searchVideo()" a="s-search">Tìm kiếm
+                                    </button>
                                 </li>
-                                <li><a href="#" class="login" data-toggle="modal" data-target="#myModal4">Login</a></li>
-                                <li><a href="#" class="login reg" data-toggle="modal" data-target="#myModal5">Sign Up</a>
+                                <li><a th:href="@{/admin/home-page}" sec:authorize="!hasRole('USER')">Nhân viên</a></li>
+                                <li class="dropdown" sec:authorize="hasRole('USER')">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <div th:text="'Xin Chào ' + ${#authentication.getPrincipal().username}"
+                                             th:remove="tag"></div>
+                                        <b class="caret"></b></a>
+                                    <ul class="dropdown-menu multi-column columns-3" style="display: none;">
+                                        <li>
+                                            <div class="col-sm-12" >
+                                                <ul class="multi-column-dropdown dropdown-menu-right">
+                                                    <li><a th:href="@{/trang-ca-nhan/chinh-sua}">Chỉnh sủa trang cá nhân</a></li>
+                                                    <li><a th:href="@{/trang-ca-nhan/quan-ly-video}">Quản lý video</a></li>
+                                                    <li><a th:href="@{/video/dang-xuat}">Đăng xuất</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#" class="login" data-toggle="modal" data-target="#myModal4"
+                                       sec:authorize="!hasRole('USER')">Đăng Nhập</a></li>
+                                <li><a href="#" class="login reg" data-toggle="modal" data-target="#myModal5"
+                                       sec:authorize="!hasRole('USER')">Đăng Ký</a>
                                 </li>
                             </ul>
 

@@ -5,6 +5,67 @@
       th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
 <head>
     <title th:text="#{label.user.profile}"></title>
+    <style>
+        .follower{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .follower-info{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: calc(100% - 80px);
+        }
+        .follower-img{
+            width: 80px;
+            margin-right: 20px;
+        }
+        .follower-img img{
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .follower-name .name-real{
+            font-family: 'Dosis', sans-serif;
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .follower-name .name-fake{
+            font-size: 16px;
+            color: #d6c6c6;
+            font-weight: bold;
+        }
+        .btn-add-follower{
+            background-color: #2474c4;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+            font-family: 'Dosis', sans-serif;
+            padding: 4px 12px;
+            border: none;
+            outline: none;
+        }
+        .user-hero .hero-ct h1 {
+            margin-left: 280px;
+            text-align: left;
+        }
+        .user{
+            display: flex;
+            align-items: center;
+        }
+        .user-icon{
+            font-size: 24px;
+            margin-right: 20px;
+            color: white;
+        }
+        .user-content p{
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="hero user-hero">
@@ -12,36 +73,60 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="hero-ct">
-                    <ul class="breadcumb">
-                        <li class="active"><a th:href="@{/trang-ca-nhan/chinh-sua}">Trang cá nhân</a></li>
-                        <li> <span class="ion-ios-arrow-right"></span>Danh sách theo dõi của tôi</li>
-                    </ul>
+                    <h1 th:text="${user.firstName +' '+user.lastName}"></h1>
+                    <div class="user" style="margin-left: 280px;">
+                        <div class="user-icon">
+                            <i class="far fa-envelope"></i>
+                        </div>
+                        <div class="user-content">
+                            <p th:text="${user.email}"></p>
+                        </div>
+                    </div>
+                    <div class="user" style="margin-left: 280px;">
+                        <div class="user-icon">
+                            <i class="fas fa-address-card"></i>
+                        </div>
+                        <div class="user-content">
+                            <p th:text="${user.address}"></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="page-single userfav_list">
+<div class="page-single">
     <div class="container">
-        <div class="row ipad-width2">
+        <div class="row ipad-width">
             <div class="col-md-3 col-sm-12 col-xs-12">
                 <div th:replace="fragments/web/user-menu::user-menu"></div>
             </div>
 
-            <div class="flex-wrap-movielist user-fav-list" >
-                <div class="movie-item-style-2" th:each="user:${Myfollow}" >
-                    <img   th:src="@{${user.photoUrl}}" alt="">
-                    <div class="mv-item-infor">
-                        <h6><a th:href="@{'/danh-sach-video-'+${user.id}}" th:text="${user.firstName+' '+user.lastName}"></a></h6>
-                        <p class="describe" th:text="${user.email}"></p>
-                        <p class="describe" th:text="${user.address}"></p>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <h3 style="margin: 20px 0;">Danh sách người theo dõi</h3>
+                <div class="form-style-1 user-pro">
+                    <div class="row">
+                        <div class="col-md-6 col-12" th:each="user: ${Myfollow}">
+                            <div class="follower">
+                                <div class="follower-img">
+                                    <img th:src="@{${user.photoUrl}}" alt="avatar">
+                                </div>
+                                <div class="follower-info">
+                                    <div class="follower-name">
+                                        <p class="name-real" th:text="${user.firstName + ' ' + user.lastName}"></p>
+                                        <p class="name-fake">Đã theo dõi</p>
+                                    </div>
+                                    <div class="follower-btn">
+                                        <button class="btn btn-add-follower">Xem thêm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

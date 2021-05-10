@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Random;
 
 
 @Controller(value = "VideoControllerOfWeb")
@@ -35,23 +36,46 @@ public class VideoController {
         model.addAttribute("topVideos", topVideos);
         return "views/video/home";
     }
+
+    @RequestMapping(value = "/video/thinh-hanh", method = RequestMethod.GET)
+    public String trending(Model model) throws Exception {
+        List<VideoDTO> topVideos = videoService.findByProperties("", CoreConstant.ACTIVE_STATUS, 1, 20, "view", "0");
+        model.addAttribute("topVideos", topVideos);
+        return "views/video/video-trend";
+    }
+
     @RequestMapping(value = "/trang-ca-nhan/quan-ly-video", method = RequestMethod.GET)
     public String profile(Model model) throws Exception {
         List<VideoDTO> videoDTOS = videoService.findByProperties(SecurityUtils.getUserPrincipal().getId());
         model.addAttribute("videos", videoDTOS);
-        UserDTO userDTO=userService.findOneById(SecurityUtils.getUserPrincipal().getId());
+        UserDTO userDTO = userService.findOneById(SecurityUtils.getUserPrincipal().getId());
         model.addAttribute("user", userDTO);
         return "views/video/MyVideo";
     }
+
+    @RequestMapping(value = "/video/xem-video/{id}", method = RequestMethod.GET)
+    public String showVideo(Model model, @PathVariable("id") Long id) throws Exception {
+        Integer limit = 10;
+        VideoDTO videoDTO = videoService.findOneByIdAndStatus(id, CoreConstant.ACTIVE_STATUS);
+        model.addAttribute("video", videoDTO);
+        // random page
+        Integer totalItem = videoService.getTotalItem("", CoreConstant.ACTIVE_STATUS);
+        Integer totalPage = (int) Math.ceil((double) totalItem / limit);
+        Random random = new Random();
+        Integer page = random.nextInt(totalPage) + 1;
+        List<VideoDTO> videoNominates = videoService.findByProperties("", CoreConstant.ACTIVE_STATUS, page, limit, null, null);
+        model.addAttribute("videoNominates", videoNominates);
+        return "views/video/videoSingle";
+    }
+
     @RequestMapping(value = "/danh-sach-video-{userId}", method = RequestMethod.GET)
     public String userVideo(Model model,@PathVariable(value = "userId", required = false) Long userId) throws Exception {
         List<VideoDTO> videoDTOS = videoService.findByProperties(userId);
         model.addAttribute("videos", videoDTOS);
-        UserDTO userDTO=userService.findOneById(userId);
+        UserDTO userDTO = userService.findOneById(userId);
         model.addAttribute("user", userDTO);
         return "views/video/UserVideo";
     }
-
 
 
     @RequestMapping(value = "/ajax/video/get-list", method = RequestMethod.GET)

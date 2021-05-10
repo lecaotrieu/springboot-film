@@ -82,6 +82,15 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = "/video/dang-xuat", method = RequestMethod.GET)
+    public String logoutOfUserInVideoPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/video/trang-chu";
+    }
+
     @RequestMapping(value = "/dang-nhap/google", method = RequestMethod.GET)
     public ModelAndView loginPageByGoogle(HttpServletRequest request) throws ClientProtocolException, IOException {
         String code = request.getParameter("code");

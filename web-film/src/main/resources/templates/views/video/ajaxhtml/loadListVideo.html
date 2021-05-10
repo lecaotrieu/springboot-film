@@ -10,7 +10,7 @@
     <div class="col-md-3 col-12 lo" th:each="video: ${videos}">
         <div class="card">
             <div class="poster-video">
-                <img class="card-img-top" th:src="@{${video.imageUrl}}" alt="Card image cap">
+                <img class="card-img-top" th:src="@{${video.imageUrl}}" onerror="imgVideoError(this);" alt="Card image cap">
             </div>
             <div class="card-body">
                 <div class="papa">
@@ -19,7 +19,7 @@
                     </div>
                     <div class="detail">
                         <div class="card-title">
-                            <a href="#" th:text="${video.name}"></a>
+                            <a th:href="@{'/video/xem-video/'+${video.id}}" th:text="${video.name}"></a>
 
                         </div>
                         <div class="card-text">

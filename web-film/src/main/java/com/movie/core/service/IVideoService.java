@@ -25,6 +25,8 @@ public interface IVideoService {
 
     VideoDTO findOneById(Long id);
 
+    VideoDTO findOneByIdAndStatus(Long id, Integer status);
+
     VideoDTO findOneById(Long id, Long userId);
 
     boolean checkUser(Long userId, Long videoId);

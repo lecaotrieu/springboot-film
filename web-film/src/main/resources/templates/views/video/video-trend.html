@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{layout/video :: main-fragment (~{::head}, ~{::body})}">
+<head>
+    <title th:text="#{label.video.trending}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/template/video/css/table-style.css}"/>
+    <link rel="stylesheet" th:href="@{/template/video/css/list.css}" type="text/css" media="all"/>
+    <style>
+        .w3_content_agilleinfo_inner {
+            padding: 0em 0;
+        }
+    </style>
+</head>
+<body>
+<div class="w3_breadcrumb">
+    <div class="breadcrumb-inner">
+        <ul>
+            <li><a th:href="@{/video/trang-chu}">Trang chủ</a><i>//</i></li>
+            <li>Thịnh hành</li>
+        </ul>
+    </div>
+</div>
+<!-- //breadcrumb -->
+<!--/content-inner-section-->
+<div class="w3_content_agilleinfo_inner">
+    <div class="agile_featured_movies">
+        <!---728x90--->
+        <div class="inner-agile-w3l-part-head">
+            <h3 class="w3l-inner-h-title">Thịnh Hành</h3>
+        </div>
+        <div class="latest-news-agile-info">
+            <div class="col-md-10 latest-news-agile-left-content">
+                <div class="w3-agileits-news-one" th:each="video: ${topVideos}">
+                    <div class="wthree-news-img">
+                        <a th:href="@{'/video/xem-video/'+${video.id}}"><img th:src="@{${video.imageUrl}}"
+                                                                             onerror="imgVideoError(this);" alt=""></a>
+                    </div>
+                    <div class="wthree-news-info">
+                        <h5><a th:href="@{'/video/xem-video/'+${video.id}}" th:text="${video.name}"></a></h5>
+                        <div class="agile-post">
+                            by <a href="#" title="w3ls" rel="author" th:text="${video.user.userName}"></a> on
+                            <div th:text="${#dates.format(video.createdDate, 'dd-MMM-yyyy')}" th:remove="tag"></div>
+                            with <a href="#" th:text="${video.totalComment}+' Bình luận'"></a>
+                        </div>
+                        <div id="brief" th:utext="${video.brief}"></div>
+                        <a class="new-more" th:href="@{'/video/xem-video/'+${video.id}}">Xem thêm</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -35,8 +35,18 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <!--//web-fonts-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+            integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
+            crossorigin="anonymous"></script>
     <script th:src="@{/template/paging/jquery.twbsPagination.js}"></script>
     <div th:replace="${head}"></div>
+    <script>
+        function imgVideoError(image) {
+            image.onerror = "";
+            image.src = "/template/image/no-image.jpg";
+            return true;
+        }
+    </script>
 </head>
 <body>
 <div th:replace="fragments/video/header::header"></div>
@@ -46,7 +56,70 @@
         <div th:replace="fragments/video/footer::footer"></div>
     </div>
 </div>
-<script src="js/jquery-1.11.1.min.js"></script>
+
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog">
+
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Đăng nhập</h4>
+                <div id="message-login">
+                </div>
+                <div class="login-form">
+                    <form th:action="@{/trang-ca-nhan/login}" method="post" id="login-user-form">
+                        <input type="text" name="j_username_user" placeholder="Tên đăng nhập" required="">
+                        <input type="password" name="j_password_user" placeholder="Mật khẩu" required="">
+                        <div class="tp">
+                            <input type="submit" value="ĐĂNG NHẬP">
+                        </div>
+                        <div class="forgot-grid">
+                            <div class="log-check">
+                                <label class="checkbox"><input type="checkbox" name="remember-me">Nhớ mật khẩu</label>
+                            </div>
+                            <div class="forgot">
+                                <a href="#" data-toggle="modal" data-target="#myModal2">Quên mật khẩu ?</a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //Modal1 -->
+<!-- Modal1 -->
+<div class="modal fade" id="myModal5" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Đăng Ký</h4>
+                <div id="message-register">
+                </div>
+                <div class="login-form">
+                    <form th:action="@{/dang-ki}" id="register-form" method="post">
+                        <input type="text" name="userName" placeholder="Tên đăng nhập"
+                               pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required">
+                        <input type="email" name="email" placeholder="E-mail"
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                               required="required">
+                        <input type="password" name="password" placeholder="Mật khẩu" pattern="^{6,20}$"
+                               required="required">
+                        <input type="password" name="confirmPassword" placeholder="Confirm Password"   pattern="^{6,20}$"
+                               required="required">
+                        <div class="tp">
+                            <input type="submit" value="ĐĂNG KÝ">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Dropdown-Menu-JavaScript -->
 <script>
     $(document).ready(function () {
@@ -168,14 +241,58 @@
         }
     }
 
-    function searchVideo(){
-        if ($('#btn-search').attr("a") == "s-search"){
+    function searchVideo() {
+        if ($('#btn-search').attr("a") == "s-search") {
             var searchValue = $('#ip-search').val();
             window.location.href = "/video/tim-kiem?search" + searchValue;
-        }else if ($('#btn-search').attr("a") == "p-search"){
+        } else if ($('#btn-search').attr("a") == "p-search") {
             $('#formUrl').submit();
         }
     }
+
+    $('#login-user-form').ajaxForm({
+        success: function (response) {
+            if (response == "success") {
+                window.location.href = "/video/trang-chu";
+            } else if (response == "failure" || response == null) {
+                $('#message-login').html("" +
+                    "<div class='alert alert-block alert-danger'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Tài khoản hoặc mật khẩu không chính xác" +
+                    "</div>")
+            }
+        },
+        error: function (response) {
+            alert("authentication failure");
+        }
+    });
+
+    $('#register-form').ajaxForm({
+        success: function (response) {
+            if (response == "success") {
+                $('#message-register').html("" +
+                    "<div class='alert alert-block alert-success'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Đăng ký tài khoản thành công" +
+                    "</div>")
+            } else if (response == "failure" || response == null) {
+                $('#message-register').html("" +
+                    "<div class='alert alert-block alert-danger'>" +
+                    "   <button type='button' class='close' data-dismiss='alert'>" +
+                    "       <i class='ace-icon fa fa-times'></i>" +
+                    "   </button>" +
+                    "   Đăng ký tài khoản thất bại" +
+                    "</div>")
+            }
+        },
+        error: function (response) {
+            alert("authentication failure");
+        }
+    });
 </script>
 </body>
 </html>

@@ -33,9 +33,11 @@
             <tr th:each="video,iter :${items.listResult}">
                 <td th:text="${iter.index+1}"></td>
                 <td class="w3-img">
-                    <a href="single.html"><img th:src="@{${video.imageUrl}}" alt=""/></a>
+                    <a th:href="@{'/video/xem-video/'+${video.id}}"><img onerror="imgVideoError(this);"
+                                                                          th:src="@{${video.imageUrl}}" alt=""/></a>
                 </td>
-                <td class="w3-list-title"><a href="#" style="color: #ea0404; font-weight: 700"
+                <td class="w3-list-title"><a th:href="@{'/video/xem-video/'+${video.id}}"
+                                             style="color: #ea0404; font-weight: 700"
                                              th:text="${video.name}"></a></td>
                 <td>
                     <div class="video-brief" th:utext="${video.brief}"></div>
@@ -84,7 +86,7 @@
         $('#btn-search').attr("a", "p-search");
     });
 
-    $('#formUrl').submit(function (){
+    $('#formUrl').submit(function () {
         $('#search').val($('#ip-search').val());
     });
 </script>

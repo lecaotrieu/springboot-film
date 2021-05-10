@@ -13,6 +13,37 @@ body {
 	margin: 0px!important;
 }
 
+.video-grid-single-page-agileits img {
+	max-height: 620px;
+	opacity: 0.5;
+}
+
+.trailer-infor {
+	font-family: -webkit-pictograph;
+}
+
+.trailer-infor p {margin: 7px 0;}
+
+.trailer-infor h4 {
+	font-size: 17px;
+	font-weight: 700;
+	font-family: -webkit-pictograph;
+	margin: 10px 0;
+}
+
+.item.row {
+	margin: 21px 0;
+}
+
+.item .trailer-img img {
+	width: 100%;
+	max-height: 140px;
+}
+
+.item .col-md-6 {
+	padding-left: 0;
+}
+
 .phan-trang {
 	display: flex;
 	justify-content: center;
@@ -102,6 +133,7 @@ img.card-img-top {
 .wthree_agile-requested-movies .card {
 	margin-bottom: 20px;
 	height: 307px;
+	background: #fff;
 }
 
 .requested-movies {
@@ -367,9 +399,9 @@ ul.dropdown-menu.multi-column ul li a {
 }
 
 ul.dropdown-menu.multi-column {
-	width: 400px;
-	left: 0;
+	width: 212px;
 	padding: 1em;
+	left: 0;
 }
 
 ul.dropdown-menu.multi-column ul li a:hover {
@@ -872,6 +904,7 @@ a.w3layouts-t:hover {
 
 .w3_content_agilleinfo_inner {
 	padding: 3em 0;
+	background: #eaeaea;
 }
 
 .agile_featured_movies {
@@ -1230,8 +1263,8 @@ p.fexi_header_para1 a i {
 #play7,
 #play8 {
 	position: absolute;
-	top: 38%;
-	left: 44%;
+	top: 41%;
+	left: 47%;
 	width: 64px;
 	height: 64px;
 	cursor: pointer;
@@ -1401,7 +1434,7 @@ h3.agile_w3_title span {
 
 .wthree-news-img {
 	float: left;
-	width: 27%;
+	width: 40%;
 }
 
 .wthree-news-img img {
@@ -1410,7 +1443,7 @@ h3.agile_w3_title span {
 
 .wthree-news-info {
 	float: right;
-	width: 66%;
+	width: 57%;
 }
 
 .wthree-news-info h5 {
