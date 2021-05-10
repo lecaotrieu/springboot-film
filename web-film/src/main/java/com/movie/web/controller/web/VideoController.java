@@ -43,7 +43,7 @@ public class VideoController {
         model.addAttribute("user", userDTO);
         return "views/video/MyVideo";
     }
-    @RequestMapping(value = "/trang-ca-nhan/quan-ly-video-{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/danh-sach-video-{userId}", method = RequestMethod.GET)
     public String userVideo(Model model,@PathVariable(value = "userId", required = false) Long userId) throws Exception {
         List<VideoDTO> videoDTOS = videoService.findByProperties(userId);
         model.addAttribute("videos", videoDTOS);

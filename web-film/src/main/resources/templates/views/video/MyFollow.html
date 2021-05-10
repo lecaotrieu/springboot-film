@@ -32,7 +32,7 @@
                 <div class="movie-item-style-2" th:each="user:${Myfollow}" >
                     <img   th:src="@{${user.photoUrl}}" alt="">
                     <div class="mv-item-infor">
-                        <h6><a th:href="@{'/trang-ca-nhan/quan-ly-video-'+${user.id}}" th:text="${user.firstName+' '+user.lastName}"></a></h6>
+                        <h6><a th:href="@{'/danh-sach-video-'+${user.id}}" th:text="${user.firstName+' '+user.lastName}"></a></h6>
                         <p class="describe" th:text="${user.email}"></p>
                         <p class="describe" th:text="${user.address}"></p>
                     </div>
