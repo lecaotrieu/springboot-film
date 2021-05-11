@@ -20,7 +20,7 @@ public class CommentVideoEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "commentVideo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "commentVideo", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CommentVideoLikeEntity> commentVideoLikes;
 
     @OneToMany(mappedBy = "commentVideo", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

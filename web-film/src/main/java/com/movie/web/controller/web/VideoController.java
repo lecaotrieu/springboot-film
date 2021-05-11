@@ -2,8 +2,9 @@ package com.movie.web.controller.web;
 
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
-import com.movie.core.dto.UserDTO;
-import com.movie.core.dto.VideoDTO;
+import com.movie.core.dto.*;
+import com.movie.core.service.ICommentVideoLikeService;
+import com.movie.core.service.ICommentVideoService;
 import com.movie.core.service.IUserService;
 import com.movie.core.service.IVideoService;
 import com.movie.web.command.VideoCommand;
@@ -53,6 +54,12 @@ public class VideoController {
         return "views/video/MyVideo";
     }
 
+    @Autowired
+    private ICommentVideoService commentVideoService;
+
+    @Autowired
+    private ICommentVideoLikeService commentVideoLikeService;
+
     @RequestMapping(value = "/video/xem-video/{id}", method = RequestMethod.GET)
     public String showVideo(Model model, @PathVariable("id") Long id) throws Exception {
         Integer limit = 10;
@@ -65,12 +72,23 @@ public class VideoController {
         Integer page = random.nextInt(totalPage) + 1;
         List<VideoDTO> videoNominates = videoService.findByProperties("", CoreConstant.ACTIVE_STATUS, page, limit, null, null);
         model.addAttribute("videoNominates", videoNominates);
+        List<CommentVideoDTO> commentVideoDTOS = commentVideoService.findByProperties(id, null, "", "", 1, 5, "createdDate", "0");
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
+            for (CommentVideoDTO commentVideoDTO : commentVideoDTOS) {
+                CommentVideoLikeDTO commentVideoLikeDTO = commentVideoLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentVideoDTO.getId());
+                if (commentVideoLikeDTO != null) {
+                    commentVideoDTO.setLike(commentVideoLikeDTO.getStatus());
+                }
+            }
+        }
+        model.addAttribute("comments", commentVideoDTOS);
+        model.addAttribute("totalComment", commentVideoService.totalComment(id));
         return "views/video/videoSingle";
     }
 
     @RequestMapping(value = "/danh-sach-video-{userId}", method = RequestMethod.GET)
-    public String userVideo(Model model,@PathVariable(value = "userId", required = false) Long userId) throws Exception {
-        List<VideoDTO> videoDTOS = videoService.findByProperties(userId);
+    public String userVideo(Model model, @PathVariable(value = "userId", required = false) Long userId) throws Exception {
+        List<VideoDTO> videoDTOS = videoService.findByProperties(userId, CoreConstant.ACTIVE_STATUS);
         model.addAttribute("videos", videoDTOS);
         UserDTO userDTO = userService.findOneById(userId);
         model.addAttribute("user", userDTO);

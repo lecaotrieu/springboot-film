@@ -26,8 +26,9 @@ public interface VideoRepository extends JpaRepository<VideoEntity, Long> {
 
     List<VideoEntity> findAllByStatus(Integer status);
 
-
     List<VideoEntity> findAllByUser_IdAndStatus(Long userId, Integer status);
+
+    List<VideoEntity> findAllByUser_Id(Long userId);
 
     @Query("select v from VideoEntity v where (lower(v.code) like %?1% or lower(v.name) like %?1%) and v.status = ?2")
     List<VideoEntity> findAllBySearchAndStatus(String search, Integer status, Pageable pageable);

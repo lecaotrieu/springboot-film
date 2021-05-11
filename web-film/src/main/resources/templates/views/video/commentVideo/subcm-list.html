@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+</head>
+<body>
+<div th:class="'cmt-item flex-it reply scm_'+${comment.commentVideo.id}" th:id="cm_+${comment.id}" th:each="comment: ${items.listResult}">
+    <img th:src="@{${comment.user.photoUrl}}" alt="" style="width: 65px;height: 65px; border-radius: 50px;">
+    <div class="author-infor">
+        <div class="flex-it2">
+            <h6><a th:href="@{'/danh-sach-video-'+${comment.user.id}}" th:text="${comment.user.userName}"></a></h6> <span class="time"
+                                                                               th:text="${comment.thoiGianDang}"></span>
+        </div>
+        <p th:text="${comment.content}" style="min-width: 525px;"></p>
+        <div class="evaluate">
+            <span th:text="${comment.totalLike}" th:id="totalLike+${comment.id}"></span>
+            <p class="like-cm" sec:authorize="hasRole('USER')"  th:onclick="likeComment([[${comment.id}]])" th:id="like-cm_+${comment.id}">
+                <i class="fas fa-thumbs-up"
+                   th:if="${comment.like == 1}"></i>
+                <i class="far fa-thumbs-up"
+                   th:if="${comment.like != 1}"></i>
+                <input type="hidden" th:name="comment_like_+${comment.id}"
+                       th:id="ip-content_+${comment.id}"
+                       th:value="${comment.like}">
+            </p>
+            <p class="like-cm" sec:authorize="!hasRole('USER')"  th:id="like-cm_+${comment.id}">
+                <i class="far fa-thumbs-up"></i>
+            </p>
+            <p class="delete-cm" sec:authorize="hasRole('USER')"
+               th:onclick="warningBeforeDelete([[${comment.id}]])"
+               th:if="${comment.user.id.equals(#authentication.principal.id)}">
+                <i class="far fa-trash-alt"></i>
+            </p>
+        </div>
+    </div>
+</div>
+<div th:class="'sub-comment-list_'+${items.commentId}">
+    <p class="scm-xemthem" th:onclick="loadSubComment2([[${items.commentId}]],[[${items.page+1}]])"
+       th:if="${items.nextCountItem>0}">Xem thêm phản hồi</p>
+</div>
+</body>
+</html>

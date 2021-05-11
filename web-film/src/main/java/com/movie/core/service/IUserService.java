@@ -35,5 +35,6 @@ public interface IUserService {
     void updatePhoto(Long id, String contentType, InputStream inputStream) throws Exception;
 
     List<UserDTO> findFollower(Long id);
+
     List<UserDTO> findMyFollow(Long id);
 }

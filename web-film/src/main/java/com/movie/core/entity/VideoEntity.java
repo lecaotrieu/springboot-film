@@ -18,6 +18,8 @@ public class VideoEntity extends BaseEntity {
     private String image;
     @Column
     private Integer view;
+    @Column(name = "totallike")
+    private Integer totalLike;
     @Column
     private Integer status;
 
@@ -25,7 +27,7 @@ public class VideoEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE, mappedBy = "video")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "video")
     private List<CommentVideoEntity> commentVideos;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "video")
@@ -109,5 +111,13 @@ public class VideoEntity extends BaseEntity {
 
     public void setBrief(String brief) {
         this.brief = brief;
+    }
+
+    public Integer getTotalLike() {
+        return totalLike;
+    }
+
+    public void setTotalLike(Integer totalLike) {
+        this.totalLike = totalLike;
     }
 }

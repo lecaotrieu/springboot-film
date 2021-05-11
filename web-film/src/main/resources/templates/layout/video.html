@@ -22,6 +22,9 @@
     <!-- pop-up -->
     <link th:href="@{/template/video/css/popuo-box.css}" rel="stylesheet" type="text/css" media="all"/>
     <!-- //pop-up -->
+    <!--    font-awesome-->
+    <link rel="stylesheet" th:href="@{/template/fontawesome-5.12.1/css/fontawesome.min.css}">
+    <link rel="stylesheet" th:href="@{/template/fontawesome-5.12.1/css/all.css}">
     <link th:href="@{/template/video/css/easy-responsive-tabs.css}" rel='stylesheet' type='text/css'/>
     <link rel="stylesheet" type="text/css" th:href="@{/template/video/css/zoomslider.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/template/video/css/style.css}"/>
@@ -31,6 +34,9 @@
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/template/video/js/modernizr-2.6.2.min.js}"></script>
     <!--/web-fonts-->
+    <!-- sweetalert -->
+    <link rel="stylesheet" th:href="@{/template/admin/sweetalert2/sweetalert2.min.css}">
+    <script type='text/javascript' th:src="@{/template/admin/sweetalert2/sweetalert2.min.js}"></script>
     <link href='http://fonts.googleapis.com/css?family=Tangerine:400,700' rel='stylesheet' type='text/css'>
     <link href="http://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -109,7 +115,7 @@
                                required="required">
                         <input type="password" name="password" placeholder="Mật khẩu" pattern="^{6,20}$"
                                required="required">
-                        <input type="password" name="confirmPassword" placeholder="Confirm Password"   pattern="^{6,20}$"
+                        <input type="password" name="confirmPassword" placeholder="Confirm Password" pattern="^{6,20}$"
                                required="required">
                         <div class="tp">
                             <input type="submit" value="ĐĂNG KÝ">
@@ -203,6 +209,7 @@
 </script>
 <!--end-smooth-scrolling-->
 <script th:src="@{/template/video/js/bootstrap.js}"></script>
+<script th:src="@{/template/fontawesome-5.12.1/js/fontawesome.min.js}"></script>
 <script th:src="@{/template/admin/js/convert-json.js}"></script>
 <script>
     function showAlertBeforeDelete(callback) {
@@ -293,6 +300,23 @@
             alert("authentication failure");
         }
     });
+    function showAlertBeforeDelete(callback) {
+        swal({
+            title: "Xác nhận xóa",
+            text: "Bạn có chắc muốn xóa những dữ liệu đã chọn !",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy bỏ",
+            confirmButtonClass: "btn btn-success",
+            cancelButtonClass: "btn btn-danger"
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                callback();
+            }
+        })
+    }
+
 </script>
 </body>
 </html>

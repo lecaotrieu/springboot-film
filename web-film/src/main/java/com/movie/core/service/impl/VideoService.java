@@ -45,6 +45,7 @@ public class VideoService implements IVideoService {
         }
         if(videoEntity.getView() == null){
             videoEntity.setView(0);
+            videoEntity.setTotalLike(0);
         }
         videoEntity.setCode(code);
         videoEntity = videoRepository.save(videoEntity);
@@ -167,7 +168,7 @@ public class VideoService implements IVideoService {
 
     public List<VideoDTO> findByProperties(Long userId) {
         List<VideoEntity> videoEntities;
-        videoEntities = videoRepository.findAllByUser_IdAndStatus(userId, CoreConstant.ACTIVE_STATUS);
+        videoEntities = videoRepository.findAllByUser_Id(userId);
         List<VideoDTO> videoDTOS = new ArrayList<>();
         for (VideoEntity entity : videoEntities) {
             VideoDTO videoDTO = videoConvert.toDTO(entity);
@@ -175,6 +176,19 @@ public class VideoService implements IVideoService {
         }
         return videoDTOS;
     }
+
+    @Override
+    public List<VideoDTO> findByProperties(Long userId, Integer status) {
+        List<VideoEntity> videoEntities;
+        videoEntities = videoRepository.findAllByUser_IdAndStatus(userId, status);
+        List<VideoDTO> videoDTOS = new ArrayList<>();
+        for (VideoEntity entity : videoEntities) {
+            VideoDTO videoDTO = videoConvert.toDTO(entity);
+            videoDTOS.add(videoDTO);
+        }
+        return videoDTOS;
+    }
+
 
     @Override
     public List<VideoDTO> findByProperties(String search, Integer status, int page, int limit, String sortExpression, String sortDirection) {

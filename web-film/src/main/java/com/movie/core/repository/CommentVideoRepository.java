@@ -1,6 +1,5 @@
 package com.movie.core.repository;
 
-import com.movie.core.entity.CommentEntity;
 import com.movie.core.entity.CommentVideoEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +27,10 @@ public interface CommentVideoRepository extends JpaRepository<CommentVideoEntity
     long countAllByUserAndProperties(String userName, String search);
 
     List<CommentVideoEntity> findAllByCommentVideo_Id(Long commentId);
+
+    long countAllByVideo_Id(Long videoId);
+
+    List<CommentVideoEntity> findAllByCommentVideo_IdAndVideo_Id(Long commentId, Long videoId, Pageable pageable);
+
+    long countAllByVideo_IdAndCommentVideo_Id(Long videoId, Long commentId);
 }

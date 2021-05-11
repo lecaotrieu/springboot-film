@@ -11,6 +11,7 @@
             padding: 0em 0;
         }
     </style>
+    <script th:src="@{/template/video/js/comment.js}"></script>
 </head>
 <body>
 <div class="w3_breadcrumb">
@@ -35,9 +36,9 @@
                     <div class="video-grid-single-page-agileits">
                         <div data-video="f2Z65fobH2I" id="video">
                             <img th:src="@{${video.imageUrl}}" onerror="imgVideoError(this)" alt=""/>
-                            <div id="play"></div>
-                            <video width="100%" autoplay controls class="hide">
-                                <source th:src="@{${video.videoUrl}}">
+                            <div id="play" ></div>
+                            <input type="hidden" th:value="${video.videoUrl}" id="ip-video-url">
+                            <video width="100%" src="#" controls class="hide">
                             </video>
                         </div>
                     </div>
@@ -46,93 +47,121 @@
 
                 <!---728x90--->
                 <div class="response">
-                    <h4 class="desc" th:text="${video.name}"><p></p>
-                        <button>Like</button>
-                        <button>Theo dõi</button>
-
+                    <h4 class="desc" th:text="${video.name}">
                     </h4>
-
-                    <h3>Bình Luận</h3>
-                    <div class="media response-info">
-                        <div class="media-left response-text-left">
-                            <a href="#">
-                                <img class="media-object" src="images/admin.jpg" alt="">
-                            </a>
-                            <h5><a href="#">Admin</a></h5>
+                    <div class="video-info">
+                        <div class="info-view">
+                            <p th:text="${video.view}+' lượt xem'"></p>
+                            <p th:text="'Được đăng vào ngày '+${#dates.format(video.createdDate,'dd-MM-yyyy')}"></p>
                         </div>
-
-                        <div class="media-body response-text-right">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of
-                                passages of Lorem Ipsum available,
-                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.There are many
-                                variations of passages of Lorem Ipsum available.</p>
-                            <ul>
-                                <li>October 15, 2016</li>
-                                <li><a href="single.html"><i class="fa fa-reply" aria-hidden="true"></i> Reply</a></li>
-                            </ul>
-                            <div class="media response-info">
-                                <div class="media-left response-text-left">
-                                    <a href="#">
-                                        <img class="media-object" src="images/admin.jpg" alt="">
-                                    </a>
-                                    <h5><a href="#">Admin</a></h5>
-                                </div>
-                                <div class="media-body response-text-right">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many
-                                        variations of passages of Lorem Ipsum available,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.There are many
-                                        variations of passages of Lorem Ipsum available.</p>
-                                    <ul>
-                                        <li>November 02, 2016</li>
-                                        <li><a href="single.html"><i class="fa fa-reply" aria-hidden="true"></i>
-                                            Reply</a></li>
-                                    </ul>
-                                </div>
-                                <div class="clearfix"></div>
+                        <div class="danh-gia">
+                            <button class="btn btn-info">Like</button>
+                            <p th:text="${video.totalLike}+' lượt thích'"></p>
+                        </div>
+                    </div>
+                    <div class="video-user-info">
+                        <div class="info">
+                            <div class="user-img">
+                                <img th:src="@{${video.user.photoUrl}}" alt="">
+                            </div>
+                            <div class="video-user">
+                                <a th:href="@{'/danh-sach-video-'+${video.user.id}}" class="name"
+                                   th:text="${video.user.firstName}+' '+${video.user.lastName}"></a>
+                                <p class="dang-ky" th:text="${video.user.followers.size()}+' người theo dõi'"></p>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
+                        <button class="btn btn-primary">Theo dõi</button>
                     </div>
-                    <div class="media response-info">
-                        <div class="media-left response-text-left">
-                            <a href="#">
-                                <img class="media-object" src="images/admin.jpg" alt="">
-                            </a>
-                            <h5><a href="#">Admin</a></h5>
+                    <div class="video-brief">
+                        <div class="content" th:utext="${video.brief}">
                         </div>
-                        <div class="media-body response-text-right">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,There are many variations of
-                                passages of Lorem Ipsum available,
-                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.There are many
-                                variations of passages of Lorem Ipsum available.</p>
-                            <ul>
-                                <li>November 03, 2016</li>
-                                <li><a href="single.html"><i class="fa fa-reply" aria-hidden="true"></i> Reply</a></li>
-                            </ul>
+                    </div>
+                    <h3>Bình Luận</h3>
+                    <div id="comments" class="blog-detail-ct">
+                        <h4 th:text="${totalComment}+' Bình luận'"></h4>
+                        <div id="new-comment"></div>
+                        <th:block th:each="comment: ${comments}">
+                            <div class="cmt-item flex-it" th:id="cm_+${comment.id}">
+                                <img th:src="@{${comment.user.photoUrl}}" alt=""
+                                     style="width: 65px;height: 65px; border-radius:50px; ">
+                                <div class="author-infor">
+                                    <div class="flex-it2">
+                                        <h6><a th:href="@{'/danh-sach-video-'+${comment.user.id}}"
+                                               th:text="${comment.user.userName}"></a></h6>
+                                        <span class="time" th:text="${comment.thoiGianDang}"></span>
+                                    </div>
+                                    <p th:text="${comment.content}" class="cm-content"
+                                       style="min-width: 600px;"></p>
+                                    <p><a class="rep-btn" th:onclick="showReplyCm([[${comment.id}]])">+
+                                        Trả lời</a></p>
+                                    <p th:if="${comment.subCommentCount>0}" class="show-subcomment"
+                                       th:onclick="loadSubComment([[${comment.id}]])"
+                                       th:text="'Xem phản hồi'"></p>
+                                    <div class="evaluate">
+                                                        <span th:text="${comment.totalLike}"
+                                                              th:id="totalLike+${comment.id}"></span>
+                                        <p class="like-cm" sec:authorize="hasRole('USER')"
+                                           th:onclick="likeComment([[${comment.id}]])"
+                                           th:id="like-cm_+${comment.id}">
+                                            <i class="fas fa-thumbs-up"
+                                               th:if="${comment.like == 1}"></i>
+                                            <i class="far fa-thumbs-up"
+                                               th:if="${comment.like != 1}"></i>
+                                            <input type="hidden" th:name="comment_like_+${comment.id}"
+                                                   th:id="ip-content_+${comment.id}"
+                                                   th:value="${comment.like}">
+                                        </p>
+                                        <p class="like-cm" sec:authorize="!hasRole('USER')"
+                                           th:id="like-cm_+${comment.id}">
+                                            <i class="far fa-thumbs-up"></i>
+                                        </p>
+                                        <p class="delete-cm" sec:authorize="hasRole('USER')"
+                                           th:onclick="warningBeforeDelete([[${comment.id}]])"
+                                           th:if="${comment.user.id.equals(#authentication.principal.id)}">
+                                            <i class="far fa-trash-alt"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:id="new-sub-cm_+${comment.id}"></div>
+                            <div th:class="'sub-comment_'+${comment.id}">
+                                <input type="hidden" th:id="'sub-page_'+${comment.id}" value="1">
+                            </div>
+                        </th:block>
+                        <div id="comment_list">
+                            <input type="hidden" id="comment-page" name="page" value="1">
+                            <p class="show-comment" th:onclick="loadComment([[${video.id}]],2)">
+                                Xem thêm bình luận</p>
                         </div>
-                        <div class="clearfix"></div>
+
+                        <div class="comments"></div>
+                        <div class="comment-form">
+                            <h4 th:text="#{label.comment.please}"></h4>
+                            <div class="cmt-item flex-it hide" id="cm-reply">
+                                <div class="author-infor">
+                                    <div class="flex-it2">
+                                        <h6><a href="#"></a></h6>
+                                        <span class="time"></span>
+                                    </div>
+                                    <div class="close"><a><i class="fas fa-times"></i></a></div>
+                                    <p id="reply-content" style="min-width: 600px;"></p>
+                                </div>
+                            </div>
+                            <form id="form-comment-video">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                                    <textarea name="content" id="comment-content-txt"
+                                                              th:placeholder="#{label.comment}"></textarea>
+                                    </div>
+                                    <input type="hidden" name="video.id" th:value="${video.id}">
+                                    <input type="hidden" id="reply-cm-id">
+                                </div>
+                                <button class="btn btn-primary" id="btn-submit">Gửi</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <!---728x90--->
-
-                <div class="all-comments-info">
-                    <h5>Để lại bình luận</h5>
-                    <div class="agile-info-wthree-box">
-                        <form>
-                            <div class="col-md-6 form-info">
-                                <input type="text" name="name" placeholder="Tên" required="">
-                                <input type="email" name="email" placeholder="Email" required="">
-                                <input type="text" name="phone" placeholder="Số ĐT" required="">
-                            </div>
-                            <div class="col-md-6 form-info">
-
-                                <textarea placeholder="Nhập nội dung" required=""></textarea>
-                                <input type="submit" value="SEND">
-                            </div>
-                            <div class="clearfix"></div>
-                        </form>
-                    </div>
-                </div>
             </div>
             <div class="col-md-4 latest-news-agile-right-content">
                 <h4 class="side-t-w3l-agile">Video <span>tiếp theo</span></h4>
@@ -164,12 +193,26 @@
 
     </div>
 </div>
+<input type="hidden" id="ip-videoId" name="videoId" th:value="${video.id}">
+
 <!--//content-inner-section-->
 <script>
     $('#play').click(function () {
         $('#video').children('img').hide();
         $('#play').css('background-image', 'url(play-button.png), url(' + $('#video').children().attr('src') + ')').hide();
+        var url = $('#ip-video-url').val();
+        $('video').attr("src",url);
         $("video").removeClass("hide");
+        $("video").get(0).play();
+    });
+
+
+    $('#form-comment-video').submit(function (e) {
+        e.preventDefault();
+        var formData = $('#form-comment-video').serializeArray();
+        var data = convertToJson(formData);
+        var url = "/api/video/comment";
+        commentVideoApi(data, url, "post", undefined);
     });
 
     $(document).ready(function () {

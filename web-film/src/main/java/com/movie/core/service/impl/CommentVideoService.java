@@ -9,6 +9,7 @@ import com.movie.core.service.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class CommentVideoService implements ICommentVideoService {
 
     @Autowired
     private CommentVideoConvert commentVideoConvert;
+
     @Override
     public List<CommentVideoDTO> findByProperties(Long videoId, Long commentId, String search, String userName, int page, int limit, String sortExpression, String sortDirection) {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
@@ -42,6 +44,18 @@ public class CommentVideoService implements ICommentVideoService {
         for (CommentVideoEntity entity : commentVideoEntities) {
             CommentVideoDTO commentVideoDTO = commentVideoConvert.toDTO(entity);
             commentVideoDTO.setSubCommentCount(entity.getCommentVideos().size());
+            commentVideoDTOS.add(commentVideoDTO);
+        }
+        return commentVideoDTOS;
+    }
+
+    @Override
+    public List<CommentVideoDTO> findByProperties(Long commentId, Long videoId, int page, int limit, String sortExpression, String sortDirection) {
+        Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
+        List<CommentVideoEntity> commentVideoEntities = commentVideoRepository.findAllByCommentVideo_IdAndVideo_Id(commentId, videoId, pageable);
+        List<CommentVideoDTO> commentVideoDTOS = new ArrayList<CommentVideoDTO>();
+        for (CommentVideoEntity entity : commentVideoEntities) {
+            CommentVideoDTO commentVideoDTO = commentVideoConvert.toDTO(entity);
             commentVideoDTOS.add(commentVideoDTO);
         }
         return commentVideoDTOS;
@@ -84,5 +98,33 @@ public class CommentVideoService implements ICommentVideoService {
     public CommentVideoDTO findOneById(Long commentId) {
         CommentVideoEntity commentVideoEntity = commentVideoRepository.getOne(commentId);
         return commentVideoConvert.toDTO(commentVideoEntity);
+    }
+
+    @Override
+    public int totalComment(Long videoId) {
+        int result = (int) commentVideoRepository.countAllByVideo_Id(videoId);
+        return result;
+    }
+
+    @Transactional
+    public Long save(CommentVideoDTO commentVideoDTO) throws Exception {
+        CommentVideoEntity entity;
+        if (commentVideoDTO.getId() != null) {
+            entity = commentVideoRepository.getOne(commentVideoDTO.getId());
+            entity.setContent(commentVideoDTO.getContent());
+        } else {
+            entity = commentVideoConvert.toEntity(commentVideoDTO);
+        }
+        if (entity.getTotalLike() == null){
+            entity.setTotalLike(0);
+        }
+        entity = commentVideoRepository.save(entity);
+        return entity.getId();
+    }
+
+    @Override
+    public int totalComment(Long commentId, Long videoId) {
+        int result = (int) commentVideoRepository.countAllByVideo_IdAndCommentVideo_Id(videoId, commentId);
+        return result;
     }
 }
