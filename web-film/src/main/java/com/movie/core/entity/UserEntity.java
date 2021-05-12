@@ -16,6 +16,9 @@ public class UserEntity extends BaseEntity {
     @Column
     private String email;
 
+    @Column(name = "totalfollow")
+    private Integer totalFollow;
+
     @Column(name = "firstname")
     private String firstName;
 
@@ -39,6 +42,12 @@ public class UserEntity extends BaseEntity {
 
     @Column(columnDefinition = "VARCHAR(255)")
     private String address;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<SubscribeEntity> subscribes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userFollow")
+    private List<SubscribeEntity> beSubscribes;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<EvaluateEntity> evaluates;
@@ -227,5 +236,29 @@ public class UserEntity extends BaseEntity {
 
     public void setEvaluateVideos(List<EvaluateVideoEntity> evaluateVideos) {
         this.evaluateVideos = evaluateVideos;
+    }
+
+    public List<SubscribeEntity> getSubscribes() {
+        return subscribes;
+    }
+
+    public void setSubscribes(List<SubscribeEntity> subscribes) {
+        this.subscribes = subscribes;
+    }
+
+    public List<SubscribeEntity> getBeSubscribes() {
+        return beSubscribes;
+    }
+
+    public void setBeSubscribes(List<SubscribeEntity> beSubscribes) {
+        this.beSubscribes = beSubscribes;
+    }
+
+    public Integer getTotalFollow() {
+        return totalFollow;
+    }
+
+    public void setTotalFollow(Integer totalFollow) {
+        this.totalFollow = totalFollow;
     }
 }

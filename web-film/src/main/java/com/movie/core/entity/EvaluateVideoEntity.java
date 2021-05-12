@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "evaluatevideo")
 public class EvaluateVideoEntity extends BaseEntity {
     @Column
-    private Integer like;
+    private Integer liked;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -16,13 +16,6 @@ public class EvaluateVideoEntity extends BaseEntity {
     @JoinColumn(name = "video_id")
     private VideoEntity video;
 
-    public Integer getLike() {
-        return like;
-    }
-
-    public void setLike(Integer like) {
-        this.like = like;
-    }
 
     public UserEntity getUser() {
         return user;
@@ -38,5 +31,13 @@ public class EvaluateVideoEntity extends BaseEntity {
 
     public void setVideo(VideoEntity video) {
         this.video = video;
+    }
+
+    public Integer getLiked() {
+        return liked;
+    }
+
+    public void setLiked(Integer liked) {
+        this.liked = liked;
     }
 }

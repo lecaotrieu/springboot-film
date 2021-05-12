@@ -70,6 +70,8 @@
             <b th:text="#{label.video.name}"></b>: <p th:text="${item.name}"></p>
             <b th:text="#{label.video.code}"></b>: <p th:text="${item.code}"></p>
             <b th:text="#{label.drive.id}"></b>: <p th:text="${item.video}"></p>
+            <b th:text="#{label.view}"></b>: <p th:text="${item.view}"></p>
+            <b th:text="#{label.comment.total.like}"></b>: <p th:text="${item.totalLike}"></p>
             <b th:text="#{label.status}"></b>: <p th:text="#{label.video.active}" th:if="${item.status==1}"></p>
             <p th:text="#{label.video.inactive}" th:if="${item.status==0}"></p>
             <b th:text="#{label.people.create}"></b>: <p th:text="${item.createdBy}"></p>

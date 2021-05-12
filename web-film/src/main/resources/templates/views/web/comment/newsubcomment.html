@@ -9,7 +9,7 @@
     <img th:src="@{${comment.user.photoUrl}}" alt="" style="width: 65px;height: 65px; border-radius: 50px;">
     <div class="author-infor">
         <div class="flex-it2">
-            <h6><a href="#" th:text="${comment.user.userName}"></a></h6> <span class="time"
+            <h6><a th:href="@{'/danh-sach-video-'+${comment.user.id}}" th:text="${comment.user.userName}"></a></h6> <span class="time"
                                                                                th:text="${comment.thoiGianDang}"></span>
         </div>
         <p th:text="${comment.content}" style="min-width: 525px;"></p>

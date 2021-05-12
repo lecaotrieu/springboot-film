@@ -40,4 +40,8 @@ public interface IVideoService {
     List<VideoDTO> findAllToViewInHomePage(Integer status, int page, int limit);
 
     int getTotalItem(String search, Integer status);
+
+    Integer setTotalLike(Long videoId);
+
+    void updateView(Long videoId);
 }

@@ -5,8 +5,11 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.convert.UserConvert;
 import com.movie.core.dto.UserDTO;
 import com.movie.core.entity.UserEntity;
+import com.movie.core.entity.VideoEntity;
+import com.movie.core.repository.SubscribeRepository;
 import com.movie.core.repository.UserRepository;
 import com.movie.core.service.IDriveService;
+import com.movie.core.service.ISubscribeService;
 import com.movie.core.service.IUserService;
 import com.movie.core.service.utils.PagingUtils;
 import org.apache.commons.fileupload.FileItem;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,6 +85,12 @@ public class UserService implements IUserService {
         return userConvert.toDTO(userEntity);
     }
 
+    @Override
+    public UserDTO findOneById(Long id, Integer status) throws Exception {
+        UserEntity userEntity = userRepository.findAllByIdAndStatus(id, status);
+        return userConvert.toDTO(userEntity);
+    }
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -96,6 +106,9 @@ public class UserService implements IUserService {
         } else {
             userEntity = userConvert.toEntity(userDTO);
             userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        }
+        if (userEntity.getTotalFollow() == null) {
+            userEntity.setTotalFollow(0);
         }
         userEntity = userRepository.save(userEntity);
         return userConvert.toDTO(userEntity);
@@ -227,22 +240,36 @@ public class UserService implements IUserService {
     @Override
     public List<UserDTO> findFollower(Long id) {
         List<UserDTO> userDTOS = new ArrayList<>();
-        List<UserEntity> userEntities = userRepository.findAllFollower(id);
+        List<UserEntity> userEntities = userRepository.findAllUserFollowMe(id, 1);
         for (UserEntity entity : userEntities) {
             UserDTO userDTO = userConvert.toDTO(entity);
             userDTOS.add(userDTO);
         }
         return userDTOS;
     }
+
     @Override
     public List<UserDTO> findMyFollow(Long id) {
         List<UserDTO> userDTOS = new ArrayList<>();
-        List<UserEntity> userEntities = userRepository.findAllMyFollow(id);
+        List<UserEntity> userEntities = userRepository.findAllUserFollowed(id, 1);
         for (UserEntity entity : userEntities) {
             UserDTO userDTO = userConvert.toDTO(entity);
             userDTOS.add(userDTO);
         }
         return userDTOS;
+    }
+
+    @Autowired
+    private SubscribeRepository subscribeRepository;
+
+    @Transactional
+    @Override
+    public Integer setTotalFollow(Long id) {
+        Integer totalFollow = subscribeRepository.countAllByFollowIsLikeAndUserFollow_Id(1, id);
+        UserEntity userEntity = userRepository.getOne(id);
+        userEntity.setTotalFollow(totalFollow);
+        userRepository.save(userEntity);
+        return totalFollow;
     }
 
     private boolean checkUpdatePassword(String userEntityPassword, String password, String newPassword, String confirmPassword) {

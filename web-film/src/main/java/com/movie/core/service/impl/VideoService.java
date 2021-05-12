@@ -4,8 +4,9 @@ import com.google.api.services.drive.model.File;
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.convert.VideoConvert;
 import com.movie.core.dto.VideoDTO;
-import com.movie.core.entity.CommentVideoEntity;
+import com.movie.core.entity.FilmEntity;
 import com.movie.core.entity.VideoEntity;
+import com.movie.core.repository.EvaluateVideoRepository;
 import com.movie.core.repository.VideoRepository;
 import com.movie.core.service.ICommentVideoService;
 import com.movie.core.service.IDriveService;
@@ -43,7 +44,7 @@ public class VideoService implements IVideoService {
         } else {
             videoEntity = videoConvert.toEntity(videoDTO);
         }
-        if(videoEntity.getView() == null){
+        if (videoEntity.getView() == null) {
             videoEntity.setView(0);
             videoEntity.setTotalLike(0);
         }
@@ -112,8 +113,6 @@ public class VideoService implements IVideoService {
         }
         return videoDTOS;
     }
-
-
 
 
     @Autowired
@@ -218,5 +217,32 @@ public class VideoService implements IVideoService {
     @Override
     public int getTotalItem(String search, Integer status) {
         return (int) videoRepository.countAllBySearchAndStatus(search, status);
+    }
+
+    @Autowired
+    private EvaluateVideoRepository evaluateVideoRepository;
+
+    @Transactional
+    @Override
+    public Integer setTotalLike(Long videoId) {
+        Integer totalLike = evaluateVideoRepository.countAllByLikedIsLikeAndVideo_Id(1, videoId);
+        VideoEntity videoEntity = videoRepository.getOne(videoId);
+        videoEntity.setTotalLike(totalLike);
+        videoRepository.save(videoEntity);
+        return totalLike;
+    }
+
+    @Override
+    public void updateView(Long videoId) {
+        VideoEntity videoEntity = videoRepository.getOne(videoId);
+        int view;
+        if (videoEntity.getView() == null) {
+            view = 1;
+        } else {
+            view = videoEntity.getView() + 1;
+        }
+
+        videoEntity.setView(view);
+        videoRepository.save(videoEntity);
     }
 }

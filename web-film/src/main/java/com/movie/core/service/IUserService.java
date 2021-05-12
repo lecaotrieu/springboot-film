@@ -16,6 +16,8 @@ public interface IUserService {
 
     UserDTO findOneById(Long id) throws Exception;
 
+    UserDTO findOneById(Long id, Integer status) throws Exception;
+
     UserDTO save(UserDTO userDTO) throws Exception;
 
     boolean updateUserStatus(UserDTO userDTO);
@@ -37,4 +39,6 @@ public interface IUserService {
     List<UserDTO> findFollower(Long id);
 
     List<UserDTO> findMyFollow(Long id);
+
+    Integer setTotalFollow(Long id);
 }

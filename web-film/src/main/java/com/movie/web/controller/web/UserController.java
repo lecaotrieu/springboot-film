@@ -104,12 +104,25 @@ public class UserController {
         return "views/web/favoriteFilm";
     }
 
+    @RequestMapping(value = "/trang-ca-nhan/edit", method = RequestMethod.POST)
+    public String saveProfile(UserDTO userDTO) {
+        userDTO.setId(SecurityUtils.getUserPrincipal().getId());
+        userDTO.setUserName(SecurityUtils.getUserPrincipal().getUsername());
+        try {
+            userService.save(userDTO);
+            return "redirect:/trang-ca-nhan/chinh-sua?message=redirect_update";
+        } catch (Exception e) {
+            return "redirect:/trang-ca-nhan/chinh-sua?message=redirect_error";
+        }
+    }
+
     @RequestMapping(value = "/trang-ca-nhan/follower", method = RequestMethod.GET)
     public String follower(Model model) throws Exception {
         List<UserDTO> userDTOS = userService.findFollower(SecurityUtils.getUserPrincipal().getId());
         model.addAttribute("followers", userDTOS);
         return "views/video/follower";
     }
+
     @RequestMapping(value = "/trang-ca-nhan/MyFollow", method = RequestMethod.GET)
     public String MyFollow(Model model) throws Exception {
         List<UserDTO> userDTOS = userService.findMyFollow(SecurityUtils.getUserPrincipal().getId());

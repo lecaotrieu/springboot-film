@@ -1,8 +1,5 @@
 package com.movie.core.dto;
 
-import com.movie.core.entity.*;
-
-import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 
@@ -19,6 +16,7 @@ public class UserDTO extends AbstractDTO<UserDTO> {
     private String photo;
     private String photoUrl;
     private Date birthDate;
+    private Integer totalFollow;
     private String address;
     private List<CommentVideoDTO> commentVideos;
     private List<CommentVideoLikeDTO> commentVideoLikes;
@@ -29,6 +27,24 @@ public class UserDTO extends AbstractDTO<UserDTO> {
     private List<UserDTO> usersFollowed;
     private List<UserDTO> followers;
     private List<EvaluateVideoDTO> evaluateVideos;
+    private List<SubscribeDTO> subscribes;
+    private List<SubscribeDTO> beSubscribes;
+
+    public List<SubscribeDTO> getSubscribes() {
+        return subscribes;
+    }
+
+    public void setSubscribes(List<SubscribeDTO> subscribes) {
+        this.subscribes = subscribes;
+    }
+
+    public List<SubscribeDTO> getBeSubscribes() {
+        return beSubscribes;
+    }
+
+    public void setBeSubscribes(List<SubscribeDTO> beSubscribes) {
+        this.beSubscribes = beSubscribes;
+    }
 
     public List<CommentVideoDTO> getCommentVideos() {
         return commentVideos;
@@ -204,5 +220,13 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 
     public void setEvaluateVideos(List<EvaluateVideoDTO> evaluateVideos) {
         this.evaluateVideos = evaluateVideos;
+    }
+
+    public Integer getTotalFollow() {
+        return totalFollow;
+    }
+
+    public void setTotalFollow(Integer totalFollow) {
+        this.totalFollow = totalFollow;
     }
 }

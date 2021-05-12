@@ -44,7 +44,7 @@
                 </td>
                 <td class="w3-list-info" th:text="${video.view}"></td>
                 <td class="w3-list-info" th:text="${video.createdDate}"></td>
-                <td><a href="#" th:text="${video.user.userName}"></a></td>
+                <td><a th:href="@{'/danh-sach-video-'+${video.user.id}}" th:text="${video.user.userName}"></a></td>
             </tr>
             </tbody>
         </table>

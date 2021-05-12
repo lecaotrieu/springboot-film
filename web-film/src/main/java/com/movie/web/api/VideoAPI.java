@@ -24,7 +24,10 @@ public class VideoAPI {
     public Long updateVideo(@RequestBody VideoDTO videoDTO) throws Exception {
         return videoService.save(videoDTO).getId();
     }
-
+    @PutMapping("/api/video/view")
+    public void updateFilmView(@RequestBody Long videoId) {
+        videoService.updateView(videoId);
+    }
 
     @PutMapping("/api/admin/video/status")
     public boolean updateVideoStatus(@RequestBody VideoDTO videoDTO) {

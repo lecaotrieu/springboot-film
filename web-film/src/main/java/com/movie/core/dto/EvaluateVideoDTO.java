@@ -1,17 +1,9 @@
 package com.movie.core.dto;
 
 public class EvaluateVideoDTO extends AbstractDTO<EvaluateVideoDTO> {
-    private Integer like;
+    private Integer liked;
     private UserDTO user;
     private VideoDTO video;
-
-    public Integer getLike() {
-        return like;
-    }
-
-    public void setLike(Integer like) {
-        this.like = like;
-    }
 
     public UserDTO getUser() {
         return user;
@@ -27,5 +19,13 @@ public class EvaluateVideoDTO extends AbstractDTO<EvaluateVideoDTO> {
 
     public void setVideo(VideoDTO video) {
         this.video = video;
+    }
+
+    public Integer getLiked() {
+        return liked;
+    }
+
+    public void setLiked(Integer liked) {
+        this.liked = liked;
     }
 }

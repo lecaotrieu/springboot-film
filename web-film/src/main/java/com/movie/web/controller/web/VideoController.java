@@ -3,10 +3,7 @@ package com.movie.web.controller.web;
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.*;
-import com.movie.core.service.ICommentVideoLikeService;
-import com.movie.core.service.ICommentVideoService;
-import com.movie.core.service.IUserService;
-import com.movie.core.service.IVideoService;
+import com.movie.core.service.*;
 import com.movie.web.command.VideoCommand;
 import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +57,11 @@ public class VideoController {
     @Autowired
     private ICommentVideoLikeService commentVideoLikeService;
 
+    @Autowired
+    private IEvaluateVideoService evaluateVideoService;
+    @Autowired
+    private ISubscribeService subscribeService;
+
     @RequestMapping(value = "/video/xem-video/{id}", method = RequestMethod.GET)
     public String showVideo(Model model, @PathVariable("id") Long id) throws Exception {
         Integer limit = 10;
@@ -74,6 +76,10 @@ public class VideoController {
         model.addAttribute("videoNominates", videoNominates);
         List<CommentVideoDTO> commentVideoDTOS = commentVideoService.findByProperties(id, null, "", "", 1, 5, "createdDate", "0");
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
+            EvaluateVideoDTO evaluateVideo = evaluateVideoService.findByVideoAndUser(id, SecurityUtils.getUserPrincipal().getId());
+            SubscribeDTO subscribe = subscribeService.findByUserFollowAndUser(videoDTO.getUser().getId(), SecurityUtils.getUserPrincipal().getId());
+            model.addAttribute("evaluateVideo", evaluateVideo);
+            model.addAttribute("subscribe", subscribe);
             for (CommentVideoDTO commentVideoDTO : commentVideoDTOS) {
                 CommentVideoLikeDTO commentVideoLikeDTO = commentVideoLikeService.findByUserAndComment(SecurityUtils.getUserPrincipal().getId(), commentVideoDTO.getId());
                 if (commentVideoLikeDTO != null) {
@@ -86,12 +92,20 @@ public class VideoController {
         return "views/video/videoSingle";
     }
 
+
     @RequestMapping(value = "/danh-sach-video-{userId}", method = RequestMethod.GET)
     public String userVideo(Model model, @PathVariable(value = "userId", required = false) Long userId) throws Exception {
         List<VideoDTO> videoDTOS = videoService.findByProperties(userId, CoreConstant.ACTIVE_STATUS);
         model.addAttribute("videos", videoDTOS);
-        UserDTO userDTO = userService.findOneById(userId);
+        UserDTO userDTO = userService.findOneById(userId, CoreConstant.ACTIVE_STATUS);
+        if (userDTO == null) {
+            return "redirect:/error";
+        }
         model.addAttribute("user", userDTO);
+        if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
+            SubscribeDTO subscribeDTO = subscribeService.findByUserFollowAndUser(userId, SecurityUtils.getUserPrincipal().getId());
+            model.addAttribute("subscribe", subscribeDTO);
+        }
         return "views/video/UserVideo";
     }
 

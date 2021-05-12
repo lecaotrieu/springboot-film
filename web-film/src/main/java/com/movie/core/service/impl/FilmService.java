@@ -446,7 +446,7 @@ public class FilmService implements IFilmService {
         FilmEntity filmEntity = filmRepository.getOne(id);
         int view;
         if (filmEntity.getView() == null) {
-            view = 0;
+            view = 1;
         } else {
             view = filmEntity.getView() + 1;
         }

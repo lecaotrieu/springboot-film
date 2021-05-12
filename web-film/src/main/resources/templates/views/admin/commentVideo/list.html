@@ -123,8 +123,8 @@
                         <th class="th-sm table-sort" sortBy="user.name" th:text="#{label.comment.user.name}"></th>
                         <th class="th-sm table-sort" sortBy="video.name" th:text="#{label.video.name}"></th>
                         <th class="th-sm table-sort" sortBy="content" th:text="#{label.content}"></th>
-                        <th class="th-sm table-sort" sortBy="" th:text="#{label.comment.total.like}"></th>
-                        <th class="th-sm table-sort" sortBy="" th:text="#{label.comment.sub.total}"></th>
+                        <th class="th-sm table-sort" sortBy="totalLike" th:text="#{label.comment.total.like}"></th>
+                        <th class="th-sm" th:text="#{label.comment.sub.total}"></th>
                         <th class="th-sm table-sort" sortBy="createdBy" th:text="#{label.people.create}"></th>
                         <th class="th-sm table-sort" sortBy="createdDate" th:text="#{label.create.date}"></th>
                         <th class="th-sm table-sort" sortBy="modifiedBy" th:text="#{label.people.modified}"></th>
@@ -163,7 +163,7 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr id="subComment">
+                        <tr th:id="'subComment'+${comment.id}">
                         </tr>
                     </th:block>
                     </tbody>
@@ -232,7 +232,7 @@
                     window.location.href = "/admin/comment/list?commentId=" + id;
                 } else {
                     $.get("/ajax/admin/subComment-video/list?commentId=" + id, function (data) {
-                        $("#subComment").replaceWith($(data).find("tr"));
+                        $("#subComment"+id).replaceWith($(data).find("tr"));
                     });
                 }
             } else {

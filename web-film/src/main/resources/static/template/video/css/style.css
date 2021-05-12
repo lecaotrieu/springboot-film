@@ -2073,8 +2073,20 @@ div#home {
 	outline: none;
 }
 
-.danh-gia button.btn.btn-info {
+.danh-gia .btn-outline-info {
+	border: #5bc0de 1px solid;
+}
+
+.danh-gia .btn-outline-info:focus {
+	border: none;
+	outline-color: #5bc0de;
+}
+
+.danh-gia button.btn {
 	margin-right: 19px;
+}
+
+.danh-gia .btn-outline-info:focus {
 }
 
 .video-user-info button.btn.btn-primary {

@@ -95,6 +95,8 @@
                         <th class="th-sm table-sort" sortBy="code" th:text="#{label.video.code}"></th>
                         <th class="th-sm table-sort" sortBy="name" th:text="#{label.video.name}"></th>
                         <th class="th-sm table-sort" sortBy="video" th:text="#{label.drive.id}"></th>
+                        <th class="th-sm table-sort" sortBy="view" th:text="#{label.view}"></th>
+                        <th class="th-sm table-sort" sortBy="totalLike" th:text="#{label.comment.total.like}"></th>
                         <th class="th-sm table-sort" sortBy="user.userName" th:text="#{label.people.create}"></th>
                         <th class="th-sm" th:text="#{label.comment.total}"></th>
                         <th class="th-sm table-sort" sortBy="createdDate" th:text="#{label.create.date}"></th>
@@ -112,6 +114,8 @@
                             <td><a th:href="@{/admin/video/show(id=${video.id})}" th:text="${video.name}"
                                    style="color: #0b51c5; font-weight: bold"></a></td>
                             <td th:text="${video.video}"></td>
+                            <td th:text="${video.view}"></td>
+                            <td th:text="${video.totalLike}"></td>
                             <td><a th:href="@{/admin/user/profile(id=${video.user.id})}" th:text="${video.user.userName}"
                                                                     style="color: #0b51c5; font-weight: bold"></a></td>
                             <td><a th:href="@{/admin/comment-video/list(videoId=${video.id})}" th:text="${video.totalComment}"
@@ -153,6 +157,8 @@
                         <th class="th-sm" th:text="#{label.video.code}"></th>
                         <th class="th-sm" th:text="#{label.video.name}"></th>
                         <th class="th-sm" th:text="#{label.drive.id}"></th>
+                        <th class="th-sm" th:text="#{label.view}"></th>
+                        <th class="th-sm" th:text="#{label.comment.total.like}"></th>
                         <th class="th-sm" th:text="#{label.people.create}"></th>
                         <th class="th-sm" th:text="#{label.comment.total}"></th>
                         <th class="th-sm" th:text="#{label.create.date}"></th>

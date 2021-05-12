@@ -77,7 +77,10 @@
                 <div class="user-information">
                     <div class="user-img">
                         <div class="user-img-img"><img th:src="@{${user.photoUrl}}" alt=""><br></div>
-                        <a href="#" class="redbtn">Theo dõi</a>
+
+                        <button class="redbtn" sec:authorize="!hasRole('USER')">Theo dõi</button>
+                        <button class="redbtn" id="btn-follow" sec:authorize="hasRole('USER')"
+                                th:if="${#authentication.principal.id!=user.id}">Theo dõi</button>
                     </div>
                     <div class="user-fav">
                         <p>Chi tiết tài khoản</p>
@@ -96,7 +99,9 @@
                     </div> -->
                 </div>
             </div>
-
+            <input type="hidden" id="ip-follow" name="follow" th:value="${subscribe.follow}" th:if="${subscribe!=null}">
+            <input type="hidden" id="ip-follow" name="follow" value="" th:if="${subscribe==null}">
+            <input type="hidden" id="ip-userId" name="userId" th:value="${user.id}">
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <h3 style="margin: 20px 0;" th:text="'Danh sách video của'+${user.lastName}">  </h3>
                 <div class="form-style-1 user-pro" action="#">
@@ -114,7 +119,7 @@
                                                 alt="avatar">
                                         </div> -->
                                         <div class="card-title">
-                                            <a th:href="@{'/trang-ca-nhan/dang-video?videoId='+${userVideo.id}}" style="color: #fff;" th:text="${userVideo.name}"></a>
+                                            <a th:href="@{'/video/xem-video/'+${userVideo.id}}" style="color: #fff;" th:text="${userVideo.name}"></a>
 
                                         </div>
                                     </div>
@@ -135,7 +140,48 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        var follow = $('#ip-follow').val();
+        if (follow == 1) {
+            $('#btn-follow').text("Đã theo dõi");
+        }
+    });
 
+    $('#btn-follow').click(function () {
+        var follow = 0;
+        follow = $('#ip-follow').val() == 1 ? 0 : 1;
+        var userId = $('#ip-userId').val();
+        var data = {
+            userFollow: {id: userId},
+            follow: follow
+        };
+        var url = "/api/user/subscribe";
+        followUser(data, url);
+    });
 
+    function followUser(data, url) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                if (result != null) {
+                    $('.dang-ky span').text(result);
+                    $('#ip-follow').val(data.follow);
+                    if (data.follow == 1) {
+                        $('#btn-follow').text("Đã theo dõi");
+                    } else {
+                        $('#btn-follow').text("Theo dõi");
+                    }
+                }
+            },
+            error: function (error) {
+            }
+        });
+    }
+</script>
 </body>
 </html>

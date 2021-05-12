@@ -8,6 +8,19 @@
     <title th:text="#{label.comment.list}"></title>
     <!-- MDBootstrap Datatables  -->
     <link th:href="@{/template/mdbootstrap/css/addons/datatables.min.css}" rel="stylesheet">
+    <style>
+        .comment-content {
+            display: block;
+            display: -webkit-box;
+            width: 231px;
+            margin: 0 auto;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 53px;
+        }
+    </style>
 </head>
 <body>
 <head>
@@ -22,7 +35,8 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .btn-close{
+
+        .btn-close {
             float: right;
             font-size: 1.5rem;
             font-weight: 700;
@@ -34,6 +48,7 @@
             background-color: transparent;
             border: 0;
         }
+
         .alert-hidden {
             display: none;
         }
@@ -150,7 +165,9 @@
                             <td><a th:href="@{/admin/film/show(filmId=${comment.film.id})}"
                                    th:text="${comment.film.name}"
                                    style="color: #0b51c5; font-weight: bold"></a></td>
-                            <td th:text="${comment.content}"  style="color: #0b51c5; font-weight: bold; cursor: pointer" th:onclick="loadCommentContent([[${comment.id}]])"></td>
+                            <td th:text="${comment.content}" class="comment-content"
+                                style="color: #0b51c5; font-weight: bold; cursor: pointer"
+                                th:onclick="loadCommentContent([[${comment.id}]])"></td>
                             <td th:text="${comment.totalLike}"></td>
                             <td th:text="${comment.subCommentCount}"></td>
                             <td th:text="${comment.createdBy}"></td>
@@ -163,7 +180,7 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr id="subComment">
+                        <tr th:id="'subComment'+${comment.id}">
                         </tr>
                     </th:block>
                     </tbody>
@@ -232,7 +249,7 @@
                     window.location.href = "/admin/comment/list?commentId=" + id;
                 } else {
                     $.get("/ajax/admin/subComment/list?commentId=" + id, function (data) {
-                        $("#subComment").replaceWith($(data).find("tr"));
+                        $("#subComment" + id).replaceWith($(data).find("tr"));
                     });
                 }
             } else {
@@ -318,7 +335,7 @@
         });
     }
 
-    $('.btn-close').click(function (){
+    $('.btn-close').click(function () {
         $('.comment-content-alert').addClass("alert-hidden");
     })
 

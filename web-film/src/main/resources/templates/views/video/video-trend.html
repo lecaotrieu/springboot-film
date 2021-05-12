@@ -40,9 +40,9 @@
                     <div class="wthree-news-info">
                         <h5><a th:href="@{'/video/xem-video/'+${video.id}}" th:text="${video.name}"></a></h5>
                         <div class="agile-post">
-                            by <a href="#" title="w3ls" rel="author" th:text="${video.user.userName}"></a> on
+                            by <a th:href="@{'/danh-sach-video-'+${video.user.id}}" title="w3ls" rel="author" th:text="${video.user.userName}"></a> on
                             <div th:text="${#dates.format(video.createdDate, 'dd-MMM-yyyy')}" th:remove="tag"></div>
-                            with <a href="#" th:text="${video.totalComment}+' Bình luận'"></a>
+                            with <p th:text="${video.totalComment}+' Bình luận'"></p>
                         </div>
                         <div id="brief" th:utext="${video.brief}"></div>
                         <a class="new-more" th:href="@{'/video/xem-video/'+${video.id}}">Xem thêm</a>

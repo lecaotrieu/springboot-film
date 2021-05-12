@@ -54,7 +54,7 @@
                         <div th:text="${film.time}" th:remove="tag"></div>
                         </p>
                         <p>Đạo diễn: <a href="#" th:text="${film.director.name}"></a></p>
-                        <p>Diễn viên chính: <a href="#" th:each="actor: ${film.actors}"
+                        <p>Diễn viên chính: <a th:href="@{'/thong-tin-dien-vien/'+${actor.code}+'-'+${actor.id}}" th:each="actor: ${film.actors}"
                                                th:text="${actor.name}+', '"></a></p>
                     </div>
                 </div>
