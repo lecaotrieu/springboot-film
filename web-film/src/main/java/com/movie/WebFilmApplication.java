@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class WebFilmApplication extends SpringBootServletInitializer {
+public class WebFilmApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebFilmApplication.class, args);
     }

@@ -4,22 +4,14 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.constant.WebConstant;
 import com.movie.core.dto.UserDTO;
 import com.movie.core.service.IUserService;
-import com.movie.core.service.IVideoService;
 import com.movie.core.utils.UploadUtil;
 import com.movie.web.utils.SecurityUtils;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RestController(value = "UserAPIOfAdmin")
 public class UserAPI {
