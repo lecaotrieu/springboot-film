@@ -1,12 +1,17 @@
 package com.movie.core.convert;
 
 import com.movie.core.constant.CoreConstant;
+import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.CountryDTO;
 import com.movie.core.dto.FilmDTO;
+import com.movie.core.entity.CategoryEntity;
 import com.movie.core.entity.FilmEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class FilmConvert {
@@ -18,7 +23,8 @@ public class FilmConvert {
     private EmployeeConvert employeeConvert;
     @Autowired
     private DirectorConvert directorConvert;
-
+    @Autowired
+    private CategoryConvert categoryConvert;
     public FilmDTO toDTO(FilmEntity entity) {
         FilmDTO dto = new FilmDTO();
         BeanUtils.copyProperties(entity, dto, "comments");
@@ -46,6 +52,13 @@ public class FilmConvert {
         }
         if (dto.getTrailer() != null && !dto.getTrailer().isEmpty()) {
             dto.setTrailerUrl("https://drive.google.com/uc?id=" + dto.getTrailer());
+        }
+        if (entity.getCategories()!=null){
+            List<CategoryDTO> categoryDTOS = new ArrayList<>();
+            for (CategoryEntity categoryEntity : entity.getCategories()) {
+                categoryDTOS.add(categoryConvert.toDTO(categoryEntity));
+            }
+            dto.setCategories(categoryDTOS);
         }
         return dto;
     }

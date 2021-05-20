@@ -94,6 +94,9 @@ public class EmployeeController {
         return "views/admin/employee/edit_avatar";
     }
 
+    @Autowired
+    private UploadUtil uploadUtil;
+
     @PostMapping({"/api/admin/employee/photo", "/api/admin/personal/photo"})
     public String updateEmployeePhoto(@RequestParam(value = "id", required = false) Long id, @RequestParam("img") MultipartFile file, HttpServletRequest request) {
         String urlRq;
@@ -110,7 +113,7 @@ public class EmployeeController {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
                 fileName = "employee_photo_" + id + getFieldName(fileName);
                 String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.EMPLOYEE_PHOTOS + File.separator + id;
-                UploadUtil.saveFile(uploadDir, fileName, file);
+                uploadUtil.saveFile(uploadDir, fileName, file);
                 employeeService.updatePhoto(id, fileName);
             }
             return "redirect:" + urlRq + "redirect_update";

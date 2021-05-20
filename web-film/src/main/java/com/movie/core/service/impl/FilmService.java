@@ -3,6 +3,7 @@ package com.movie.core.service.impl;
 import com.google.api.services.drive.model.File;
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.convert.ActorConvert;
+import com.movie.core.convert.CategoryConvert;
 import com.movie.core.dto.ActorDTO;
 import com.movie.core.dto.CategoryDTO;
 import com.movie.core.dto.FilmDTO;
@@ -15,7 +16,6 @@ import com.movie.core.service.utils.PagingUtils;
 import com.movie.core.service.utils.StringGlobalUtils;
 import com.movie.core.convert.FilmConvert;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -79,6 +79,7 @@ public class FilmService implements IFilmService {
         }
         return filmDTOS;
     }
+
 
 
     public List<FilmDTO> findByProperties(int page, int limit, String sortExpression, String sortDirection) {
@@ -368,7 +369,7 @@ public class FilmService implements IFilmService {
     @Transactional
     public void updatePhotoToDrive(Long id, FileItem photo) throws IOException {
         FilmEntity filmEntity = filmRepository.getOne(id);
-        if (StringUtils.isNotBlank(filmEntity.getImage())) {
+        if (!filmEntity.getImage().isEmpty()) {
             try {
                 driveService.deleteFileById(filmEntity.getImage());
             } catch (IOException e) {
@@ -399,7 +400,7 @@ public class FilmService implements IFilmService {
     public void updateTrailer(Long id, MultipartFile trailer, String trailerYoutube) throws IOException {
         FilmEntity filmEntity = filmRepository.getOne(id);
         if (!trailer.getOriginalFilename().isEmpty()) {
-            if (StringUtils.isNotBlank(filmEntity.getTrailer())) {
+            if (!filmEntity.getTrailer().isEmpty()) {
                 try {
                     driveService.deleteFileById(filmEntity.getTrailer());
                 } catch (IOException e) {

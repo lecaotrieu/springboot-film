@@ -6,38 +6,57 @@
 <head>
     <title th:text="#{label.user.profile}"></title>
     <style>
+        button.btn.btn-primary.delete-btn {
+            color: #bcb4b4;
+            padding: 3px 11px;
+            background: #eb3737;
+            border: none;
+            border-radius: 7px;
+            transition: 0.5s;
+        }
 
-        .follower-img img{
+        button.btn.btn-primary.delete-btn:hover {
+            background: #f20808;
+            color: #fff;
+        }
+
+        .follower-img img {
             width: 80px;
             height: 80px;
             border-radius: 8px;
             object-fit: cover;
         }
-        .follower-name .name-real{
+
+        .follower-name .name-real {
             font-family: 'Dosis', sans-serif;
             font-size: 20px;
             color: #ffffff;
             font-weight: bold;
         }
-        .follower-name .name-fake{
+
+        .follower-name .name-fake {
             font-size: 16px;
             color: #d6c6c6;
             font-weight: bold;
         }
+
         .user-hero .hero-ct h1 {
             margin-left: 280px;
             text-align: left;
         }
-        .user{
+
+        .user {
             display: flex;
             align-items: center;
         }
-        .user-icon{
+
+        .user-icon {
             font-size: 24px;
             margin-right: 20px;
             color: white;
         }
-        .user-content p{
+
+        .user-content p {
             font-size: 20px;
         }
     </style>
@@ -85,25 +104,36 @@
 
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <h3 style="margin: 20px 0;">Danh sách video của tôi</h3>
+                <div class='alert alert-block alert-success' th:if="${param.message!=null}">
+                    <button type='button' class='close' data-dismiss='alert'>
+                        <i class='ace-icon fa fa-times'></i>
+                    </button>
+                    Xóa video thành công!
+                </div>
                 <div class="form-style-1 user-pro" action="#">
                     <div class="row">
                         <div class="col-md-4 col-12" th:each="item: ${videos}">
                             <div class="card" style="height: 215px;">
                                 <img class="card-img-top"
-                                     th:src="@{${item.imageUrl}}" onerror="imgVideoError(this);" style="width: 100%; min-height: 153px; margin: 10px 0;"
+                                     th:src="@{${item.imageUrl}}" onerror="imgVideoError(this);"
+                                     style="width: 100%; height: 160px; margin: 10px 0;"
                                      alt="Card image cap">
                                 <div class="card-body">
                                     <div class="papa">
                                         <div class="card-title">
-                                            <a th:href="@{'/trang-ca-nhan/dang-video?videoId='+${item.id}}" style="color: #fff;" th:text="${item.name}"></a>
+                                            <a th:href="@{'/trang-ca-nhan/dang-video?videoId='+${item.id}}"
+                                               style="color: #fff;" th:text="${item.name}"></a>
                                         </div>
                                     </div>
-                                    <p class="card-text">
+                                    <p class="card-text" style="width: 70%;float: left;">
                                     <div th:text="${item.view}" th:remove="tag"></div>
                                     lượt xem
                                     <div th:text="${#dates.format(item.createdDate, 'dd-MMM-yyyy')}"
                                          th:remove="tag"></div>
                                     </p>
+                                    <button class="btn btn-primary delete-btn" style="float: right; margin-top: -10px;"
+                                            th:onclick="warningBeforeDelete([[${item.id}]])"><i
+                                            class="fas fa-trash"></i></button>
                                 </div>
                             </div>
 
@@ -115,6 +145,34 @@
         </div>
     </div>
 </div>
+<script>
 
+    function warningBeforeDelete(x) {
+        if (x != null) {
+            showAlertBeforeDelete(function () {
+                deleteVideo([x]);
+            });
+        }
+    }
+
+    var urlListVideo = "/trang-ca-nhan/quan-ly-video";
+
+    function deleteVideo(data) {
+        $.ajax({
+            url: "/api/video",
+            type: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (result) {
+                window.location.href = urlListVideo + '?message=redirect_delete';
+            },
+            error: function (result) {
+                window.location.href = urlListVideo + '?&message=redirect_error';
+
+            }
+        });
+    }
+
+</script>
 </body>
 </html>

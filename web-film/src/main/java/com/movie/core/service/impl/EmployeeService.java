@@ -14,7 +14,6 @@ import com.movie.core.service.IDriveService;
 import com.movie.core.service.IEmployeeService;
 import com.movie.core.service.utils.PagingUtils;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -171,7 +170,7 @@ public class EmployeeService implements IEmployeeService {
     @Transactional
     public void updatePhoto(Long id, FileItem photo) throws IOException {
         EmployeeEntity employeeEntity = employeeRepository.getOne(id);
-        if (StringUtils.isNotBlank(employeeEntity.getPhoto())) {
+        if (!employeeEntity.getPhoto().isEmpty()) {
             try {
                 driveService.deleteFileById(employeeEntity.getPhoto());
             } catch (IOException e) {
@@ -198,7 +197,7 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public void updatePhoto(Long id, String contentType, InputStream inputStream) throws Exception {
         EmployeeEntity employeeEntity = employeeRepository.getOne(id);
-        if (StringUtils.isNotBlank(employeeEntity.getPhoto())) {
+        if (!employeeEntity.getPhoto().isEmpty()) {
             try {
                 driveService.deleteFileById(employeeEntity.getPhoto());
             } catch (IOException e) {

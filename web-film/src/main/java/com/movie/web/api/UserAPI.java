@@ -75,7 +75,7 @@ public class UserAPI {
                     String fileName = org.springframework.util.StringUtils.cleanPath(file.getOriginalFilename());
                     fileName = "film_img_" + id + getFieldName(fileName);
                     String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.USER_PHOTOS + File.separator + id;
-                    UploadUtil.saveFile(uploadDir, fileName, file);
+                    uploadUtil.saveFile(uploadDir, fileName, file);
                     userService.updatePhoto(id, fileName);
                 }
                 mav.setViewName("redirect:/admin/user/photo/edit?id=" + id + "&message=redirect_update");
@@ -91,6 +91,9 @@ public class UserAPI {
         return fileName.substring(fileName.length() - 4);
     }
 
+    @Autowired
+    private UploadUtil uploadUtil;
+
     @PostMapping("/api/user/photo")
     public String updatePhotoOfUser(@RequestParam("img") MultipartFile file) throws Exception {
         if (file.getSize() > CoreConstant.IMAGE_UPLOAD_MAX) {
@@ -101,7 +104,7 @@ public class UserAPI {
                 String fileName = org.springframework.util.StringUtils.cleanPath(file.getOriginalFilename());
                 fileName = "film_img_" + id + getFieldName(fileName);
                 String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.USER_PHOTOS + File.separator + id;
-                UploadUtil.saveFile(uploadDir, fileName, file);
+                uploadUtil.saveFile(uploadDir, fileName, file);
                 userService.updatePhoto(id, fileName);
             }
             return "success";

@@ -4,7 +4,6 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.dto.VideoDTO;
 import com.movie.core.entity.UserEntity;
 import com.movie.core.entity.VideoEntity;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,10 +44,10 @@ public class VideoConvert {
     private UserConvert userConvert;
 
     public VideoEntity toEntity(VideoDTO dto, VideoEntity entityOld) {
-        if (dto.getVideo() != null && StringUtils.isNotBlank(dto.getVideo())) {
+        if (dto.getVideo() != null && !dto.getVideo().isEmpty()) {
             entityOld.setVideo(dto.getVideo());
         }
-        if (dto.getImage() != null && StringUtils.isNotBlank(dto.getImage())) {
+        if (dto.getImage() != null && !dto.getImage().isEmpty()) {
             entityOld.setImage(dto.getImage());
         }
         entityOld.setStatus(dto.getStatus());

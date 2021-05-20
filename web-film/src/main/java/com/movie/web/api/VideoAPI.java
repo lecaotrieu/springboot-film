@@ -2,7 +2,6 @@ package com.movie.web.api;
 
 
 import com.movie.core.constant.CoreConstant;
-import com.movie.core.dto.FilmDTO;
 import com.movie.core.dto.UserDTO;
 import com.movie.core.dto.VideoDTO;
 import com.movie.core.service.IVideoService;
@@ -24,13 +23,14 @@ public class VideoAPI {
     public Long updateVideo(@RequestBody VideoDTO videoDTO) throws Exception {
         return videoService.save(videoDTO).getId();
     }
+
     @PutMapping("/api/video/view")
     public void updateFilmView(@RequestBody Long videoId) {
         videoService.updateView(videoId);
     }
 
     @PutMapping("/api/admin/video/status")
-    public boolean updateVideoStatus(@RequestBody VideoDTO videoDTO) {
+    public boolean updateVideoStatusOfAdmin(@RequestBody VideoDTO videoDTO) {
         return videoService.updateVideoStatus(videoDTO);
     }
 
@@ -39,6 +39,10 @@ public class VideoAPI {
         videoService.deleteById(ids);
     }
 
+    @DeleteMapping("/api/video")
+    public void deleteVideoOfUser(@RequestBody Long[] ids) throws Exception {
+        videoService.deleteById(ids);
+    }
     @PostMapping("/api/user/video")
     public String uploadVideoOfUser(@RequestParam(value = "img", required = false) MultipartFile image,
                                     @RequestParam(value = "video", required = false) MultipartFile video,
@@ -89,11 +93,14 @@ public class VideoAPI {
         return fileName.substring(fileName.length() - 4);
     }
 
+    @Autowired
+    private UploadUtil uploadUtil;
+
     private String uploadImageVideo(Long videoId, MultipartFile image) throws Exception {
         String fileName = org.springframework.util.StringUtils.cleanPath(image.getOriginalFilename());
         fileName = "video_img_" + videoId + getFieldName(fileName);
         String uploadDir = CoreConstant.FOLDER_UPLOAD + File.separator + CoreConstant.VIDEO_IMAGES + File.separator + videoId;
-        UploadUtil.saveFile(uploadDir, fileName, image);
+        uploadUtil.saveFile(uploadDir, fileName, image);
         return fileName;
     }
 }

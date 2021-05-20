@@ -1,7 +1,5 @@
 package com.movie.core.service;
 
-import com.movie.core.dto.CategoryDTO;
-import com.movie.core.dto.FilmDTO;
 import com.movie.core.dto.VideoDTO;
 import org.springframework.web.multipart.MultipartFile;
 

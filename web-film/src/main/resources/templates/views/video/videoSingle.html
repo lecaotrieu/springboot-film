@@ -324,6 +324,16 @@
         });
 
     });
+
+    $('#cm-reply .close a').click(function () {
+        var cm = $('#cm-reply');
+        cm.addClass("hide");
+        $('#reply-cm-id').attr({
+            name: '',
+            value: ''
+        });
+    });
+
     function increaseView() {
         var vid = document.getElementById("video-user");
         vid.onloadedmetadata = function () {

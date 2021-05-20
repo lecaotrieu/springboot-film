@@ -3,17 +3,22 @@ package com.movie.core.convert;
 import com.movie.core.constant.CoreConstant;
 import com.movie.core.dto.*;
 import com.movie.core.entity.EmployeeEntity;
+import com.movie.core.entity.RoleEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class EmployeeConvert {
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private RoleConvert roleConvert;
 
     public EmployeeDTO toDTO(EmployeeEntity entity) {
         EmployeeDTO dto = new EmployeeDTO();

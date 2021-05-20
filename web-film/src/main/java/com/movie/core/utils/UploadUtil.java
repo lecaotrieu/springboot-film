@@ -5,8 +5,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +19,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 
+@Component
 public class UploadUtil {
     private final int maxMemorySize = 1024 * 1024 * 3;//3 MB
     private final int maxRequestSize = 1024 * 1024 * 50; //50 MB
-    private final Logger log = Logger.getLogger(this.getClass());
 
-    public static void saveFile(String uploadDir, String fileName, MultipartFile file) throws Exception{
+    public void saveFile(String uploadDir, String fileName, MultipartFile file) throws Exception {
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
@@ -38,6 +37,23 @@ public class UploadUtil {
         }
     }
 
+    public void saveFileOfUserHome(String uploadDir, String fileName, MultipartFile multipartFile) throws Exception {
+        String uploadLocation = "/" + uploadDir + "/" + fileName;
+        byte[] bytes = multipartFile.getBytes();
+        File folderRoot = new File("/"+uploadDir);
+        if (!folderRoot.exists()) {
+            folderRoot.mkdirs();
+        }
+        Path path = Paths.get(uploadLocation);
+        Files.write(path, bytes);
+    }
+    public File getFolderUpload(String uploadLocation) {
+        File folderUpload = new File(uploadLocation);
+        if (!folderUpload.exists()) {
+            folderUpload.mkdirs();
+        }
+        return folderUpload;
+    }
     public Object[] getFileInputStreams(HttpServletRequest request, Set<String> titleValue) {
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         boolean check = true;
@@ -53,7 +69,7 @@ public class UploadUtil {
             List<FileItem> items = upload.parseRequest(request);
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                    if (StringUtils.isNotBlank(item.getName())) {
+                    if (!item.getName().isEmpty()) {
                         fileItems.add(item);
                     }
                 } else {
@@ -63,7 +79,6 @@ public class UploadUtil {
                         try {
                             valueField = item.getString("UTF-8");
                         } catch (UnsupportedEncodingException e) {
-                            log.error(e.getMessage(), e);
                         }
                         if (titleValue.contains(nameField)) {
                             if (mapReturnValue.containsKey(nameField)) {
@@ -85,9 +100,8 @@ public class UploadUtil {
             }
         } catch (FileUploadException e) {
             check = false;
-            log.error(e.getMessage(), e);
         }
-        return new Object[]{fileItems,mapReturnValue};
+        return new Object[]{fileItems, mapReturnValue};
     }
 
     public Object[] writeOrUpdateFile(HttpServletRequest request, Set<String> titleValue, String path) {
@@ -110,7 +124,7 @@ public class UploadUtil {
             for (FileItem item : items) {
                 if (!item.isFormField()) {
                     name = item.getName();
-                    if (StringUtils.isNotBlank(name)) {
+                    if (!name.isEmpty()) {
                         File uploadFile = new File(address + File.separator + path + File.separator + name);
                         fileLocation = address + File.separator + path + File.separator + name;
                         boolean isExist = uploadFile.exists();
@@ -123,7 +137,6 @@ public class UploadUtil {
                             }
                         } catch (Exception e) {
                             check = false;
-                            log.error(e.getMessage(), e);
                         }
                     }
                 } else {
@@ -133,7 +146,6 @@ public class UploadUtil {
                         try {
                             valueField = item.getString("UTF-8");
                         } catch (UnsupportedEncodingException e) {
-                            log.error(e.getMessage(), e);
                         }
                         if (titleValue.contains(nameField)) {
                             if (mapReturnValue.containsKey(nameField)) {
@@ -156,10 +168,9 @@ public class UploadUtil {
 
         } catch (FileUploadException e) {
             check = false;
-            log.error(e.getMessage(), e);
         }
         String fileName = "";
-        if (StringUtils.isNotBlank(name)) {
+        if (!name.isEmpty()) {
             fileName = path + File.separator + name;
         }
         return new Object[]{check, fileLocation, fileName, mapReturnValue};

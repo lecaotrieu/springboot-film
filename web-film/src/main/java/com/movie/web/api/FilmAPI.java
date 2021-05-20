@@ -4,19 +4,12 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.dto.FilmDTO;
 import com.movie.core.service.IFilmService;
 import com.movie.core.utils.UploadUtil;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RestController(value = "FilmAPI")
 public class FilmAPI {
@@ -29,6 +22,9 @@ public class FilmAPI {
         return filmService.save(filmDTO);
     }
 
+    @Autowired
+    private UploadUtil uploadUtil;
+
     @PostMapping("/api/admin/film/image")
     public void saveImageFilm(@RequestParam("img1") MultipartFile img1, @RequestParam("id") Long id, @RequestParam("img2") MultipartFile img2) throws Exception {
         try {
@@ -39,13 +35,13 @@ public class FilmAPI {
                 if (!img1.isEmpty()) {
                     String fileName1 = org.springframework.util.StringUtils.cleanPath(img1.getOriginalFilename());
                     fileName1 = "film_img1_" + id + getFieldName(fileName1);
-                    UploadUtil.saveFile(uploadDir, fileName1, img1);
+                    uploadUtil.saveFile(uploadDir, fileName1, img1);
                     filmService.updateImg1(id, fileName1);
                 }
                 if (!img2.isEmpty()) {
                     String fileName2 = org.springframework.util.StringUtils.cleanPath(img2.getOriginalFilename());
                     fileName2 = "film_img2_" + id + getFieldName(fileName2);
-                    UploadUtil.saveFile(uploadDir, fileName2, img2);
+                    uploadUtil.saveFile(uploadDir, fileName2, img2);
                     filmService.updateImg2(id, fileName2);
                 }
             }

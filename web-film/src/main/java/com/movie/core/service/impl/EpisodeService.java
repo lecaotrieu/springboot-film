@@ -9,7 +9,6 @@ import com.movie.core.service.IEpisodeService;
 import com.movie.core.convert.EpisodeConvert;
 import com.movie.core.service.utils.PagingUtils;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,7 +61,7 @@ public class EpisodeService implements IEpisodeService {
 
     private void deleteEpisodeInDrive(String episodeId) {
         try {
-            if (StringUtils.isNotBlank(episodeId)) {
+            if (!episodeId.isEmpty()) {
                 driveService.deleteFileById(episodeId);
             }
         } catch (IOException e) {

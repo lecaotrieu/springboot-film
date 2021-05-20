@@ -5,19 +5,14 @@ import com.movie.core.constant.CoreConstant;
 import com.movie.core.convert.UserConvert;
 import com.movie.core.dto.UserDTO;
 import com.movie.core.entity.UserEntity;
-import com.movie.core.entity.VideoEntity;
 import com.movie.core.repository.SubscribeRepository;
 import com.movie.core.repository.UserRepository;
 import com.movie.core.service.IDriveService;
-import com.movie.core.service.ISubscribeService;
 import com.movie.core.service.IUserService;
 import com.movie.core.service.utils.PagingUtils;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,7 +164,7 @@ public class UserService implements IUserService {
 
     public void updatePhotoToDrive(Long id, FileItem photo) throws IOException {
         UserEntity userEntity = userRepository.getOne(id);
-        if (StringUtils.isNotBlank(userEntity.getPhoto())) {
+        if (!userEntity.getPhoto().isEmpty()) {
             try {
                 driveService.deleteFileById(userEntity.getPhoto());
             } catch (IOException e) {
@@ -223,7 +218,7 @@ public class UserService implements IUserService {
     @Override
     public void updatePhoto(Long id, String contentType, InputStream inputStream) throws Exception {
         UserEntity userEntity = userRepository.getOne(id);
-        if (StringUtils.isNotBlank(userEntity.getPhoto())) {
+        if (!userEntity.getPhoto().isEmpty()) {
             try {
                 driveService.deleteFileById(userEntity.getPhoto());
             } catch (IOException e) {

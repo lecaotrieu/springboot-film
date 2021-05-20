@@ -17,7 +17,7 @@
                     </div>
                     <div class="title-in">
                         <div class="cate">
-                            <span class="blue"><a th:href="@{'/phim/the-loai/'+${film.categories.get(0).code}}" th:text="${film.categories.get(0).name}"></a></span>
+                            <span class="blue"><a th:href="@{'/phim/the-loai/'+${film.categories.get(0).code}}" th:text="${film.categories.get(0).name}" th:if="${film.categories != null}"></a></span>
                         </div>
                         <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
                         <div style="width: 100%;">

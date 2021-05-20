@@ -37,5 +37,4 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
         registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
     }
-
 }

@@ -14,6 +14,6 @@ public class MyErrorController implements ErrorController {
 
     @Override
     public String getErrorPath() {
-        return "/error";
+        return null;
     }
 }
