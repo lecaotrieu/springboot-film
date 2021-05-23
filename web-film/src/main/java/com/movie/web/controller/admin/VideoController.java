@@ -62,7 +62,7 @@ public class VideoController {
     private void executeSearchVideo(VideoCommand command) {
         List<VideoDTO> videoDTOS = videoService.findByProperties(command.getSearch(), command.getUserName(), command.getStatus(), command.getPage(), command.getLimit(), command.getSortExpression(), command.getSortDirection());
         command.setListResult(videoDTOS);
-        command.setTotalItems(videoService.getTotalItem(command.getSearch(), command.getUserName()));
+        command.setTotalItems(videoService.getTotalItem(command.getSearch(), command.getUserName(), command.getStatus()));
         command.setTotalPage((int) Math.ceil((double) command.getTotalItems() / command.getLimit()));
     }
 }

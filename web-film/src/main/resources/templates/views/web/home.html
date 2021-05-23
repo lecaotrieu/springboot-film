@@ -5,6 +5,16 @@
       th:replace="~{layout/web :: main-fragment (~{::head}, ~{::body})}">
 <head>
     <title th:text="#{label.home.page}"></title>
+    <style>
+        .movie-item.slick-slide {
+            height: 366px;
+            overflow: hidden;
+        }
+        .slide-it.slick-slide {
+            height: 216px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 <div class="slider movie-items">

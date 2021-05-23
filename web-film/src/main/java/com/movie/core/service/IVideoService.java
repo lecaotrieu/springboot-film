@@ -42,4 +42,6 @@ public interface IVideoService {
     Integer setTotalLike(Long videoId);
 
     void updateView(Long videoId);
+
+    int getTotalItem(String search, String userName, Integer status);
 }

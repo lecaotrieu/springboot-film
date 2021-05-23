@@ -81,6 +81,7 @@
                     </label>
                 </div>
             </div>
+
             <div class="col-sm-12 col-md-2">
                 <button class="btn btn-primary btn-sm float-right" th:text="#{label.search}"></button>
             </div>
@@ -181,6 +182,7 @@
                 <div class="dataTables_paginate paging_simple_numbers" id="dtBasicExample_paginate">
                     <ul id="pagination" class="pagination-sm"></ul>
                     <input type="hidden" th:value="${items.page}" name="page" id="page">
+                    <input type="hidden" th:value="${items.status}" name="status" th:if="${items.status!=null}">
                 </div>
             </div>
         </div>

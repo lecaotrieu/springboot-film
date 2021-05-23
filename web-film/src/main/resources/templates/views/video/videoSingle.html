@@ -18,7 +18,7 @@
     <div class="breadcrumb-inner">
         <ul>
             <li><a th:href="@{/video/trang-chu}">Trang chủ</a><i>//</i></li>
-            <li>Xem Video</li>
+            <li th:text="${video.name}"></li>
         </ul>
     </div>
 </div>

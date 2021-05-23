@@ -84,9 +84,18 @@ public class VideoService implements IVideoService {
         Pageable pageable = pagingUtils.setPageable(page, limit, sortExpression, sortDirection);
         List<VideoEntity> videoEntities;
         if (userName == null || userName.isEmpty()) {
-            videoEntities = videoRepository.findAllByProperties(search, pageable);
+            if (status != null) {
+                videoEntities = videoRepository.findAllByProperties(search, status, pageable);
+
+            } else {
+                videoEntities = videoRepository.findAllByProperties(search, pageable);
+            }
         } else {
-            videoEntities = videoRepository.findAllByProperties(search, userName, pageable);
+            if (status != null) {
+                videoEntities = videoRepository.findAllByProperties(search, userName, status, pageable);
+            } else {
+                videoEntities = videoRepository.findAllByProperties(search, userName, pageable);
+            }
         }
         List<VideoDTO> videoDTOS = new ArrayList<>();
         for (VideoEntity entity : videoEntities) {
@@ -100,7 +109,6 @@ public class VideoService implements IVideoService {
         }
         return videoDTOS;
     }
-
 
     @Override
     public List<VideoDTO> findAll() {
@@ -244,5 +252,20 @@ public class VideoService implements IVideoService {
 
         videoEntity.setView(view);
         videoRepository.save(videoEntity);
+    }
+
+    @Override
+    public int getTotalItem(String search, String userName, Integer status) {
+        if (userName == null || userName.isEmpty()) {
+            if (status != null) {
+                return (int) videoRepository.countAllByProperties(search, status);
+            }
+            return (int) videoRepository.countAllByProperties(search);
+        } else {
+            if (status != null) {
+                return (int) videoRepository.countAllByProperties(search, userName, status);
+            }
+            return (int) videoRepository.countAllByProperties(search, userName);
+        }
     }
 }
