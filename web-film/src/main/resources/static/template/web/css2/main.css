@@ -172,8 +172,7 @@ ul {
   position: relative;
 }
 .b-description_readmore_button:before {
-  content: '\f1c8';
-  font-family: "Ionicons";
+  content: 'Xem thêm';
   position: absolute;
   display: block;
   top: 0;
@@ -182,7 +181,7 @@ ul {
   right: 0;
   text-align: center;
   color: rgba(255,255,255,0.75);
-  font-size: 22px;
+  font-size: 17px;
   line-height: 24px;
   -webkit-transition: 0.4s ease;
   -moz-transition: 0.4s ease;

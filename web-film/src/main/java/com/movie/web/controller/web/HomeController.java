@@ -41,36 +41,48 @@ public class HomeController {
 
     @RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
     public String homePage(Model model) {
-        List<FilmDTO> filmNews = filmService.findByProperties(1, 8, "createdDate", "1");
+        List<FilmDTO> filmNews = filmService.findByProperties(1, 8, "createdDate", "0");
         model.addAttribute("filmNews", filmNews);
         //phim lẻ
         List<ActorDTO> actorDTOS = actorService.findByProperties("", 1, 4, null, null);
         model.addAttribute("actors", actorDTOS);
 
-        List<FilmDTO> filmles = filmService.findByProperties("phim-le", 1, 8, "view", "1");
+        List<FilmDTO> filmles = filmService.findByProperties("phim-le", 1, 8, "view", "0");
         model.addAttribute("filmles", filmles);
 
-        List<FilmDTO> filmTop = filmService.findByProperties("phim-le", 1, 8, "scores", "1");
+        List<FilmDTO> filmTop = filmService.findByProperties("phim-le", 1, 8, "scores", "0");
         model.addAttribute("filmTop", filmTop);
 
-        List<FilmDTO> filmVote = filmService.findByProperties("phim-le", 1, 8, "totalVote", "1");
+        List<FilmDTO> filmVote = filmService.findByProperties("phim-le", 1, 8, "totalVote", "0");
         model.addAttribute("filmVote", filmVote);
 
-        List<FilmDTO> filmCommings = filmService.findByProperties("phim-le", true, 1, 8, "createdDate", "1");
+        List<FilmDTO> filmCommings = filmService.findByProperties("phim-le", true, 1, 8, "createdDate", "0");
         model.addAttribute("filmCommings", filmCommings);
         ///phim bộ
-        List<FilmDTO> filmBoPhoBien = filmService.findByProperties("phim-bo", 1, 8, "view", "1");
+        List<FilmDTO> filmBoPhoBien = filmService.findByProperties("phim-bo", 1, 8, "view", "0");
         model.addAttribute("filmBoPhoBien", filmBoPhoBien);
 
-        List<FilmDTO> filmBoTop = filmService.findByProperties("phim-bo", 1, 8, "scores", "1");
+        List<FilmDTO> filmBoTop = filmService.findByProperties("phim-bo", 1, 8, "scores", "0");
         model.addAttribute("filmBoTop", filmBoTop);
 
-        List<FilmDTO> filmBoVote = filmService.findByProperties("phim-bo", 1, 8, "totalVote", "1");
+        List<FilmDTO> filmBoVote = filmService.findByProperties("phim-bo", 1, 8, "totalVote", "0");
         model.addAttribute("filmBoVote", filmBoVote);
 
-        List<FilmDTO> filmBoCommings = filmService.findByProperties("phim-bo", true, 1, 8, "createdDate", "1");
+        List<FilmDTO> filmBoCommings = filmService.findByProperties("phim-bo", true, 1, 8, "createdDate", "0");
         model.addAttribute("filmBoCommings", filmBoCommings);
 
+        ///phim chiếu rạp
+        List<FilmDTO> filmChieuRapPhoBien = filmService.findByProperties("phim-chieu-rap", 1, 8, "view", "0");
+        model.addAttribute("filmChieuRapPhoBien", filmChieuRapPhoBien);
+
+        List<FilmDTO> filmChieuRapTop = filmService.findByProperties("phim-chieu-rap", 1, 8, "scores", "0");
+        model.addAttribute("filmChieuRapTop", filmChieuRapTop);
+
+        List<FilmDTO> filmChieuRapVote = filmService.findByProperties("phim-chieu-rap", 1, 8, "totalVote", "0");
+        model.addAttribute("filmChieuRapVote", filmChieuRapVote);
+
+        List<FilmDTO> filmChieuRapCommings = filmService.findByProperties("phim-chieu-rap", true, 1, 8, "createdDate", "0");
+        model.addAttribute("filmChieuRapCommings", filmChieuRapCommings);
         return "views/web/home";
     }
 

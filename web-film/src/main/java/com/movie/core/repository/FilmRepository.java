@@ -43,7 +43,7 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
     @Query("select distinct f from FilmEntity f join f.categories c where (lower(f.name) like %?1% or lower(f.code) like %?1%) and f.filmType.code like %?2% and f.country.code like %?4% and f.year like %?5% and c.code like %?3% and f.status = ?6")
     List<FilmEntity> findAllByProperties(String search, String filmType, String category, String country, String year, Integer status, Pageable pageable);
 
-    @Query("select f from FilmEntity as f where f.status=?1 and f.episodes.size = 0 and f.filmType.code=?2 and f.trailer <> 'null' and f.trailerYoutube <> 'null'")
+    @Query("select f from FilmEntity as f where f.status=?1 and f.episodes.size = 0 and f.filmType.code=?2 and (f.trailer <> 'null' or f.trailerYoutube <> 'null')")
     List<FilmEntity> findAllByFilmType_CodeAndTrailerNotNull(Integer status, String filmTypeCode, Pageable pageable);
 
     @Query("select count(distinct f.id) from FilmEntity f join f.categories c where (lower(f.name) like %?1% or lower(f.code) like %?1%) and f.filmType.code like %?2% and f.country.code like %?4% and f.year like %?5% and c.code like %?3% and f.status = ?6")

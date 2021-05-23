@@ -6,13 +6,16 @@
 <head>
     <title th:text="#{label.home.page}"></title>
     <style>
-        .movie-item.slick-slide {
+        .movie-item.slick-slide .mv-img{
             height: 366px;
             overflow: hidden;
         }
-        .slide-it.slick-slide {
+        .slide-it.slick-slide .movie-item .mv-img {
             height: 216px;
             overflow: hidden;
+        }
+        .movie-items .slick-slider {
+            margin-left:0px ;
         }
     </style>
 </head>
@@ -53,7 +56,7 @@
                     <ul class="tab-links">
                         <li class="active"><a href="#tab1">#Phổ biến</a></li>
                         <li><a href="#tab2"> #Sắp có</a></li>
-                        <li><a href="#tab3"> #Top sắp hạng </a></li>
+                        <li><a href="#tab3"> #Top xếp hạng </a></li>
                         <li><a href="#tab4"> #Được đánh giá nhiều nhất</a></li>
                     </ul>
                     <div class="tab-content">
@@ -142,14 +145,14 @@
                     </div>
                 </div>
                 <div class="title-hd">
-                    <h2 th:href="@{'/phim/phim-le'}">Phim Bộ</h2>
+                    <h2 th:href="@{'/phim/phim-bo'}">Phim Bộ</h2>
                     <a th:href="@{'/phim/phim-bo'}" class="viewall">Xem tất cả <i  class="ion-ios-arrow-right"></i></a>
                 </div>
                 <div class="tabs">
                     <ul class="tab-links">
                         <li class="active"><a href="#tab21">#Phổ biến</a></li>
                         <li><a href="#tab22"> #Sắp có</a></li>
-                        <li><a href="#tab23"> #Top sắp hạng </a></li>
+                        <li><a href="#tab23"> #Top xếp hạng </a></li>
                         <li><a href="#tab24"> #Được đánh giá nhiều nhất</a></li>
                     </ul>
                     <div class="tab-content">
@@ -222,6 +225,105 @@
                             <div class="row">
                                 <div class="slick-multiItem">
                                     <div class="slide-it" th:each="film :${filmBoVote}">
+                                        <div class="movie-item">
+                                            <div class="mv-img">
+                                                <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
+                                            </div>
+                                            <div class="hvr-inner">
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
+                                                        class="ion-android-arrow-dropright"></i> </a>
+                                            </div>
+                                            <div class="title-in">
+                                                <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
+                                                <p><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title-hd">
+                    <h2 th:href="@{'/phim/phim-chieu-rap'}">Phim chiếu rạp</h2>
+                    <a th:href="@{'/phim/phim-chieu-rap'}" class="viewall">Xem tất cả <i  class="ion-ios-arrow-right"></i></a>
+                </div>
+                <div class="tabs">
+                    <ul class="tab-links">
+                        <li class="active"><a href="#tab31">#Phổ biến</a></li>
+                        <li><a href="#tab32"> #Sắp có</a></li>
+                        <li><a href="#tab33"> #Top xếp hạng </a></li>
+                        <li><a href="#tab34"> #Được đánh giá nhiều nhất</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab31" class="tab active">
+                            <div class="row">
+                                <div class="slick-multiItem">
+                                    <div class="slide-it" th:each="film :${filmChieuRapPhoBien}">
+                                        <div class="movie-item">
+                                            <div class="mv-img">
+                                                <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
+                                            </div>
+                                            <div class="hvr-inner">
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
+                                                        class="ion-android-arrow-dropright"></i> </a>
+                                            </div>
+                                            <div class="title-in">
+                                                <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
+                                                <p><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab32" class="tab">
+                            <div class="row">
+                                <div class="slick-multiItem">
+                                    <div class="slide-it" th:each="film :${filmChieuRapCommings}">
+                                        <div class="movie-item">
+                                            <div class="mv-img">
+                                                <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
+                                            </div>
+                                            <div class="hvr-inner">
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
+                                                        class="ion-android-arrow-dropright"></i> </a>
+                                            </div>
+                                            <div class="title-in">
+                                                <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
+                                                <p><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab33" class="tab">
+                            <div class="row">
+                                <div class="slick-multiItem">
+                                    <div class="slide-it" th:each="film :${filmChieuRapTop}">
+                                        <div class="movie-item">
+                                            <div class="mv-img">
+                                                <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">
+                                            </div>
+                                            <div class="hvr-inner">
+                                                <a th:href="@{'/film/'+${film.code}+'-'+${film.id}}"> Xem Phim <i
+                                                        class="ion-android-arrow-dropright"></i> </a>
+                                            </div>
+                                            <div class="title-in">
+                                                <h6><a th:href="@{'/film/'+${film.code}+'-'+${film.id}}" th:text="${film.name}"></a></h6>
+                                                <p><i class="ion-android-star"></i><span th:text="${film.scores}"></span> /10</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab34" class="tab">
+                            <div class="row">
+                                <div class="slick-multiItem">
+                                    <div class="slide-it" th:each="film :${filmChieuRapVote}">
                                         <div class="movie-item">
                                             <div class="mv-img">
                                                 <img th:src="@{${film.image1Url}}" alt="" width="185" height="284">

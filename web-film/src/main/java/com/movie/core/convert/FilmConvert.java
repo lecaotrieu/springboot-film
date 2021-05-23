@@ -53,13 +53,6 @@ public class FilmConvert {
         if (dto.getTrailer() != null && !dto.getTrailer().isEmpty()) {
             dto.setTrailerUrl("https://drive.google.com/uc?id=" + dto.getTrailer());
         }
-        if (entity.getCategories()!=null){
-            List<CategoryDTO> categoryDTOS = new ArrayList<>();
-            for (CategoryEntity categoryEntity : entity.getCategories()) {
-                categoryDTOS.add(categoryConvert.toDTO(categoryEntity));
-            }
-            dto.setCategories(categoryDTOS);
-        }
         return dto;
     }
 

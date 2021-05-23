@@ -54,13 +54,14 @@
             $('li.user-name').addClass("open");
         }
     });
-    $('#top-search select').change(function (){
-        if($('#top-search select').val() == "film"){
-            $('#top-search').attr("action","/phim");
-        } else if ($('#top-search select').val() == "actor"){
-            $('#top-search').attr("action","/danh-sach-dien-vien");
+    $('#top-search select').change(function () {
+        if ($('#top-search select').val() == "film") {
+            $('#top-search').attr("action", "/phim");
+        } else if ($('#top-search select').val() == "actor") {
+            $('#top-search').attr("action", "/danh-sach-dien-vien");
         }
     });
+
     function showAlertBeforeDelete(callback) {
         swal({
             title: "Xác nhận xóa",
@@ -121,6 +122,7 @@
             alert("authentication failure");
         }
     });
+
     function readURL(input, imageId) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -138,10 +140,43 @@
             $source.parent()[0].load();
         }
     }
+
     function imgVideoError(image) {
         image.onerror = "";
         image.src = "/template/image/no-image.jpg";
         return true;
+    }
+
+    var loadingUrl = "/template/image/loading.gif";
+
+    function showAlertAfterError(x) {
+        swal("Thất bại!", "Đã có lỗi xãy ra", "error").then(function (isConfirm) {
+            if (isConfirm) {
+                if (x != undefined) {
+                    x();
+                }
+            }
+        });
+    }
+
+    function showAlertLoading() {
+        swal({
+            title: "Đang cập nhật...",
+            text: "Làm ơn chờ một lát",
+            imageUrl: loadingUrl,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+        });
+    }
+
+    function showAlertAfterSuccess(x) {
+        swal("Thành công!", "Cập nhật thành công", "success").then(function (isConfirm) {
+            if (isConfirm) {
+                if (x != undefined) {
+                    x();
+                }
+            }
+        });
     }
 </script>
 </body>

@@ -62,7 +62,7 @@
                                 <ul class="card__meta">
                                     <li>
                                         <span>Thể loại:</span>
-                                        <a href="#" th:each="category: ${film.categories}"
+                                        <a th:href="@{'/phim/the-loai/'+${category.code}}" th:each="category: ${film.categories}"
                                            th:text="${category.name}"></a>
                                     </li>
                                     <li><span>Năm:</span>
@@ -341,6 +341,9 @@
 <script th:src="@{/template/web/js2/photoswipe-ui-default.min.js}"></script>
 <script th:src="@{/template/web/js2/main.js}"></script>
 <script th:src="@{/template/web/js/comment.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+        integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
+        crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
         var episode_code = $('#episode-code').val();

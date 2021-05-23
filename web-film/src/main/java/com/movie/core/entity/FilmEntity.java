@@ -48,7 +48,7 @@ public class FilmEntity extends BaseEntity {
     @Column
     private Integer view;
 
-    @Column
+    @Column(name = "total_vote")
     private Integer totalVote;
 
     @OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

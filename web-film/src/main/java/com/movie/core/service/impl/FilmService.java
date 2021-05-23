@@ -434,6 +434,7 @@ public class FilmService implements IFilmService {
     @Autowired
     private IEvaluateService evaluateService;
 
+    @Transactional
     public Double updateScores(Long id) {
         FilmEntity filmEntity = filmRepository.getOne(id);
         Double scores = Math.ceil(evaluateService.getAvgScores(id) * 10) / 10;

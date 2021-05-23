@@ -85,7 +85,7 @@ body {
 }
 
 .poster-video {
-	height: 200px;
+	height: 227px;
 	justify-content: center;
 	overflow: hidden;
 }
@@ -120,7 +120,7 @@ body {
 .papa {
 	display: flex;
 	justify-content: space-between;
-	padding: 20px 0;
+	padding: 20px 8px;
 }
 
 img.card-img-top {
@@ -132,7 +132,7 @@ img.card-img-top {
 
 .wthree_agile-requested-movies .card {
 	margin-bottom: 20px;
-	height: 307px;
+	height: 320px;
 	background: #fff;
 }
 

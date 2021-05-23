@@ -12,7 +12,7 @@ public class StringGlobalUtils {
         try {
             String temp = Normalizer.normalize(value, Normalizer.Form.NFD);
             Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-            return pattern.matcher(temp).replaceAll("").toLowerCase().replaceAll(" ", "-").replaceAll("đ", "d");
+            return pattern.matcher(temp).replaceAll("").toLowerCase().replaceAll(" ", "-").replaceAll("đ", "d").replaceAll("/", "-");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

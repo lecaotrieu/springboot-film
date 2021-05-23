@@ -46,7 +46,7 @@
                 </th:block>
 
                 <div class="form-style-1 user-pro" action="#">
-                    <form th:action="@{/trang-ca-nhan/edit}" method="post" class="user">
+                    <form th:action="@{/trang-ca-nhan/chinh-sua-thong-tin}" method="post" class="user">
                         <h4>01. Chi tiết hồ sơ</h4>
                         <div class="row">
                             <div class="col-md-6 form-it">
@@ -76,7 +76,7 @@
                             </div>
                             <div class="col-md-6 form-it">
                                 <label th:text="#{label.birth.date}"></label>
-                                <input type="date"   th:field="${user.birthDate}">
+                                <input type="date" th:field="${user.birthDate}">
                             </div>
                             <input type="hidden" th:field="${user.status}">
                         </div>

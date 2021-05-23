@@ -213,7 +213,7 @@
                             <div class="custom-control custom-checkbox float-left" th:each="category: ${categories}"
                                  style="width:120px; margin-right: 15px;">
                                 <input name="categories.id" type="checkbox" class="custom-control-input"
-                                       th:field="*{categories}" th:id="checkbox_+${category.id}"
+                                       th:field="*{categories}" th:id="checkbox_+${category.id}" th:checked="${true}"
                                        th:value="${category.id}">
                                 <label class="custom-control-label"
                                        th:for="checkbox_+${category.id}" th:text="${category.name}"></label>

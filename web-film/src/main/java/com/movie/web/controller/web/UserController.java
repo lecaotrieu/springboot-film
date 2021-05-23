@@ -104,7 +104,7 @@ public class UserController {
         return "views/web/favoriteFilm";
     }
 
-    @RequestMapping(value = "/trang-ca-nhan/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/trang-ca-nhan/chinh-sua-thong-tin", method = RequestMethod.POST)
     public String saveProfile(UserDTO userDTO) {
         userDTO.setId(SecurityUtils.getUserPrincipal().getId());
         userDTO.setUserName(SecurityUtils.getUserPrincipal().getUsername());
