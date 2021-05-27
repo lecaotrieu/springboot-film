@@ -34,18 +34,21 @@ public class HomeController {
 //        String userInfo = SecurityUtils.getPrincipal().getUsername();
 //        model.addAttribute("userInfo", userInfo);
         String userName = "";
-        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)||SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)) {
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN) || SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)) {
             userName = "ADMIN";
         } else if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_POSTER)) {
             userName = SecurityUtils.getPrincipal().getUsername();
         }
-        int totalFilm = filmService.getTotalItem(userName, "", "", "", "","");
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN) || SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_POSTER)) {
+            int totalFilm = filmService.getTotalItem(userName, "", "", "", "", "");
+            model.addAttribute("filmTotal", totalFilm);
+        }
+
         if (userName == "ADMIN") {
             int totalEmployee = employeeService.getTotalItem();
             model.addAttribute("employeeTotal", totalEmployee);
         }
-
-        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN) || SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)){
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN) || SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)) {
             int totalUser = userService.getTotalItem("");
             model.addAttribute("userTotal", totalUser);
             List<CategoryDTO> categoryDTOS = categoryService.findAll();
@@ -53,11 +56,10 @@ public class HomeController {
             model.addAttribute("categories", categoryDTOS);
             model.addAttribute("filmTypes", filmTypeDTOS);
         }
-        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN)||SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)){
+        if (SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_ADMIN) || SecurityUtils.getEmployeeAuthorities().contains(WebConstant.ROLE_MANAGER)) {
             int totalVideo = videoService.getTotalItem("", "");
             model.addAttribute("videoTotal", totalVideo);
         }
-        model.addAttribute("filmTotal", totalFilm);
         return "views/admin/home";
     }
 }

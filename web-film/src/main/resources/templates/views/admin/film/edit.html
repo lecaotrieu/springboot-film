@@ -334,7 +334,8 @@
 
     $("input[name='categories']").attr("name", "categories.id");
 
-    $('#btnActorSave').click(function (e) {
+
+    $("#editActorForm").submit(function (e) {
         e.preventDefault();
         var formData = $('#editActorForm').serializeArray();
         var data = convertToJson(formData);
@@ -343,6 +344,9 @@
             $('#edit-actor').modal("hide")
             $('#ip-actor-name').val("");
         }
+    })
+    $('#btnActorSave').click(function (e) {
+        $("#editActorForm").submit();
     });
 
     var apiActorUrl = "/api/admin/actor";
@@ -364,7 +368,7 @@
         });
     }
 
-    $('#btnDirectorSave').click(function (e) {
+    $('#editDirectorForm').submit(function (e) {
         e.preventDefault();
         var formData = $('#editDirectorForm').serializeArray();
         var data = convertToJson(formData);
@@ -374,6 +378,11 @@
             $('#ip-director-name').val("");
         }
     });
+
+    $('#btnDirectorSave').click(function (e) {
+        $('#editDirectorForm').submit();
+    });
+
     var apiDirectorUrl = "/api/admin/director";
 
     function addDirector(data) {
@@ -438,7 +447,7 @@
     }
 
     function updateFilmImage(a) {
-        if ($('#img1').val() != "" || $('#img2').val() !="") {
+        if ($('#img1').val() != "" || $('#img2').val() != "") {
             var form = $('#form-image-film')[0];
             $('#loading-img').prop("hidden", false);
             var data = new FormData(form);

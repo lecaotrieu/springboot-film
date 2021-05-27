@@ -18,5 +18,6 @@ public class CoreConstant {
     public static final String VIDEO_USER_ADDRESS_ID = "1Wmckcj8VBoL5rVyhrLKjknOBHF-7ntII";
     public static final String AVATAR_ADDRESS_ID = "1Z8VwKg0Zc6rv2dJJ2-8pd128uQiRMyri";
     public static final String FILM_IMAGE_ADDRESS_ID = "1R2LYCyM0vC2K7hknEzj02hwxL_Zzcl0D";
+    public static final String DRIVE_API_KEY = "AIzaSyC7Nyaa0As9iYsDutQ7EsaEfkMtRu3lDn8";
     public static final String FILM_TRAILER_ADDRESS_ID = "1PSWING4wULcFluVbXD0Pqskdena0zjI2";
 }

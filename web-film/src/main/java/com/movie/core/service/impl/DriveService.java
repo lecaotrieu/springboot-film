@@ -193,4 +193,18 @@ public class DriveService implements IDriveService {
         googleDrive = DriveUtils.getDriveService();
         return googleDrive.permissions().create(googleFileId, newPermission).execute();
     }
+
+    private File findFileByNameSync(String name) throws IOException {
+        // escape some chars (') see : https://developers.google.com/drive/v3/web/search-parameters#fn1
+        List<File> files = googleDrive.files().list().setSpaces("appDataFolder").setQ("name='" + name + "'")
+                .execute().getFiles();
+        if (files.size() > 1) {
+            throw new IOException("multiple files with name " + name + " exists.");
+        } else if (files.size() < 1) {
+            return null;
+        } else {
+            return files.get(0);
+        }
+    }
 }
+

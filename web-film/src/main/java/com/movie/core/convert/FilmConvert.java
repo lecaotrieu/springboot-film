@@ -51,7 +51,8 @@ public class FilmConvert {
             dto.setImage2Url("/" + CoreConstant.FOLDER_UPLOAD + "/" + CoreConstant.FILM_IMAGES + "/" + dto.getId() + "/" + dto.getImage2());
         }
         if (dto.getTrailer() != null && !dto.getTrailer().isEmpty()) {
-            dto.setTrailerUrl("https://drive.google.com/uc?id=" + dto.getTrailer());
+            String trailerUrl ="https://www.googleapis.com/drive/v3/files/" + dto.getTrailer() + "?alt=media&key="+CoreConstant.DRIVE_API_KEY;
+            dto.setTrailerUrl(trailerUrl);
         }
         return dto;
     }

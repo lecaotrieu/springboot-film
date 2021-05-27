@@ -61,7 +61,7 @@ public class EpisodeService implements IEpisodeService {
 
     private void deleteEpisodeInDrive(String episodeId) {
         try {
-            if (!episodeId.isEmpty()) {
+            if (episodeId!=null && !episodeId.isEmpty()) {
                 driveService.deleteFileById(episodeId);
             }
         } catch (IOException e) {

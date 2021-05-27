@@ -130,7 +130,7 @@ public class VideoService implements IVideoService {
     public String uploadVideoToDrive(Long videoId, MultipartFile video) throws IOException {
         if (!video.getOriginalFilename().isEmpty()) {
             String videoName = "user_video_" + videoId;
-            File file = driveService.createGoogleFile(CoreConstant.FILM_TRAILER_ADDRESS_ID, video.getContentType(), videoName, video.getInputStream());
+            File file = driveService.createGoogleFile(CoreConstant.VIDEO_USER_ADDRESS_ID, video.getContentType(), videoName, video.getInputStream());
             driveService.createPublicPermission(file.getId());
             return file.getId();
         }

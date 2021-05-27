@@ -75,6 +75,7 @@ public class FilmController {
         FilmCommand command = new FilmCommand();
         command = setValueForCommand(command, search, page, sortExpression, filmType, category, country, year);
         if (limit != null) command.setLimit(limit);
+        else command.setLimit(12);
         List<FilmDTO> filmDTOS = filmService.findByProperties(command.getSearch(), command.getFilmType(), command.getCategory(), command.getCountry(), command.getYear(), command.getPage(), command.getLimit(), sortExpression, sortDsc);
         command.setListResult(filmDTOS);
         command.setTotalItems(filmService.getTotalItem(command.getSearch(), command.getFilmType(), command.getCategory(), command.getCountry(), command.getYear()));
@@ -106,7 +107,6 @@ public class FilmController {
         if (search != null) {
             command.setSearch(search);
         }
-        command.setLimit(5);
         return command;
     }
 

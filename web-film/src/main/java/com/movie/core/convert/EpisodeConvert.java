@@ -1,5 +1,6 @@
 package com.movie.core.convert;
 
+import com.movie.core.constant.CoreConstant;
 import com.movie.core.dto.EpisodeDTO;
 import com.movie.core.entity.EpisodeEntity;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +18,9 @@ public class EpisodeConvert {
             dto.setFilm(filmConvert.toDTO(entity.getFilm()));
         }
         if (dto.getEpisodeId() != null && !dto.getEpisodeId().isEmpty()) {
-            dto.setVideoUrl("https://drive.google.com/uc?id=" + dto.getEpisodeId());
+            String episodeUrl ="https://www.googleapis.com/drive/v3/files/" + dto.getEpisodeId() + "?alt=media&key="+ CoreConstant.DRIVE_API_KEY;
+
+            dto.setVideoUrl(episodeUrl);
         }
         return dto;
     }
