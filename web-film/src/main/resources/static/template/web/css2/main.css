@@ -61,6 +61,26 @@ button {
   transition: 0.4s ease;
   cursor: pointer;
 }
+
+button.btn.btn-fix-1, .btn.btn-fix-2 {
+  margin-left: 17px;
+  border: 1px solid;
+  padding: 8px;
+  font-size: 13px;
+  margin-top: 13px;
+}
+
+button.btn.btn-fix-1 {
+  background: #c9302c;
+  border-color: #ac2925;
+  color: #fff;
+}
+
+button.btn.btn-fix-2 {
+  background: rgb(3, 197, 135);
+  border-color: rgb(3, 197, 135);
+  color: #fff;
+}
 button:focus {
   outline: none;
 }
@@ -172,7 +192,7 @@ ul {
   position: relative;
 }
 .b-description_readmore_button:before {
-  content: 'Xem thêm';
+  content: 'Xem thÃƒÆ’Ã‚Âªm';
   position: absolute;
   display: block;
   top: 0;
@@ -3716,4 +3736,16 @@ table.accordion__list a:hover {
   background-image: -webkit-linear-gradient(180deg, #ff55a5 0%, #ff5860 100%);
   background-image: -ms-linear-gradient(180deg, #ff55a5 0%, #ff5860 100%);
   background-image: linear-gradient(180deg, #ff55a5 0%, #ff5860 100%);
+}
+.fix-video-logo {
+  position: absolute;
+  right: 26px;
+  top: 9px;
+  z-index: 10;
+  padding: 6px;
+  padding-bottom: 14px;
+}
+
+.fix-video-logo img {
+  width: 31px;
 }

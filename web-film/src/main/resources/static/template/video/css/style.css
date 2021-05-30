@@ -13,9 +13,17 @@ body {
 	margin: 0px!important;
 }
 
+.fix-video-logo {
+	position: absolute;
+	z-index: 13;
+	right: 22px;
+	top: 9px;
+	padding: 9px;
+	padding-bottom: 10px;
+}
+
 .video-grid-single-page-agileits img {
 	max-height: 620px;
-	opacity: 0.5;
 }
 
 .trailer-infor {
@@ -1225,6 +1233,8 @@ p.fexi_header_para1 a i {
 	width: 100%;
 }
 
+.fix-video-logo img {width: 32px;}
+
 #video,
 #video1,
 #video2,
@@ -2073,6 +2083,10 @@ div#home {
 	outline: none;
 }
 
+button#btn-fix-1, #btn-fix-2 {
+	padding: 9px;
+}
+
 .danh-gia .btn-outline-info {
 	border: #5bc0de 1px solid;
 }
@@ -2083,7 +2097,6 @@ div#home {
 }
 
 .danh-gia button.btn {
-	margin-right: 19px;
 }
 
 .danh-gia .btn-outline-info:focus {
@@ -2817,6 +2830,8 @@ ul.bottom-links-agile li a {
 	font-family: unset;
 }
 
+.fix-error-video {float: right;}
+
 div#comments {
 	width: 90%;
 	margin-top: 20px;
@@ -2867,6 +2882,7 @@ div#comments {
 	display: flex;
 	align-items: baseline;
 	margin-top: 10px;
+	float: right;
 }
 
 .video-info {
@@ -2874,6 +2890,7 @@ div#comments {
 	align-items: baseline;
 	justify-content: space-between;
 	margin-bottom: 20px;
+	clear: both;
 }
 
 .video-info p {
@@ -2883,6 +2900,12 @@ div#comments {
 
 .response p {
 	font-family: unset;
+}
+
+p#totalLike {
+	margin-right: 0px;
+	margin-left: 18px;
+	padding: 0;
 }
 
 .response {}
@@ -2906,6 +2929,8 @@ div#comments {
 	text-transform: uppercase;
 	font-weight: 500;
 	font-size: 21px;
+	width: 80%;
+	float: left;
 }
 
 .response-text-left h5 a {

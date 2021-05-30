@@ -9,6 +9,8 @@ public class VideoDTO extends AbstractDTO<VideoDTO> {
     private String image;
     private String imageUrl;
     private String videoUrl;
+    private String videoUrl2;
+    private String videoUrl3;
     private Integer status;
     private Integer view;
     private String brief;
@@ -138,5 +140,21 @@ public class VideoDTO extends AbstractDTO<VideoDTO> {
 
     public void setTotalLike(Integer totalLike) {
         this.totalLike = totalLike;
+    }
+
+    public String getVideoUrl3() {
+        return videoUrl3;
+    }
+
+    public void setVideoUrl3(String videoUrl3) {
+        this.videoUrl3 = videoUrl3;
+    }
+
+    public String getVideoUrl2() {
+        return videoUrl2;
+    }
+
+    public void setVideoUrl2(String videoUrl2) {
+        this.videoUrl2 = videoUrl2;
     }
 }

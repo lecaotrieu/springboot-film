@@ -14,8 +14,9 @@ public class VideoConvert {
         VideoDTO dto = new VideoDTO();
         BeanUtils.copyProperties(entity, dto);
         if (dto.getVideo() != null && !dto.getVideo().isEmpty()) {
-//            https://www.googleapis.com/drive/v3/files/19MCF2s21LlPiW2i5V_oUcUFbMNxVE6lc?alt=media&key=AIzaSyC7Nyaa0As9iYsDutQ7EsaEfkMtRu3lDn8&v=.mp4
-            dto.setVideoUrl("https://www.googleapis.com/drive/v3/files/" + dto.getVideo() + "?alt=media&key="+CoreConstant.DRIVE_API_KEY);
+            dto.setVideoUrl2("https://www.googleapis.com/drive/v3/files/" + dto.getVideo() + "?alt=media&amp;&key=" + CoreConstant.DRIVE_API_KEY);
+            dto.setVideoUrl("https://drive.google.com/uc?id=" + dto.getVideo());
+            dto.setVideoUrl3("https://drive.google.com/file/d/" + dto.getVideo() + "/preview");
         }
 
         if (dto.getImage() != null && !dto.getImage().isEmpty()) {

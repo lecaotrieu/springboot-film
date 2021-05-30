@@ -34,13 +34,24 @@
             <div class="col-md-8 latest-news-agile-left-content">
                 <div class="single video_agile_player">
                     <div class="video-grid-single-page-agileits">
+                        <div class="fix-video-logo">
+                            <img th:src="@{/template/image/logo.png}">
+                        </div>
                         <div data-video="f2Z65fobH2I" id="video">
                             <img th:src="@{${video.imageUrl}}" onerror="imgVideoError(this)" alt=""/>
                             <div id="play"></div>
                             <input type="hidden" th:value="${video.videoUrl}" id="ip-video-url">
+                            <input type="hidden" th:value="${video.videoUrl2}" id="ip-video-url2">
+                            <input type="hidden" th:value="${video.videoUrl3}" id="ip-video-url3">
                             <video width="100%" src="#" controls class="hide" id="video-user">
                             </video>
                         </div>
+                        <div class="iframe-video" style="display: none">
+                            <iframe id="video-iframe" src="#" height="650" width="100%" allowfullscreen></iframe>
+                        </div>
+                        <!--  <iframe id="video-iframe"
+                                  src="https://drive.google.com/file/d/1N63gaA9aRjsEm_pLy9vzMTuuin3JUeSF/preview"
+                                  allowfullscreen="true" height="650" width="100%"></iframe>-->
                     </div>
 
                 </div>
@@ -49,6 +60,10 @@
                 <div class="response">
                     <h4 class="desc" th:text="${video.name}">
                     </h4>
+                    <div class="fix-error-video">
+                        <button class="btn btn-sm btn-danger" id="btn-fix-1" onclick="fixVideo1()">Server 2</button>
+                        <button class="btn btn-sm btn-warning" id="btn-fix-2" onclick="fixVideo2()">Server 3</button>
+                    </div>
                     <div class="video-info">
                         <div class="info-view">
                             <p th:text="${video.view}+' lượt xem'"></p>
@@ -218,6 +233,7 @@
             $('#btn-follow').text("Đã theo dõi");
         }
         increaseView();
+        $('#video-iframe img').click();
     });
 
     $('#btn-like').click(function () {
@@ -292,15 +308,28 @@
         });
     }
 
+    function fixVideo1() {
+        $('#video-user').attr("src", $('#ip-video-url2').val());
+        $('#video').css("display", "block");
+        $('.iframe-video').css("display", "none");
+        $('#video-iframe').attr("src", "#");
+    }
+
+    function fixVideo2() {
+        $('#video-iframe').attr("src", $('#ip-video-url3').val());
+        $('.iframe-video').css("display", "block");
+        $('#video-user').attr("src", "#");
+        $('#video').css("display", "none");
+    }
+
     $('#play').click(function () {
         $('#video').children('img').hide();
         $('#play').css('background-image', 'url(play-button.png), url(' + $('#video').children().attr('src') + ')').hide();
         var url = $('#ip-video-url').val();
-        $('video').attr("src", url);
-        $("video").removeClass("hide");
-        $("video").get(0).play();
+        $('#video-user').attr("src", url);
+        $("#video-user").removeClass("hide");
+        $("#video-user").trigger("play");
     });
-
 
     $('#form-comment-video').submit(function (e) {
         e.preventDefault();
@@ -333,6 +362,7 @@
             value: ''
         });
     });
+
 
     function increaseView() {
         var vid = document.getElementById("video-user");

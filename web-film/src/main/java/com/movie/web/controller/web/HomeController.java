@@ -159,4 +159,8 @@ public class HomeController {
         return "redirect:/trang-chu";
     }
 
+    @GetMapping("/test/load")
+    public String loadVideo(){
+        return "redirect:https://drive.google.com/file/d/1ywttqCmBDVc-CQxzzMh2oACnaP4i9wRW/view";
+    }
 }

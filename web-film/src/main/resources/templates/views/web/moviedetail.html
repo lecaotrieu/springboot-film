@@ -62,7 +62,8 @@
                                 <ul class="card__meta">
                                     <li>
                                         <span>Thể loại:</span>
-                                        <a th:href="@{'/phim/the-loai/'+${category.code}}" th:each="category: ${film.categories}"
+                                        <a th:href="@{'/phim/the-loai/'+${category.code}}"
+                                           th:each="category: ${film.categories}"
                                            th:text="${category.name}"></a>
                                     </li>
                                     <li><span>Năm:</span>
@@ -91,10 +92,25 @@
 
             <!-- player -->
             <div class="col-12 col-xl-6">
-                <video controls playsinline id="player">
-                    <!-- Video files -->
-                    <source th:if="${episode!=null}" th:src="@{${episode.videoUrl}}" type="video/mp4" size="576">
-                </video>
+                <div class="fix-video-logo">
+                    <img th:src="@{/template/image/logo.png}">
+                </div>
+                <div class="video-content">
+                    <video controls playsinline id="player">
+                        <!-- Video files -->
+                        <source th:if="${episode!=null}" th:src="@{${episode.videoUrl}}" type="video/mp4" size="576">
+                    </video>
+                </div>
+                <div class="iframe-episode" style="display: none">
+                    <iframe id="video-episode" src="#" height="310" width="100%" allowfullscreen></iframe>
+                </div>
+                <div class="row">
+                    <button class="btn btn-fix-1" onclick="fixEpisodeSv2()">Server 2</button>
+                    <button class="btn btn-fix-2" onclick="fixEpisodeSv3()">Server 3</button>
+                </div>
+                <input type="hidden" id="server" value="1">
+                <input type="hidden" id="episode-sv-2" th:value="${episode.videoUrl2}">
+                <input type="hidden" id="episode-sv-3" th:value="${episode.videoUrl3}">
             </div>
             <!-- end player -->
 
@@ -125,6 +141,9 @@
                                     <tr th:each="chapter: ${film.episodes}" th:href="@{${chapter.videoUrl}}"
                                         th:data="${chapter.episodeCode}"
                                         th:id="chapter_+${chapter.episodeCode}" class="episode_chapter">
+                                        <input type="hidden" th:value="${chapter.videoUrl}" class="episode-url-1">
+                                        <input type="hidden" th:value="${chapter.videoUrl2}" class="episode-url-2">
+                                        <input type="hidden" th:value="${chapter.videoUrl3}" class="episode-url-3">
                                         <th th:text="${chapter.episodeCode}">
                                         </th>
                                         <th th:text="${chapter.name}">
@@ -141,35 +160,6 @@
                 </div>
             </div>
             <!-- end accordion -->
-
-            <!--<div class="col-12">
-                <div class="details__wrap">
-                    &lt;!&ndash; availables &ndash;&gt;
-                    <div class="details__devices">
-                        <span class="details__devices-title">Available on devices:</span>
-                        <ul class="details__devices-list">
-                            <li><i class="icon ion-logo-apple"></i><span>IOS</span></li>
-                            <li><i class="icon ion-logo-android"></i><span>Android</span></li>
-                            <li><i class="icon ion-logo-windows"></i><span>Windows</span></li>
-                            <li><i class="icon ion-md-tv"></i><span>Smart TV</span></li>
-                        </ul>
-                    </div>
-                    &lt;!&ndash; end availables &ndash;&gt;
-
-                    &lt;!&ndash; share &ndash;&gt;
-                    <div class="details__share">
-                        <span class="details__share-title">Share with friends:</span>
-
-                        <ul class="details__share-list">
-                            <li class="facebook"><a href="#"><i class="icon ion-logo-facebook"></i></a></li>
-                            <li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
-                            <li class="twitter"><a href="#"><i class="icon ion-logo-twitter"></i></a></li>
-                            <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
-                        </ul>
-                    </div>
-                    &lt;!&ndash; end share &ndash;&gt;
-                </div>
-            </div>-->
         </div>
     </div>
     <!-- end details content -->
@@ -209,7 +199,8 @@
                                      style="width: 65px;height: 65px; border-radius:50px; ">
                                 <div class="author-infor">
                                     <div class="flex-it2">
-                                        <h6><a th:href="@{'/danh-sach-video-'+${comment.user.id}}" th:text="${comment.user.userName}"></a></h6>
+                                        <h6><a th:href="@{'/danh-sach-video-'+${comment.user.id}}"
+                                               th:text="${comment.user.userName}"></a></h6>
                                         <span class="time" th:text="${comment.thoiGianDang}"></span>
                                     </div>
                                     <p th:text="${comment.content}" class="cm-content"
@@ -352,15 +343,38 @@
     });
 
     $('.episode_chapter').click(function () {
+        var episode_chapter = $(this);
         var code = $(this).attr("data");
         if (code != $('#episode-code').val()) {
             $('.episode_chapter').removeClass("active");
             $(this).addClass("active");
             $('#episode-code').val(code);
-            var url = $(this).attr("href");
+            var url1 = episode_chapter.find(".episode-url-1").val();
+            var url2 = episode_chapter.find(".episode-url-2").val();
+            var url3 = episode_chapter.find(".episode-url-3").val();
+            $('#episode-sv-3').val(url3);
+            $('#episode-sv-2').val(url2);
+            var url = "";
+            switch ($('#server').val()) {
+                case "1": {
+                    url = url1;
+                    $('#player').attr('src', url);
+                    $('#player source').attr('src', url);
+                    break;
+                }
+                case "2": {
+                    url = url2;
+                    $('#player').attr('src', url);
+                    $('#player source').attr('src', url);
+                    break;
+                }
+                case "3": {
+                    $('#video-episode').attr("src", url3);
+                    url = url3;
+                    break;
+                }
+            }
             if (url != "") {
-                $('#player').attr('src', url);
-                $('#player source').attr('src', url);
                 increaseView();
                 var urlc = "/film/" + $('#ip-filmCode').val() + "-" + $('#ip-filmId').val() + "/" + code;
                 window.history.pushState("", "", urlc);
@@ -400,6 +414,22 @@
                 }
             }, 1000);
         };
+    }
+
+    function fixEpisodeSv2() {
+        $('#server').val(2);
+        $('#player').attr("src",$('#episode-sv-2').val());
+        $('#video-episode').attr("src","#");
+        $('.video-content').css("display","block");
+        $('.iframe-episode').css("display","none");
+    }
+
+    function fixEpisodeSv3() {
+        $('#server').val(3);
+        $('#player').attr("src","#");
+        $('#video-episode').attr("src",$('#episode-sv-3').val());
+        $('.video-content').css("display","none");
+        $('.iframe-episode').css("display","block");
     }
 
 </script>

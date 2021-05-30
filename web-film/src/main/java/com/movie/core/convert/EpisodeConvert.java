@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class EpisodeConvert {
     @Autowired
     private FilmConvert filmConvert;
+
     public EpisodeDTO toDTO(EpisodeEntity entity) {
         EpisodeDTO dto = new EpisodeDTO();
         BeanUtils.copyProperties(entity, dto);
@@ -18,9 +19,10 @@ public class EpisodeConvert {
             dto.setFilm(filmConvert.toDTO(entity.getFilm()));
         }
         if (dto.getEpisodeId() != null && !dto.getEpisodeId().isEmpty()) {
-            String episodeUrl ="https://www.googleapis.com/drive/v3/files/" + dto.getEpisodeId() + "?alt=media&key="+ CoreConstant.DRIVE_API_KEY;
-
-            dto.setVideoUrl(episodeUrl);
+            String episodeUrl = "https://www.googleapis.com/drive/v3/files/" + dto.getEpisodeId() + "?alt=media&key=" + CoreConstant.DRIVE_API_KEY;
+            dto.setVideoUrl2(episodeUrl);
+            dto.setVideoUrl("https://drive.google.com/uc?id=" + dto.getEpisodeId());
+            dto.setVideoUrl3("https://drive.google.com/file/d/" + dto.getEpisodeId() + "/preview");
         }
         return dto;
     }

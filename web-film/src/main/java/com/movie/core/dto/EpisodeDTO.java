@@ -8,6 +8,8 @@ public class EpisodeDTO extends AbstractDTO<EpisodeDTO> {
     private Integer episodeCode;
     private MultipartFile video;
     private String videoUrl;
+    private String videoUrl2;
+    private String videoUrl3;
     private Integer status;
     private FilmDTO film;
 
@@ -66,5 +68,21 @@ public class EpisodeDTO extends AbstractDTO<EpisodeDTO> {
 
     public void setVideo(MultipartFile video) {
         this.video = video;
+    }
+
+    public String getVideoUrl2() {
+        return videoUrl2;
+    }
+
+    public void setVideoUrl2(String videoUrl2) {
+        this.videoUrl2 = videoUrl2;
+    }
+
+    public String getVideoUrl3() {
+        return videoUrl3;
+    }
+
+    public void setVideoUrl3(String videoUrl3) {
+        this.videoUrl3 = videoUrl3;
     }
 }
