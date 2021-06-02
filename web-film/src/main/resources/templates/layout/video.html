@@ -252,7 +252,7 @@
     function searchVideo() {
         if ($('#btn-search').attr("a") == "s-search") {
             var searchValue = $('#ip-search').val();
-            window.location.href = "/video/tim-kiem?search" + searchValue;
+            window.location.href = "/video/tim-kiem?search=" + searchValue;
         } else if ($('#btn-search').attr("a") == "p-search") {
             $('#formUrl').submit();
         }

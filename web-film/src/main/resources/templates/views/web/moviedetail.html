@@ -96,7 +96,7 @@
                     <img th:src="@{/template/image/logo.png}">
                 </div>
                 <div class="video-content">
-                    <video controls playsinline id="player">
+                    <video controls playsinline id="player" onerror="videoError()">
                         <!-- Video files -->
                         <source th:if="${episode!=null}" th:src="@{${episode.videoUrl}}" type="video/mp4" size="576">
                     </video>
@@ -431,7 +431,23 @@
         $('.video-content').css("display","none");
         $('.iframe-episode').css("display","block");
     }
-
+    function videoError() {
+        switch ($('#server').val()) {
+            case "1": {
+                fixEpisodeSv2()
+                $('#server').val(2);
+                break;
+            }
+            case "2": {
+                fixEpisodeSv3()
+                $('#server').val(3);
+                break;
+            }
+            case "3": {
+                break;
+            }
+        }
+    }
 </script>
 </body>
 </html>

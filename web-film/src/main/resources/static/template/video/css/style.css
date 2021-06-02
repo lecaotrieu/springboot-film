@@ -8,7 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 html,
 body {
 	font-size: 100%;
-	font-family: 'Lato', sans-serif;
+	font-family: 'Dosis', sans-serif;
 	background: #f9f9f9;
 	margin: 0px!important;
 }
@@ -166,7 +166,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Dosis', sans-serif;
 	margin: 0;
 }
 
@@ -186,7 +186,7 @@ label {
 }
 
 body p {
-	font-family: 'Lato', sans-serif;
+	font-family: 'Dosis', sans-serif;
 	letter-spacing: 1px;
 }
 
@@ -718,7 +718,7 @@ ul.dropdown-menu.multi-column ul li a:hover {
 	font-size: 1em;
 	color: #fff;
 	margin: 2em 0 2.5em 0;
-	font-family: 'Lato', sans-serif;
+	font-family: 'Dosis', sans-serif;
 	text-transform: uppercase;
 	font-weight: 300;
 	letter-spacing: 5px;

@@ -43,7 +43,7 @@
                             <input type="hidden" th:value="${video.videoUrl}" id="ip-video-url">
                             <input type="hidden" th:value="${video.videoUrl2}" id="ip-video-url2">
                             <input type="hidden" th:value="${video.videoUrl3}" id="ip-video-url3">
-                            <video width="100%" src="#" controls class="hide" id="video-user">
+                            <video width="100%" src="#" controls class="hide" id="video-user" onerror="videoError()">
                             </video>
                         </div>
                         <div class="iframe-video" style="display: none">
@@ -172,6 +172,7 @@
                                                               th:placeholder="#{label.comment}"></textarea>
                                     </div>
                                     <input type="hidden" name="video.id" th:value="${video.id}">
+                                    <input type="hidden" id="server-video" th:value="0">
                                     <input type="hidden" id="reply-cm-id">
                                 </div>
                                 <button class="btn btn-primary" id="btn-submit">Gửi</button>
@@ -308,6 +309,27 @@
         });
     }
 
+    function videoError() {
+        switch ($('#server-video').val()) {
+            case "1": {
+                fixVideo1()
+                $('#server-video').val(2);
+                break;
+            }
+            case "2": {
+                fixVideo2()
+                $('#server-video').val(3);
+                break;
+            }
+            case "3": {
+                break;
+            }
+            case "0": {
+                break;
+            }
+        }
+    }
+
     function fixVideo1() {
         $('#video-user').attr("src", $('#ip-video-url2').val());
         $('#video').css("display", "block");
@@ -324,6 +346,7 @@
 
     $('#play').click(function () {
         $('#video').children('img').hide();
+        $('#server-video').val(1);
         $('#play').css('background-image', 'url(play-button.png), url(' + $('#video').children().attr('src') + ')').hide();
         var url = $('#ip-video-url').val();
         $('#video-user').attr("src", url);
