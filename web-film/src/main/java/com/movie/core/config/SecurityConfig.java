@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
+@Order(2)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -32,59 +32,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
-    @Autowired
-    private PersistentTokenRepository persistentTokenRepository;
-
-  /*  @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/user**")
-                .authorizeRequests().anyRequest().hasRole("USER")
+        http
+                .authorizeRequests()
+                .antMatchers("/trang-ca-nhan/**").hasRole("USER")
                 .and()
                 .formLogin()
-                .loginPage("/dang-nhap")
+                .loginPage("/trang-chu")
                 .usernameParameter("j_username_user")
                 .passwordParameter("j_password_user")
-                .loginProcessingUrl("/user_login")
-                .defaultSuccessUrl("/trang-chu")
-                .successHandler(customUserSuccessHandler)
-                .failureUrl("/trang-chu?incorrectAccount")
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/accessDenied-user")
+                .loginProcessingUrl("/trang-ca-nhan/login")
+                .defaultSuccessUrl("/ajax-login-success")
+                .failureUrl("/ajax-login-failure")
                 .and()
                 .sessionManagement().invalidSessionUrl("/trang-chu")
                 .and()
-                .logout().deleteCookies("JSESSIONID").invalidateHttpSession(true);
+                .logout().deleteCookies("JSESSIONID", "remember-me")
+                .and()
+                .rememberMe().rememberMeParameter("remember-me").key("remember-key").tokenValiditySeconds(1 * 24 * 60 * 60);
         http.csrf().disable();
-        // Cấu hình Remember Me.
-        http.authorizeRequests().and() //
-                .rememberMe().tokenRepository(persistentTokenRepository).key("uniqueAndSecret") //
-                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
-    }*/
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-      http.antMatcher("/trang-ca-nhan/**")
-              .authorizeRequests()
-              .antMatchers("/trang-ca-nhan/**").hasRole("USER")
-              .and()
-              .formLogin()
-              .loginPage("/trang-chu")
-              .usernameParameter("j_username_user")
-              .passwordParameter("j_password_user")
-              .loginProcessingUrl("/trang-ca-nhan/login")
-              .defaultSuccessUrl("/ajax-login-success")
-              .failureUrl("/ajax-login-failure")
-              .and()
-              .exceptionHandling()
-              .accessDeniedPage("/accessDenied-user")
-              .and()
-              .sessionManagement().invalidSessionUrl("/trang-chu")
-              .and()
-              .logout().deleteCookies("JSESSIONID").invalidateHttpSession(true);
-      http.csrf().disable();
-      // Cấu hình Remember Me.
-      http.authorizeRequests().and() //
-              .rememberMe().tokenRepository(persistentTokenRepository).key("uniqueAndSecret") //
-              .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
-  }
+
+    }
 }

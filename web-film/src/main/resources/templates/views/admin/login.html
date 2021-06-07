@@ -26,7 +26,7 @@
                     <div class="alert alert-danger" th:if="${param.accessDenied !=null}">
                         You not authorize
                     </div>
-                    <form th:action="@{/admin_login}" id="formLogin" method="post">
+                    <form th:action="@{/admin/login}" id="formLogin" method="post">
                         <div class="form-group">
                             <label class="small mb-1" for="inputUserNameAddress">
                                 <div th:text="#{label.username}" th:remove="tag"></div>

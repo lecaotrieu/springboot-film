@@ -7,6 +7,7 @@ import com.movie.core.dto.FilmTypeDTO;
 import com.movie.core.service.ICategoryService;
 import com.movie.core.service.ICountryService;
 import com.movie.core.service.IFilmTypeService;
+import com.movie.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;

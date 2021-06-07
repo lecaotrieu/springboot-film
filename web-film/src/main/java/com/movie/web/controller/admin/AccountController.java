@@ -33,10 +33,4 @@ public class AccountController {
     public ModelAndView accessDeniedOfAdmin() {
         return new ModelAndView("redirect:/account/logout-admin?accessDenied");
     }
-
-    @RequestMapping(value = "/accessDenied-user", method = RequestMethod.GET)
-    public ModelAndView accessDeniedOfUser() {
-        return new ModelAndView("redirect:/dang-nhap?accessDenied");
-    }
-
 }

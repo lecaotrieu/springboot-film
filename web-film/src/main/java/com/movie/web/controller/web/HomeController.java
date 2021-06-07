@@ -93,7 +93,7 @@ public class HomeController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/";
+        return "redirect:/logout";
     }
 
 
@@ -103,56 +103,11 @@ public class HomeController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/video/trang-chu";
+        return "redirect:/logout";
     }
-
-    @RequestMapping(value = "/dang-nhap/google", method = RequestMethod.GET)
-    public ModelAndView loginPageByGoogle(HttpServletRequest request) throws ClientProtocolException, IOException {
-        String code = request.getParameter("code");
-
-        if (code == null || code.isEmpty()) {
-            new ModelAndView("redirect:/dang-nhap?message=google_error");
-        }
-        String accessToken = googleUtils.getToken(code);
-
-        GoogleDTO googleDTO = googleUtils.getUserInfo(accessToken);
-        UserDetails userDetail = googleUtils.buildUser(googleDTO);
-        MyUser myUser = new MyUser(userDetail.getUsername(), userDetail.getPassword(), true, true, true, true, userDetail.getAuthorities());
-        myUser.setPhoto(googleDTO.getPicture());
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(myUser, null,
-                userDetail.getAuthorities());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ModelAndView("redirect:/trang-chu");
-    }
-
 
     @Autowired
     private RestFB restFB;
-
-    @RequestMapping("/AccessFacebook/login-facebook")
-    public String loginFacebook(HttpServletRequest request) {
-        String code = request.getParameter("code");
-        String accessToken = "";
-        try {
-            accessToken = restFB.getToken(code);
-        } catch (IOException e) {
-            return "redirect:/dang-nhap?facebook=error";
-        }
-        com.restfb.types.User user = restFB.getUserInfo(accessToken);
-        UserDetails userDetail = restFB.buildUser(user);
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
-                userDetail.getAuthorities());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "redirect:/trang-chu";
-    }
-
-
-   /* @GetMapping("/a")
-    public String index() {
-        return "index";
-    }*/
 
     @GetMapping("/")
     public String index1() {

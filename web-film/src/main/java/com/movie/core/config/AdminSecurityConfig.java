@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@Order(2)
+@Order(1)
 public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -38,7 +38,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.antMatcher("/admin/**")
                 .authorizeRequests()
                 .antMatchers("/admin/employee/**").hasRole("ADMIN")
                 .antMatchers("/admin/user/**").hasAnyRole("ADMIN", "MANAGER")
@@ -53,7 +53,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/account/login-admin")
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
-                .loginProcessingUrl("/admin_login")
+                .loginProcessingUrl("/admin/login")
                 .defaultSuccessUrl("/admin/home-page")
                 .successHandler(customSuccessHandler)
                 .failureUrl("/account/login-admin?incorrectAccount")
@@ -63,29 +63,14 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().invalidSessionUrl("/trang-chu")
                 .and()
-                .logout().deleteCookies("JSESSIONID");
-
-        // Cấu hình Remember Me.
-        http.authorizeRequests().and() //
-                .rememberMe().tokenRepository(this.persistentTokenRepository()).key("uniqueAndSecret") //
-                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
+                .logout().deleteCookies("JSESSIONID","remember-me")
+                .and()
+                .rememberMe().rememberMeParameter("remember-me").key("remember-key").tokenValiditySeconds(1 * 24 * 60 * 60);
         http.csrf().disable();
-    }
-
-    @Autowired
-    private DataSource dataSource;
-
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-        db.setDataSource(dataSource);
-        return db;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }
