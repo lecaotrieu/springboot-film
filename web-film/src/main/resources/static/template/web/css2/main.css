@@ -192,7 +192,7 @@ ul {
   position: relative;
 }
 .b-description_readmore_button:before {
-  content: 'Xem thÃƒÆ’Ã‚Âªm';
+  content: 'Xem thêm';
   position: absolute;
   display: block;
   top: 0;

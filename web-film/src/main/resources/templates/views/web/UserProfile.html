@@ -76,7 +76,7 @@
                             </div>
                             <div class="col-md-6 form-it">
                                 <label th:text="#{label.birth.date}"></label>
-                                <input type="date" th:field="${user.birthDate}">
+                                <input type="date" th:value="${user.birthDate}" name="birthDateStr">
                             </div>
                             <input type="hidden" th:field="${user.status}">
                         </div>

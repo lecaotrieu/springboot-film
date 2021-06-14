@@ -113,6 +113,12 @@
                         <input type="email" name="email" placeholder="E-mail"
                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                required="required">
+                        <input type="text" name="lastName" placeholder="Họ" class="ho"
+                               pattern="{0,20}$"
+                               required="required">
+                        <input type="text" name="firstName" placeholder="Tên" class="ten"
+                               pattern="{0,20}$"
+                               required="required">
                         <input type="password" name="password" placeholder="Mật khẩu" pattern="^{6,20}$"
                                required="required">
                         <input type="password" name="confirmPassword" placeholder="Confirm Password" pattern="^{6,20}$"
@@ -301,6 +307,7 @@
             alert("authentication failure");
         }
     });
+
     function showAlertBeforeDelete(callback) {
         swal({
             title: "Xác nhận xóa",

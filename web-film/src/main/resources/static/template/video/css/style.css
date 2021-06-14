@@ -251,6 +251,16 @@ ul.contact_info li a,
 	text-align: center;
 }
 
+#register-form input.ho, #register-form input.ten {width: 49%;}
+
+#register-form input.ho {
+	float: left;
+}
+
+#register-form input.ten {
+	float: right;
+}
+
 .login-form input[type="submit"] {
 	outline: none;
 	padding: 0.9em 0;
@@ -1498,9 +1508,8 @@ h3.agile_w3_title span {
 }
 
 .agile-post {
-	font-style: italic;
 	font-size: 1em;
-	font-weight: 400;
+	font-weight: 500;
 	letter-spacing: 1px;
 	color: #313131;
 }

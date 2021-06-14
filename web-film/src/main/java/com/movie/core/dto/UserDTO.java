@@ -16,6 +16,7 @@ public class UserDTO extends AbstractDTO<UserDTO> {
     private String photo;
     private String photoUrl;
     private Date birthDate;
+    private String birthDateStr;
     private Integer totalFollow;
     private String address;
     private List<CommentVideoDTO> commentVideos;
@@ -228,5 +229,13 @@ public class UserDTO extends AbstractDTO<UserDTO> {
 
     public void setTotalFollow(Integer totalFollow) {
         this.totalFollow = totalFollow;
+    }
+
+    public String getBirthDateStr() {
+        return birthDateStr;
+    }
+
+    public void setBirthDateStr(String birthDateStr) {
+        this.birthDateStr = birthDateStr;
     }
 }

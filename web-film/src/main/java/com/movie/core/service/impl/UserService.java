@@ -19,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -104,6 +107,13 @@ public class UserService implements IUserService {
         }
         if (userEntity.getTotalFollow() == null) {
             userEntity.setTotalFollow(0);
+        }
+        try {
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd-mm-yyyy");
+            Date birthDate = new Date(sdf1.parse(userDTO.getBirthDateStr()).getTime());
+            userEntity.setBirthDate(birthDate);
+        } catch (ParseException e) {
+
         }
         userEntity = userRepository.save(userEntity);
         return userConvert.toDTO(userEntity);
