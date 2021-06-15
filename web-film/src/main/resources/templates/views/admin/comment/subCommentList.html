@@ -10,7 +10,7 @@
         <td th:text="${subComment.id}" style="text-align: center"></td>
         <td th:text="${subComment.user.userName}">
         <td th:text="${subComment.film.name}"></td>
-        <td th:text="${subComment.content}" style="color: #0b51c5; font-weight: bold; cursor: pointer"
+        <td class="comment-content" th:text="${subComment.content}" style="color: #0b51c5; font-weight: bold; cursor: pointer"
             th:onclick="loadCommentContent([[${subComment.id}]])"></td>
         <td th:text="${subComment.totalLike}"></td>
         <td></td>

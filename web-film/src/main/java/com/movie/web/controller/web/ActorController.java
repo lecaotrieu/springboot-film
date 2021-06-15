@@ -56,9 +56,9 @@ public class ActorController {
         }
         if (limit != null) {
             command.setLimit(limit);
+        } else {
+            command.setLimit(12);
         }
-
-
         return  command;
     }
 

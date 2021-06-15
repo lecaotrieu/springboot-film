@@ -4,7 +4,7 @@
 <head>
 </head>
 <body>
-<div th:id="new-sub-cm_+${comment.id}"></div>
+<div th:id="new-sub-cm_+${comment.commentVideo.id}"></div>
 <div th:class="'cmt-item flex-it reply scm_'+${comment.commentVideo.id}" th:id="cm_+${comment.id}">
     <img th:src="@{${comment.user.photoUrl}}" alt="" style="width: 65px;height: 65px; border-radius: 50px;">
     <div class="author-infor">

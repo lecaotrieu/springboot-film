@@ -28,7 +28,7 @@ public class CommentVideoController {
     public String loadCommentVideoList(CommentVideoCommand command, Model model) {
         command.setSortDirection("0");
         command.setLimit(8);
-        List<CommentVideoDTO> commentVideoDTOS = commentVideoService.findByProperties(command.getVideoId(), null, "", "", command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
+        List<CommentVideoDTO> commentVideoDTOS = commentVideoService.findByProperties(command.getVideoId(), null, "", "", command.getPage(), command.getLimit(), "createdDate", "0");
         command.setListResult(commentVideoDTOS);
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             for (CommentVideoDTO commentVideoDTO : commentVideoDTOS) {
@@ -75,7 +75,7 @@ public class CommentVideoController {
     @RequestMapping(value = "/ajax/subCommentVideo/list", method = RequestMethod.GET)
     public String loadSubCommentVideoList(CommentVideoCommand command, Model model) {
         command.setLimit(10);
-        List<CommentVideoDTO> commentVideoDTOS = commentVideoService.findByProperties(command.getCommentId(), command.getVideoId(), command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
+        List<CommentVideoDTO> commentVideoDTOS = commentVideoService.findByProperties(command.getCommentId(), command.getVideoId(), command.getPage(), command.getLimit(), "createdDate", "0");
         command.setListResult(commentVideoDTOS);
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             for (CommentVideoDTO commentVideoDTO : commentVideoDTOS) {

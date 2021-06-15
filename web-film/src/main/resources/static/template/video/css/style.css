@@ -4187,6 +4187,11 @@ p.cm-content {
 	margin-bottom: 20px;
 }
 
+p.scm-xemthem {
+	margin-left: 72px;
+	cursor: pointer;
+}
+
 .blog-detail-ct .cmt-item a.rep-btn {
 	color: #525252;
 	text-transform: uppercase;

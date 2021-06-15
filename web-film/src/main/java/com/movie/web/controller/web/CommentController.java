@@ -31,7 +31,7 @@ public class CommentController {
     public String loadCommentList(CommentCommand command, Model model) {
         command.setSortDirection("0");
         command.setLimit(8);
-        List<CommentDTO> commentDTOS = commentService.findByProperties(command.getFilmId(), null, "", "", command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
+        List<CommentDTO> commentDTOS = commentService.findByProperties(command.getFilmId(), null, "", "", command.getPage(), command.getLimit(), "createdDate", "0");
         command.setListResult(commentDTOS);
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             for (CommentDTO commentDTO : commentDTOS) {
@@ -88,7 +88,7 @@ public class CommentController {
     @RequestMapping(value = "/ajax/subComment/list", method = RequestMethod.GET)
     public String loadSubCommentList(CommentCommand command, Model model) {
         command.setLimit(10);
-        List<CommentDTO> commentDTOS = commentService.findByProperties(command.getCommentId(), command.getFilmId(), command.getPage(), command.getLimit(), "createdDate", command.getSortDirection());
+        List<CommentDTO> commentDTOS = commentService.findByProperties(command.getCommentId(), command.getFilmId(), command.getPage(), command.getLimit(), "createdDate", "0");
         command.setListResult(commentDTOS);
         if (SecurityUtils.getUserAuthorities().contains(WebConstant.ROLE_USER)) {
             for (CommentDTO commentDTO : commentDTOS) {
