@@ -36,10 +36,11 @@
 <div class="row">
     <div class="col-12">
         <div class='player'>
-            <video class="video-screen" autoplay poster="" preload='auto' th:src="@{${item.videoUrl}}" type='video/mp4'
+            <video class="video-screen" autoplay poster="" preload='auto' th:src="@{${item.videoUrl}}" type='video/mp4' onerror="fixVideo1()"
                    msallowfullscreen webkitallowfullscreen mozallowfullscreen allowfullscreen>
                 Sorry, your browser doesn't support HTML5 video playback.
             </video>
+            <input type="hidden" id="ip-video-url2" th:value="${item.videoUrl2}">
             <div class='controls active'>
                 <button class='play start'></button>
                 <input type="range" class='volume-bar' value='70' min='0' max='100'>
@@ -82,5 +83,10 @@
     </div>
 </div>
 <script th:src="@{/template/js/custom_video.js}"></script>
+<script>
+    function fixVideo1() {
+        $('.video-screen').attr("src", $('#ip-video-url2').val());
+    }
+</script>
 </body>
 </html>

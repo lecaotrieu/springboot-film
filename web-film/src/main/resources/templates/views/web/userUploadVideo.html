@@ -16,7 +16,8 @@
                     <h1></h1>
                     <ul class="breadcumb">
                         <li class="active"><a th:href="@{/trang-chu}">Trang chủ</a></li>
-                        <li class="active"><span class="ion-ios-arrow-right"></span><a th:href="@{/trang-ca-nhan/quan-ly-video}">Danh sách video</a></li>
+                        <li class="active"><span class="ion-ios-arrow-right"></span><a
+                                th:href="@{/trang-ca-nhan/quan-ly-video}">Danh sách video</a></li>
                         <li><span class="ion-ios-arrow-right"></span>Đăng video
                     </ul>
                 </div>
@@ -73,8 +74,8 @@
                             <label class=" form-control-label">Ảnh video</label>
                         </div>
                         <div class="col-md-9">
-                            <video class="video" controls id="video">
-                                <source th:src="*{videoUrl}" type="video/mp4">
+                            <video class="video" controls id="video" th:src="*{videoUrl}" onerror="fixVideo1()"
+                                   type="video/mp4">
                             </video>
                             <input type="file" name="video" id="ip-video" accept="video/*"
                                    th:if="*{#strings.isEmpty(id)}"
@@ -93,12 +94,18 @@
                     <input type="hidden" th:value="*{id}" name="id" th:if="*{!#strings.isEmpty(id)}">
                     <input type="hidden" th:value="*{status}" name="status" th:if="*{!#strings.isEmpty(id)}">
                     <input type="hidden" value="0" name="status" th:if="*{#strings.isEmpty(id)}">
+                    <input type="hidden" id="ip-video-url2" th:value="*{videoUrl2}">
                     <button class="btn btn-success">Đăng</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function fixVideo1() {
+        $('#video').attr("src", $('#ip-video-url2').val());
+    }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
         integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
         crossorigin="anonymous"></script>
@@ -109,7 +116,7 @@
         });
     });
 
-    $('#form-video').submit(function (){
+    $('#form-video').submit(function () {
         showAlertLoading();
         var desc = CKEDITOR.instances['description'].getData();
         $('#description').val(desc);
@@ -118,9 +125,9 @@
     $('#form-video').ajaxForm({
         success: function (response) {
             if (response == "success") {
-               showAlertAfterSuccess(function (){
-                   window.location.href = window.location.href;
-               });
+                showAlertAfterSuccess(function () {
+                    window.location.href = window.location.href;
+                });
             } else if (response == "image_over_size" || response == null) {
                 $('#message-video').html("" +
                     "<div class='alert alert-block alert-warning'>" +
