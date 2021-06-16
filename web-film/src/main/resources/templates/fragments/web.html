@@ -79,7 +79,7 @@
                     <label for="lastName">
                         Họ
                         <input type="text" name="lastName" id="lastName" placeholder="Họ"
-                               pattern="{0,20}$"
+                               pattern=".{0,50}$"
                                required="required"/>
                     </label>
                 </div>
@@ -87,7 +87,7 @@
                     <label for="firstName">
                         Tên
                         <input type="text" name="firstName" id="firstName" placeholder="Tên"
-                               pattern="{0,20}$"
+                               pattern=".{0,50}"
                                required="required"/>
                     </label>
                 </div>
@@ -96,7 +96,7 @@
                 <label for="password-2">
                     Mật khẩu:
                     <input type="password" name="password" id="password-2" placeholder="********"
-                           pattern="^{6,20}$"
+                           pattern=".{6,20}"
                            required="required"/>
                 </label>
 
@@ -105,7 +105,7 @@
                 <label for="repassword-2">
                     Nhập lại mật khẩu:
                     <input type="password" name="confirmPassword" id="repassword-2" placeholder=""
-                           pattern="^{6,20}$"
+                           pattern=".{6,20}"
                            required="required"/>
                 </label>
             </div>

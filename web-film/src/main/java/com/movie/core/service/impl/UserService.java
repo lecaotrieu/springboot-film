@@ -108,12 +108,10 @@ public class UserService implements IUserService {
         if (userEntity.getTotalFollow() == null) {
             userEntity.setTotalFollow(0);
         }
-        try {
+        if (userDTO.getBirthDateStr() != null) {
             SimpleDateFormat sdf1 = new SimpleDateFormat("dd-mm-yyyy");
             Date birthDate = new Date(sdf1.parse(userDTO.getBirthDateStr()).getTime());
             userEntity.setBirthDate(birthDate);
-        } catch (ParseException e) {
-
         }
         userEntity = userRepository.save(userEntity);
         return userConvert.toDTO(userEntity);
